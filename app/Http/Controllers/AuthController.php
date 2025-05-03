@@ -25,7 +25,7 @@ class AuthController extends Controller
         try {
             $validated = $request->validate([
                 'username' => 'required|string|unique:users,username',
-                'email' => 'required|string|email',
+                'email' => 'required|string|email|unique:users,email',
                 'role' => 'required|in:user,cafe',
                 'no_wa' => 'required|string|min:11',
                 'password' => 'required|string|min:8',
@@ -57,9 +57,9 @@ class AuthController extends Controller
                 return redirect()->intended('/dashboard')->with('success', 'Login berhasil.');
             }
 
-            return redirect()->route('login')->withInput()->with('error', 'Username atau password salah.');
+            return redirect()->route('login')->withInput()->with('error', 'Email atau password salah.');
         } catch (\Exception $e) {
-            return redirect()->route('login')->withInput()->with('error', 'Username atau password salah.');
+            return redirect()->route('login')->withInput()->with('error', 'Email atau password salah.');
         }
     }
 
