@@ -12,20 +12,27 @@
         <div class="w-16 h-16 border-4 border-solid rounded-full animate-spin border-primary border-t-transparent">
         </div>
     </div>
-
     <!-- ===== Preloader End ===== -->
 
     <!-- ===== Page Wrapper Start ===== -->
-    <div class="flex h-screen overflow-hidden">
-        <!-- ===== Sidebar Start ===== -->
-        <x-sidebar></x-sidebar>
-        <!-- ===== Sidebar End ===== -->
+    <div class="flex flex-col h-screen">
+        <!-- ===== Navbar Start ===== -->
+        <x-navbar></x-navbar>
+        <!-- ===== Navbar End ===== -->
 
-        <!-- ===== Content Area Start ===== -->
-        <div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
-            {{ $slot }}
+        <!-- ===== Main Content Wrapper ===== -->
+        <div class="flex flex-1 overflow-hidden">
+            <!-- ===== Sidebar Start ===== -->
+            <x-sidebar class="h-full"></x-sidebar>
+            <!-- ===== Sidebar End ===== -->
+
+            <!-- ===== Content Area Start ===== -->
+            <div class="relative flex-1 overflow-x-hidden overflow-y-auto">
+                {{ $slot }}
+            </div>
+            <!-- ===== Content Area End ===== -->
         </div>
-        <!-- ===== Content Area End ===== -->
+        <!-- ===== Main Content Wrapper End ===== -->
     </div>
     <!-- ===== Page Wrapper End ===== -->
     <script defer src="{{ asset('tailadmin/build/bundle.js') }}"></script>

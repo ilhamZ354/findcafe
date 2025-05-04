@@ -1,7 +1,6 @@
 @section('title-header', 'Dashboard')
 
 <x-layout>
-    <x-navbar></x-navbar>
 
     <!-- ===== Main Content Start ===== -->
     <main>
