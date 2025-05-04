@@ -1,3 +1,4 @@
+@section('title-header', 'Sign In')
 @section('title', 'Sign In')
 
 <x-auth.layout>

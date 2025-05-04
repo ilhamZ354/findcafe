@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<x-header></x-header>
+<x-header>
+    @yield('title-header')
+</x-header>
+
+@php
+    // ===========PENENTUAN BACKGROUND IMAGE==========
+    $bgImage = trim($__env->yieldContent('title')) === 'Sign In' ? 'background-cafe.jpg' : 'background-cafe-2.jpg';
+@endphp
 
 <body>
     <!-- ===== Page Wrapper Start ===== -->
-    <div class="flex h-screen overflow-hidden bg-center bg-no-repeat bg-[url('/images/background-cafe.jpg')] bg-gray-700 bg-blend-multiply bg-cover"
-        style="background-image: url('/images/background-cafe.jpg')">
+    <div class="flex h-screen overflow-hidden bg-gray-700 bg-center bg-no-repeat bg-cover bg-blend-multiply"
+        style="background-image: url('/images/{{ $bgImage }}')" loading="lazy">
         <!-- ===== Content Area Start ===== -->
         <div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
             <!-- ===== Main Content Start ===== -->

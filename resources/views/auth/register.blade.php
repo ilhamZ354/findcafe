@@ -1,4 +1,6 @@
+@section('title-header', 'Sign Up')
 @section('title', 'Sign Up')
+
 
 <x-auth.layout>
     <!-- ====== Forms Section Start -->
