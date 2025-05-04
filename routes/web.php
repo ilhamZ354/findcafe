@@ -33,3 +33,6 @@ Route::get('/menu-cafe', action: function () {
 Route::get('/users', function () {
     return view(view: 'users.index');
 })->name('index');
+Route::get('/profile', function () {
+    return view(view: 'profile.index');
+})->name('index');
