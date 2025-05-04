@@ -14,14 +14,17 @@
                     </div>
                     <!-- Action Buttons -->
                     <div class="grid grid-cols-3 mb-6 justify-items-center">
-                        <button class="bg-primary text-white rounded-full w-12 h-12 flex items-center justify-center">
+                        <a href="/dashboard/cafe-detail/menu-cafe"
+                            class="bg-primary text-white rounded-full w-12 h-12 flex items-center justify-center hover:bg-primary-dark transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M4 6h16M4 12h16M4 18h16" />
                             </svg>
-                        </button>
-                        <button class="bg-primary text-white rounded-full w-12 h-12 flex items-center justify-center">
+                        </a>
+                        <a href="https://www.google.com/maps?q=Jl.+Uskup+Agung+No.2,+Madras+Hulu,+Medan+Polonia"
+                            target="_blank" rel="noopener noreferrer"
+                            class="bg-primary text-white rounded-full w-12 h-12 flex items-center justify-center hover:bg-primary-dark transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -29,10 +32,11 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-                        </button>
-                        <button class="bg-primary text-white rounded-full w-12 h-12 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
+                        </a>
+                        <button x-data="{ bookmarked: false }" @click="bookmarked = !bookmarked"
+                            class="bg-primary text-white rounded-full w-12 h-12 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" :fill="bookmarked ? 'currentColor' : 'none'"
+                                viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                             </svg>
@@ -50,7 +54,8 @@
                 <div class="relative">
                     <!-- Chat icon button -->
                     <div class="mb-4">
-                        <button
+                        <!-- Chat button -->
+                        <button onclick="document.getElementById('chatModal').classList.remove('hidden')"
                             class="absolute top-0 right-0 bg-primary text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
@@ -58,6 +63,24 @@
                                     d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8-1.64 0-3.168-.395-4.436-1.085L3 21l1.24-3.718C3.459 15.983 3 14.04 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                             </svg>
                         </button>
+
+                        <!-- Chat modal -->
+                        <div id="chatModal"
+                            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+                            <div class="bg-white rounded-lg w-96 p-4 relative">
+                                <button onclick="document.getElementById('chatModal').classList.add('hidden')"
+                                    class="absolute top-2 right-2 text-gray-500 hover:text-black">
+                                    &times;
+                                </button>
+                                <h2 class="text-lg font-semibold mb-4">Chat with Cafe</h2>
+                                <div class="h-64 overflow-y-auto border rounded p-2 mb-4">
+                                    <!-- Chat messages here -->
+                                    <p class="text-sm text-gray-700">Hello! How can we help you?</p>
+                                </div>
+                                <input type="text" placeholder="Type a message..."
+                                    class="w-full border rounded p-2 focus:outline-none focus:ring">
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Gallery -->

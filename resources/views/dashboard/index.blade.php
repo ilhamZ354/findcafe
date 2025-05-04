@@ -15,21 +15,23 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                         @foreach (range(1, 5) as $i)
-                            <div
-                                class="bg-white rounded-lg shadow-lg overflow-hidden border border-stroke dark:border-strokedark dark:bg-boxdark">
-                                <img src="{{ asset('images/background-cafe.jpg') }}" alt="Cafe Image"
-                                    class="w-full h-40 object-cover">
-                                <div class="p-4">
-                                    <h5 class="text-lg font-semibold text-black dark:text-white">Junction Café</h5>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                                        Jl. Uskup Agung No.2, Madras Hulu, Kec. Medan Polonia
-                                    </p>
-                                    <div class="flex items-center mt-2">
-                                        <span class="text-yellow-400 mr-1">★★★★★</span>
-                                        <span class="text-sm text-gray-600 dark:text-gray-400">(106)</span>
+                            <a href="/dashboard/cafe-detail" class="block">
+                                <div
+                                    class="bg-white rounded-lg shadow-lg overflow-hidden border border-stroke dark:border-strokedark dark:bg-boxdark hover:shadow-xl transition-shadow">
+                                    <img src="{{ asset('images/background-cafe.jpg') }}" alt="Cafe Image"
+                                        class="w-full h-40 object-cover">
+                                    <div class="p-4">
+                                        <h5 class="text-lg font-semibold text-black dark:text-white">Junction Café</h5>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                                            Jl. Uskup Agung No.2, Madras Hulu, Kec. Medan Polonia
+                                        </p>
+                                        <div class="flex items-center mt-2">
+                                            <span class="text-yellow-400 mr-1">★★★★★</span>
+                                            <span class="text-sm text-gray-600 dark:text-gray-400">(106)</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         @endforeach
                     </div>
                 </div>

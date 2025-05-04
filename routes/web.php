@@ -24,6 +24,9 @@ Route::get('/dashboard/cafe-detail', function () {
 Route::get('/dashboard/cafe-detail/menu-cafe', function () {
     return view(view: 'dashboard.menu-cafe');
 })->name('cafe-detail');
+Route::get('/dashboard/cafe-detail/cafe-chat', function () {
+    return view(view: 'dashboard.cafe-chat');
+})->name('cafe-chat');
 Route::get('/bookmark', function () {
     return view(view: 'bookmark.index');
 })->name('index');
