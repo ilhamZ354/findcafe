@@ -23,7 +23,7 @@ class AuthController extends Controller
     public function store(Request $request)
     {
         try {
-            $validated = $request->validate([
+            $validasi = $request->validate([
                 'username' => 'required|string|unique:users,username',
                 'email' => 'required|string|email|unique:users,email',
                 'role' => 'required|in:user,cafe',
@@ -31,9 +31,9 @@ class AuthController extends Controller
                 'password' => 'required|string|min:8',
             ]);
 
-            $validated['password'] = Hash::make($validated['password']);
+            $validasi['password'] = Hash::make($validasi['password']);
 
-            User::create($validated);
+            User::create($validasi);
 
             return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan.');
         } catch (\Throwable $e) {
