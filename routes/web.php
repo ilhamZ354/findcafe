@@ -18,6 +18,12 @@ Route::get('/dashboard', function () {
 Route::get('/cafe', function () {
     return view(view: 'cafe.index');
 })->name('index');
+Route::get('/dashboard/cafe-detail', function () {
+    return view(view: 'dashboard.cafe-detail');
+})->name('cafe-detail');
+Route::get('/dashboard/cafe-detail/menu-cafe', function () {
+    return view(view: 'dashboard.menu-cafe');
+})->name('cafe-detail');
 Route::get('/bookmark', function () {
     return view(view: 'bookmark.index');
 })->name('index');
