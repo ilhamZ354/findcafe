@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<x-header>
+<x-dashboard.header>
     @yield('title-header')
-</x-header>
+</x-dashboard.header>
 
 <body x-data="{ page: 'ecommerce', 'loaded': true, 'darkMode': false, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }">
     <!-- ===== Preloader Start ===== -->
@@ -15,27 +15,20 @@
     <!-- ===== Preloader End ===== -->
 
     <!-- ===== Page Wrapper Start ===== -->
-    <div class="flex flex-col h-screen">
-        <!-- ===== Navbar Start ===== -->
-        <x-navbar></x-navbar>
-        <!-- ===== Navbar End ===== -->
+    <div class="flex h-screen overflow-hidden">
+        <!-- ===== Sidebar Start ===== -->
+        <x-dashboard.sidebar></x-dashboard.sidebar>
+        <!-- ===== Sidebar End ===== -->
 
-        <!-- ===== Main Content Wrapper ===== -->
-        <div class="flex flex-1 overflow-hidden">
-            <!-- ===== Sidebar Start ===== -->
-            <x-sidebar class="h-full"></x-sidebar>
-            <!-- ===== Sidebar End ===== -->
-
-            <!-- ===== Content Area Start ===== -->
-            <div class="relative flex-1 overflow-x-hidden overflow-y-auto">
-                {{ $slot }}
-            </div>
-            <!-- ===== Content Area End ===== -->
+        <!-- ===== Content Area Start ===== -->
+        <div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
+            <x-dashboard.navbar></x-dashboard.navbar>
+            {{ $slot }}
         </div>
-        <!-- ===== Main Content Wrapper End ===== -->
+        <!-- ===== Content Area End ===== -->
     </div>
-    <!-- ===== Page Wrapper End ===== -->
     <script defer src="{{ asset('tailadmin/build/bundle.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 </body>
 
 </html>

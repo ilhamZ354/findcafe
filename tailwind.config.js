@@ -16,9 +16,10 @@ export default {
             },
             colors: {
                 primaryBrown: "#6F3917",
-                semiPrimary: "#B38867",
-                lightPrimary: "#DDBC95",
-                grayTheme: "#D9D9D9",
+                lightPrimaryBrown: "#fff7ed",
+                semiPrimaryBrown: "#B38867",
+                grayTheme: "#626D71",
+                lightGrayTheme: "#D9D9D9",
             },
         },
     },

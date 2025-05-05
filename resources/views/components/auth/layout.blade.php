@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<x-header>
+<x-dashboard.header>
     @yield('title-header')
-</x-header>
+</x-dashboard.header>
 
 @php
     // ===========PENENTUAN BACKGROUND IMAGE==========

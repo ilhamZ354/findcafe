@@ -1,43 +1,27 @@
 @section('title-header', 'Dashboard')
 
-<x-layout>
+<x-dashboard.layout>
     <!-- ===== Main Content Start ===== -->
     <main>
-        <div class="p-4 mx-auto max-w-screen-2xl md:p-6 2xl:p-10">
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-                <!-- ====== Table One Start -->
-                <div class="col-span-12 xl:col-span-8">
-                    <div class="flex justify-between items-center mb-6">
-                        <h4 class="text-xl font-bold text-black dark:text-white">
-                            Explore Cafes
-                        </h4>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        @foreach (range(1, 5) as $i)
-                            <a href="/dashboard/cafe-detail" class="block">
-                                <div
-                                    class="bg-white rounded-lg shadow-lg overflow-hidden border border-stroke dark:border-strokedark dark:bg-boxdark hover:shadow-xl transition-shadow">
-                                    <img src="{{ asset('images/background-cafe.jpg') }}" alt="Cafe Image"
-                                        class="w-full h-40 object-cover">
-                                    <div class="p-4">
-                                        <h5 class="text-lg font-semibold text-black dark:text-white">Junction Café</h5>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                                            Jl. Uskup Agung No.2, Madras Hulu, Kec. Medan Polonia
-                                        </p>
-                                        <div class="flex items-center mt-2">
-                                            <span class="text-yellow-400 mr-1">★★★★★</span>
-                                            <span class="text-sm text-gray-600 dark:text-gray-400">(106)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        @endforeach
+        <div class="flex flex-wrap mx-5 mt-10">
+            <!-- card1 -->
+            <div class="flex w-full">
+                <div class="w-full max-w-full px-3 mt-0">
+                    <div class="border-black/12.5 shadow-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-gray-700 bg-center bg-no-repeat bg-cover bg-blend-multiply h-[70vh] bg-clip-border pt-28 min-h-[60vh]"
+                        style="background-image: url('/images/background-cafe.jpg')">
+                        <div
+                            class="border-black/12.5 mb-0 rounded-t-2xl border-b-0 border-solid p-6 pt-4 pb-0 text-center h-full mx-auto max-w-4xl">
+                            <h6 class="mb-3 text-5xl font-bold tracking-wider text-white text-shadow-md">Selamat Datang
+                                di
+                                Dashboard <span class="text-semiPrimaryBrown">Cafe Hunt</span></h6>
+                            <p class="mt-1 text-lg font-light text-lightPrimaryBrown">Lihat, pantau, dan kelola seluruh
+                                data Cafe
+                                Mitra dan data lainnya.</p>
+                        </div>
                     </div>
                 </div>
-                <!-- ====== Table One End -->
             </div>
         </div>
     </main>
     <!-- ===== Main Content End ===== -->
-</x-layout>
+</x-dashboard.layout>
