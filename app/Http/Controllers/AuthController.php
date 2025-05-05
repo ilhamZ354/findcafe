@@ -20,7 +20,7 @@ class AuthController extends Controller
     }
 
     // store registrasi
-    public function store(Request $request)
+    public function storeRegis(Request $request)
     {
         try {
             $validasi = $request->validate([
@@ -40,6 +40,30 @@ class AuthController extends Controller
             return redirect()->back()->withInput()->with('error', 'Gagal menambahkan user');
         }
     }
+
+    // store akun cafe
+    public function storeCafe(Request $request)
+    {
+        try {
+            $validasi = $request->validate([
+                'username' => 'required|string|unique:users,username',
+                'email' => 'required|string|email|unique:users,email',
+                'role' => 'required|in:user,cafe',
+                'no_wa' => 'required|string|min:11',
+                'password' => 'required|string|min:8',
+            ]);
+
+            $validasi['role'] = 'cafe';
+            $validasi['password'] = Hash::make($validasi['password']);
+
+            User::create($validasi);
+
+            return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withInput()->with('error', 'Gagal menambahkan user');
+        }
+    }
+
 
     // Proses login
     public function login(Request $request)
