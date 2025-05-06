@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CafeDetail;
 
-class CafeControllere extends Controller {
+class CafeController extends Controller {
 
     // menampilkan halaman detail cafe
     public function index() {
