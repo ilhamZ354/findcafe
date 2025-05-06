@@ -29,6 +29,17 @@ Route::get('/superadmin/transaksi', function () {
     return view('superadmin.transaksi');
 })->name('superadmin.transaksi');
 
+// =============CAFE===========
+Route::get('/cafe/data-cafe', function () {
+    return view('cafe.data-cafe');
+})->name('cafe.data-cafe');
+Route::get('/cafe/menu-cafe', function () {
+    return view('cafe.menu-cafe');
+})->name('cafe.menu-cafe');
+Route::get('/cafe/transaksi', function () {
+    return view('cafe.transaksi');
+})->name('cafe.transaksi');
+
 
 
 // Route::get('/dashboard/cafe-detail', function () {
