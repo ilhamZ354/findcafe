@@ -55,6 +55,29 @@ class UserController extends Controller
         }
     }
 
+    // store akun users
+    public function storeUser(Request $request)
+    {
+        try {
+            $validasi = $request->validate([
+                'username' => 'required|string|unique:users,username',
+                'email' => 'required|string|email|unique:users,email',
+                'role' => 'required|in:user',
+                'no_wa' => 'required|string|min:11',
+                'password' => 'required|string|min:8',
+            ]);
+
+            $validasi['role'] = 'user';
+            $validasi['password'] = Hash::make($validasi['password']);
+
+            User::create($validasi);
+
+            return redirect()->route('superadmin.users')->with('success', 'User berhasil ditambahkan.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->withInput()->with('error', 'Gagal menambahkan user');
+        }
+    }
+
     // get users role user
     public function listUsers(Request $request)
     {
@@ -96,4 +119,17 @@ class UserController extends Controller
             return redirect()->back()->withInput()->with('error', 'Gagal update cafe');
         }
     }
+
+    public function deleteUser($id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            $user->delete();
+
+            return redirect()->route('superadmin.users')->with('success', 'User berhasil dihapus.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->with('error', 'Gagal menghapus user.');
+        }
+    }
+
 }

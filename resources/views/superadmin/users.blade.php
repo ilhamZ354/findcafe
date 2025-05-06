@@ -5,13 +5,13 @@
     <main>
         <div class="p-4 mx-auto max-w-screen-2xl md:p-6 2xl:p-10">
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-                <!-- ====== Table Daftar Cafe Start -->
+                <!-- ====== Table Daftar User Start -->
                 <div x-data="{ openModal: false, openEditModal: false, openDeleteModal: false }" class="col-span-12 xl:col-span-8">
                     <div
                         class="rounded-xl border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-5 -z-10">
                         <div class="flex items-center justify-between mb-6">
                             <h4 class="text-xl font-bold text-black dark:text-white">Daftar Pengguna</h4>
-                            <button data-modal-target="add-cafe" data-modal-toggle="add-cafe"
+                            <button data-modal-target="add-user" data-modal-toggle="add-user"
                                 class="px-4 py-2 text-white rounded-lg bg-primary">Tambah</button>
                         </div>
 
@@ -27,10 +27,11 @@
                                 </tr>
                             </thead>
                             <tbody class="text-sm text-center divide-y divide-gray-200">
+                                @foreach ($users as $user)
                                 <tr class="hover:bg-gray-50">
-                                    <td class="p-3 font-medium text-black dark:text-white">3.5K</td>
-                                    <td class="p-3 font-medium text-meta-3">$5,768</td>
-                                    <td class="p-3 font-medium text-black sm:table-cell dark:text-white">User
+                                    <td class="p-3 font-medium text-black dark:text-white">{{ $user->username }}</td>
+                                    <td class="p-3 font-medium text-meta-3">{{ $user->email }}</td>
+                                    <td class="p-3 font-medium text-black sm:table-cell dark:text-white">{{ $user->role }}</td>
                                     </td>
                                     <td class="p-3 sm:table-cell">
                                         <div x-data="{ open: false }" class="relative inline-block text-left">
@@ -58,7 +59,7 @@
 
                                                 {{-- BUTTON DELETE --}}
                                                 <x-dashboard.button-icon color="red" text="Delete" method="DELETE"
-                                                    action="" id_row="1">
+                                                    action="{{ route('superadmin.user.delete', $user->id) }}" id_row="1">
                                                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg"
                                                         fill="none" viewBox="0 0 24 24">
                                                         <path stroke="currentColor" stroke-linecap="round"
@@ -70,6 +71,7 @@
                                         </div>
                                     </td>
                                 </tr>
+                                @endforeach
                                 <!-- Tambah baris data lainnya di sini -->
                             </tbody>
                         </table>
@@ -81,7 +83,7 @@
     <!-- ===== Main Content End ===== -->
 
     <!-- modal -->
-    @include('components.modal.superadmin.add-cafe')
-    @include('components.modal.superadmin.update-cafe')
+    @include('components.modal.superadmin.add-user')
+    @include('components.modal.superadmin.update-user')
 
 </x-dashboard.layout>
