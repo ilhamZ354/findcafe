@@ -7,24 +7,27 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CafeDetail;
 
-class CafeController extends Controller {
+class CafeController extends Controller
+{
 
     // menampilkan halaman detail cafe
-    public function index() {
+    public function index()
+    {
         $cafe = CafeDetail::where('cafe_id', Auth::id())->first();
-        return view('pages.cafe.index', compact('cafe'));
+        return view('cafe.data-cafe', compact('cafe'));
     }
 
     // simpan data detail cafe
-    public function store (Request $request) {
-        try{
+    public function store(Request $request)
+    {
+        try {
 
             $validasi = $request->validate([
-                'description' => ['required','string','min:3','max:100'],
-                'image_profile' => ['required','string'],
-                'address' => ['required','string','min:5'],
-                'location' => ['required','string','min:10'],
-                'galleries' => ['nullable','array'],
+                'description' => ['required', 'string', 'min:3', 'max:100'],
+                'image_profile' => ['required', 'string'],
+                'address' => ['required', 'string', 'min:5'],
+                'location' => ['required', 'string', 'min:10'],
+                'galleries' => ['nullable', 'array'],
             ]);
 
             DB::beginTransaction();
@@ -38,7 +41,6 @@ class CafeController extends Controller {
             return redirect()
                 ->route('cafe.index')
                 ->with('success', 'Data Cafe Berhasil Ditambahkan');
-
         } catch (ValidationException $e) {
             // Tangkap error validasi dan redirect ke halaman sebelumnya dengan membawa old input
             return redirect()->back()->withErrors($e->validator)->withInput();
@@ -54,14 +56,15 @@ class CafeController extends Controller {
     }
 
     // update data detail cafe
-    public function Update(Request $request, $id) {
-        try{
+    public function Update(Request $request, $id)
+    {
+        try {
             $validasi = $request->validate([
-                'description' => ['required','string','min:3','max:100'],
-                'image_profile' => ['required','string'],
-                'address' => ['required','string','min:5'],
-                'location' => ['required','string','min:10'],
-                'galleries' => ['nullable','array'],
+                'description' => ['required', 'string', 'min:3', 'max:100'],
+                'image_profile' => ['required', 'string'],
+                'address' => ['required', 'string', 'min:5'],
+                'location' => ['required', 'string', 'min:10'],
+                'galleries' => ['nullable', 'array'],
             ]);
 
             $validasi['cafe_id'] = Auth::id();
@@ -84,5 +87,4 @@ class CafeController extends Controller {
                 ->with('error', 'Gagal update data cafe');
         }
     }
-
 }
