@@ -26,9 +26,9 @@
                                 </tr>
                             </thead>
                             <tbody class="text-sm text-center divide-y divide-gray-200">
-                                @foreach ($cafe as $cafe)
+                                @foreach ($cafes as $cafe)
                                 <tr class="hover:bg-gray-50">
-                                    <td class="p-3 font-medium text-black dark:text-white">{{ $cafe->cafename }}</td>
+                                    <td class="p-3 font-medium">{{ $cafe->username }}</td>
                                     <td class="p-3 font-medium text-meta-3">{{ $cafe->email }}</td>
                                     <td class="p-3 font-medium text-black sm:table-cell dark:text-white">{{ $cafe->role }}</td>
                                     <td class="p-3 sm:table-cell">

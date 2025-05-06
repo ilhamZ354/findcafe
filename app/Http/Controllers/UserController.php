@@ -92,10 +92,10 @@ class UserController extends Controller
     public function listCafe(Request $request)
     {
         // ambil semua data cafe
-        $cafe = User::where('role', 'cafe')->get();
+        $cafes = User::where('role', 'cafe')->get();
 
         // kembalikan ke view
-        return view('superadmin.cafe', compact('cafe'));
+        return view('superadmin.cafe', compact('cafes'));
     }
 
     // update akun cafe
