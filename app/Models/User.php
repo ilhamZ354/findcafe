@@ -6,6 +6,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\CafeDetail;
+use App\Models\RatingReview;
 
 class User extends Authenticatable
 {
@@ -58,6 +62,12 @@ class User extends Authenticatable
     public function ratingReviews(): HasMany
     {
         return $this->hasMany(RatingReview::class);
+    }
+
+    // relasi ke transaction
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
     }
 
     // relasi ke bookmarks

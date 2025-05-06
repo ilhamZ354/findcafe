@@ -21,18 +21,16 @@
                                 <tr class="text-center bg-gray-100">
                                     <th class="p-3 text-sm font-medium">Nama</th>
                                     <th class="p-3 text-sm font-medium">Email</th>
-                                    <th class="p-3 text-sm font-medium sm:table-cell">Gmaps</th>
-                                    <th class="p-3 text-sm font-medium sm:table-cell">About</th>
+                                    <th class="p-3 text-sm font-medium sm:table-cell">Role</th>
                                     <th class="p-3 text-sm font-medium sm:table-cell">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="text-sm text-center divide-y divide-gray-200">
+                                @foreach ($cafes as $cafe)
                                 <tr class="hover:bg-gray-50">
-                                    <td class="p-3 font-medium text-black dark:text-white">3.5K</td>
-                                    <td class="p-3 font-medium text-meta-3">$5,768</td>
-                                    <td class="p-3 font-medium text-black sm:table-cell dark:text-white">590
-                                    </td>
-                                    <td class="p-3 font-medium sm:table-cell text-meta-5">4.8%</td>
+                                    <td class="p-3 font-medium">{{ $cafe->username }}</td>
+                                    <td class="p-3 font-medium text-meta-3">{{ $cafe->email }}</td>
+                                    <td class="p-3 font-medium text-black sm:table-cell dark:text-white">{{ $cafe->role }}</td>
                                     <td class="p-3 sm:table-cell">
                                         <div x-data="{ open: false }" class="relative inline-block text-left">
                                             <button @click="open = !open" class="p-2 rounded-full hover:bg-gray-100">
@@ -59,7 +57,7 @@
 
                                                 {{-- BUTTON DELETE --}}
                                                 <x-dashboard.button-icon color="red" text="Delete" method="DELETE"
-                                                    action="" id_row="1">
+                                                    action="{{ route('superadmin.cafe.delete', $cafe->id) }}" id_row="1">
                                                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg"
                                                         fill="none" viewBox="0 0 24 24">
                                                         <path stroke="currentColor" stroke-linecap="round"
@@ -71,6 +69,7 @@
                                         </div>
                                     </td>
                                 </tr>
+                                @endforeach
                                 <!-- Tambah baris data lainnya di sini -->
                             </tbody>
                         </table>
