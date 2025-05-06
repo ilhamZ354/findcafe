@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\UploadController;
-use App\Http\Controllers\Api\CafeController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UploadController;
+use App\Http\Controllers\CafeController;
 
 Route::get('/', function () {
     return view('welcome');
