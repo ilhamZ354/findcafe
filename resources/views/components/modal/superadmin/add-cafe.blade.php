@@ -1,21 +1,30 @@
 <x-modal.modal-template id_modal="add-cafe" title_modal="Tambah Cafe">
     <!-- Modal body -->
-    <form class="p-4 md:p-5" method="POST" action="">
+    <form class="p-4 md:p-5" method="POST" action="{{ route('superadmin.cafe.store') }}">
         @csrf
         <div class="grid grid-cols-1 gap-4 mb-4">
+            {{-- Role(hidden) --}}
+            <input type="hidden" name="role" value="cafe">
+
             {{-- Nama Cafe --}}
-            <x-form.input-field name="name" label="Nama Cafe" placeholder="Masukkan nama cafe" required />
+            <x-form.input-field name="username" value="{{ $username ?? '' }}" label="Nama Cafe"
+                placeholder="Masukkan nama cafe" required />
 
             {{-- Email --}}
-            <x-form.input-field name="email" type="email" label="Email" placeholder="Masukkan email" required />
+            <x-form.input-field name="email" type="email" value="{{ $email ?? '' }}" label="Email"
+                placeholder="Masukkan email" required />
+
+            {{-- No WA --}}
+            <x-form.input-field name="no_wa" value="{{ $no_wa ?? '' }}" label="No Whatsapp" minLength="10"
+                placeholder="08xxxxxxxx" required />
 
             {{-- Password --}}
             <x-form.input-field name="password" type="password" label="Password" showTogglePassword="true"
-                placeholder="**********" required />
+                value="{{ $password ?? '' }}" placeholder="**********" required />
 
             {{-- Konfirmasi Password --}}
-            <x-form.input-field name="confirm_password" type="password" label="Konfirmasi Password"
-                showTogglePassword="true" placeholder="**********" required />
+            {{-- <x-form.input-field name="confirm_password" type="password" label="Konfirmasi Password"
+                showTogglePassword="true" placeholder="**********" required /> --}}
         </div>
 
         {{-- Button Simpan --}}

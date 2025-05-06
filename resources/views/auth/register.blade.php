@@ -11,13 +11,44 @@
             <img src="{{ asset('images/logo-cafe-hunt.png') }}" alt="logo-cafe-hunt" class="h-16">
         </h2>
 
-        <form>
+        <form action="{{ route('register.post') }}" method="POST">
+            @csrf
+            {{-- role (hidden) --}}
+            <input type="hidden" name="role" value="user">
+
+            {{-- username --}}
+            <div class="mb-4">
+                <label class="mb-2.5 block font-medium text-black">Username</label>
+                <div class="relative">
+                    <input type="text" placeholder="Enter your username" name="username"
+                        value="{{ old('username') }}"
+                        class="w-full py-4 pl-6 pr-10 bg-transparent border rounded-lg outline-none border-stroke focus:border-primary focus-visible:shadow-none"
+                        required />
+
+                    <span class="absolute right-4 top-4">
+                        <svg class="w-6 h-6 text-slate-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2"
+                                d="M7 19H5a1 1 0 0 1-1-1v-1a3 3 0 0 1 3-3h1m4-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm7.441 1.559a1.907 1.907 0 0 1 0 2.698l-6.069 6.069L10 19l.674-3.372 6.07-6.07a1.907 1.907 0 0 1 2.697 0Z" />
+                        </svg>
+
+                    </span>
+                </div>
+
+                @error('username')
+                    <div class="mt-1 text-xs text-red-500">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+
             {{-- Email --}}
             <div class="mb-4">
                 <label class="mb-2.5 block font-medium text-black">Email</label>
                 <div class="relative">
-                    <input type="email" placeholder="Enter your email"
-                        class="w-full py-4 pl-6 pr-10 bg-transparent border rounded-lg outline-none border-stroke focus:border-primary focus-visible:shadow-none" />
+                    <input type="email" placeholder="Enter your email" name="email" value="{{ old('email') }}"
+                        class="w-full py-4 pl-6 pr-10 bg-transparent border rounded-lg outline-none border-stroke focus:border-primary focus-visible:shadow-none"
+                        required />
 
                     <span class="absolute right-4 top-4">
                         <svg class="fill-current" width="22" height="22" viewBox="0 0 22 22" fill="none"
@@ -30,53 +61,112 @@
                         </svg>
                     </span>
                 </div>
+
+                @error('email')
+                    <div class="mt-1 text-xs text-red-500">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+
+            {{-- No wa --}}
+            <div class="mb-4">
+                <label class="mb-2.5 block font-medium text-black">No Whatsapp</label>
+                <div class="relative">
+                    <input type="text" placeholder="08xxxxxxxx" minlength="10" maxlength="13" name="no_wa"
+                        value="{{ old('no_wa') }}"
+                        class="w-full py-4 pl-6 pr-10 bg-transparent border rounded-lg outline-none border-stroke focus:border-primary focus-visible:shadow-none"
+                        required />
+
+                    <span class="absolute right-4 top-4">
+                        <svg class="w-6 h-6 text-slate-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path fill="currentColor" fill-rule="evenodd"
+                                d="M12 4a8 8 0 0 0-6.895 12.06l.569.718-.697 2.359 2.32-.648.379.243A8 8 0 1 0 12 4ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10a9.96 9.96 0 0 1-5.016-1.347l-4.948 1.382 1.426-4.829-.006-.007-.033-.055A9.958 9.958 0 0 1 2 12Z"
+                                clip-rule="evenodd" />
+                            <path fill="currentColor"
+                                d="M16.735 13.492c-.038-.018-1.497-.736-1.756-.83a1.008 1.008 0 0 0-.34-.075c-.196 0-.362.098-.49.291-.146.217-.587.732-.723.886-.018.02-.042.045-.057.045-.013 0-.239-.093-.307-.123-1.564-.68-2.751-2.313-2.914-2.589-.023-.04-.024-.057-.024-.057.005-.021.058-.074.085-.101.08-.079.166-.182.249-.283l.117-.14c.121-.14.175-.25.237-.375l.033-.066a.68.68 0 0 0-.02-.64c-.034-.069-.65-1.555-.715-1.711-.158-.377-.366-.552-.655-.552-.027 0 0 0-.112.005-.137.005-.883.104-1.213.311-.35.22-.94.924-.94 2.16 0 1.112.705 2.162 1.008 2.561l.041.06c1.161 1.695 2.608 2.951 4.074 3.537 1.412.564 2.081.63 2.461.63.16 0 .288-.013.4-.024l.072-.007c.488-.043 1.56-.599 1.804-1.276.192-.534.243-1.117.115-1.329-.088-.144-.239-.216-.43-.308Z" />
+                        </svg>
+
+                    </span>
+                </div>
+
+                @error('no_wa')
+                    <div class="mt-1 text-xs text-red-500">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
 
             {{-- Password --}}
-            <div class="mb-6">
-                <label class="mb-2.5 block font-medium text-black">Password</label>
+            <div x-data="{ show: false }" class="mb-6">
+                <label for="password" class="mb-2.5 block font-medium text-black">Password</label>
                 <div class="relative">
-                    <input type="password" placeholder="***********"
-                        class="w-full py-4 pl-6 pr-10 bg-transparent border rounded-lg outline-none border-stroke focus:border-primary focus-visible:shadow-none" />
+                    <input :type="show ? 'text' : 'password'" placeholder="***********" name="password" id="password"
+                        value="{{ old('password') }}"
+                        class="w-full py-4 pl-6 pr-10 bg-transparent border rounded-lg outline-none border-stroke focus:border-primary focus-visible:shadow-none"
+                        required />
 
-                    <span class="absolute right-4 top-4">
-                        <svg class="fill-current" width="22" height="22" viewBox="0 0 22 22" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <g opacity="0.5">
-                                <path
-                                    d="M16.1547 6.80626V5.91251C16.1547 3.16251 14.0922 0.825009 11.4797 0.618759C10.0359 0.481259 8.59219 0.996884 7.52656 1.95938C6.46094 2.92188 5.84219 4.29688 5.84219 5.70626V6.80626C3.84844 7.18438 2.33594 8.93751 2.33594 11.0688V17.2906C2.33594 19.5594 4.19219 21.3813 6.42656 21.3813H15.5016C17.7703 21.3813 19.6266 19.525 19.6266 17.2563V11C19.6609 8.93751 18.1484 7.21876 16.1547 6.80626ZM8.55781 3.09376C9.31406 2.40626 10.3109 2.06251 11.3422 2.16563C13.1641 2.33751 14.6078 3.98751 14.6078 5.91251V6.70313H7.38906V5.67188C7.38906 4.70938 7.80156 3.78126 8.55781 3.09376ZM18.1141 17.2906C18.1141 18.7 16.9453 19.8688 15.5359 19.8688H6.46094C5.05156 19.8688 3.91719 18.7344 3.91719 17.325V11.0688C3.91719 9.52189 5.15469 8.28438 6.70156 8.28438H15.2953C16.8422 8.28438 18.1141 9.52188 18.1141 11V17.2906Z"
-                                    fill="" />
-                                <path
-                                    d="M10.9977 11.8594C10.5852 11.8594 10.207 12.2031 10.207 12.65V16.2594C10.207 16.6719 10.5508 17.05 10.9977 17.05C11.4102 17.05 11.7883 16.7063 11.7883 16.2594V12.6156C11.7883 12.2031 11.4102 11.8594 10.9977 11.8594Z"
-                                    fill="" />
-                            </g>
+                    <button type="button" class="absolute right-4 top-4 focus:outline-none" @click="show = !show">
+                        <!-- Icon mata (lihat) -->
+                        <svg x-show="!show" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-500"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.065 7-9.542 7s-8.268-2.943-9.542-7z" />
                         </svg>
-                    </span>
+
+                        <!-- Icon mata tertutup -->
+                        <svg x-show="show" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-500"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.973 9.973 0 012.091-3.362m3.411-2.413A9.953 9.953 0 0112 5c4.477 0 8.268 2.943 9.542 7a9.963 9.963 0 01-1.507 2.472M15 12a3 3 0 00-3-3m0 0a3 3 0 00-3 3m3-3L3 3m18 18l-3-3" />
+                        </svg>
+                    </button>
                 </div>
+
+                @error('password')
+                    <div class="mt-1 text-xs text-red-500">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
 
             {{-- Confirm Password --}}
-            <div class="mb-6">
-                <label class="mb-2.5 block font-medium text-black">Konfirmasi Password</label>
+            {{-- <div x-data="{ show: false }" class="mb-6">
+                <label for="confirm_password" class="mb-2.5 block font-medium text-black">Konfirmasi Password</label>
                 <div class="relative">
-                    <input type="password" placeholder="***********"
-                        class="w-full py-4 pl-6 pr-10 bg-transparent border rounded-lg outline-none border-stroke focus:border-primary focus-visible:shadow-none" />
+                    <input :type="show ? 'text' : 'password'" placeholder="***********" name="confirm_password"
+                        id="confirm_password" value="{{ old('confirm_password') }}"
+                        class="w-full py-4 pl-6 pr-10 bg-transparent border rounded-lg outline-none border-stroke focus:border-primary focus-visible:shadow-none"
+                        required />
 
-                    <span class="absolute right-4 top-4">
-                        <svg class="fill-current" width="22" height="22" viewBox="0 0 22 22" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <g opacity="0.5">
-                                <path
-                                    d="M16.1547 6.80626V5.91251C16.1547 3.16251 14.0922 0.825009 11.4797 0.618759C10.0359 0.481259 8.59219 0.996884 7.52656 1.95938C6.46094 2.92188 5.84219 4.29688 5.84219 5.70626V6.80626C3.84844 7.18438 2.33594 8.93751 2.33594 11.0688V17.2906C2.33594 19.5594 4.19219 21.3813 6.42656 21.3813H15.5016C17.7703 21.3813 19.6266 19.525 19.6266 17.2563V11C19.6609 8.93751 18.1484 7.21876 16.1547 6.80626ZM8.55781 3.09376C9.31406 2.40626 10.3109 2.06251 11.3422 2.16563C13.1641 2.33751 14.6078 3.98751 14.6078 5.91251V6.70313H7.38906V5.67188C7.38906 4.70938 7.80156 3.78126 8.55781 3.09376ZM18.1141 17.2906C18.1141 18.7 16.9453 19.8688 15.5359 19.8688H6.46094C5.05156 19.8688 3.91719 18.7344 3.91719 17.325V11.0688C3.91719 9.52189 5.15469 8.28438 6.70156 8.28438H15.2953C16.8422 8.28438 18.1141 9.52188 18.1141 11V17.2906Z"
-                                    fill="" />
-                                <path
-                                    d="M10.9977 11.8594C10.5852 11.8594 10.207 12.2031 10.207 12.65V16.2594C10.207 16.6719 10.5508 17.05 10.9977 17.05C11.4102 17.05 11.7883 16.7063 11.7883 16.2594V12.6156C11.7883 12.2031 11.4102 11.8594 10.9977 11.8594Z"
-                                    fill="" />
-                            </g>
+                    <button type="button" class="absolute right-4 top-4 focus:outline-none" @click="show = !show">
+                        <!-- Icon mata (lihat) -->
+                        <svg x-show="!show" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-500"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.065 7-9.542 7s-8.268-2.943-9.542-7z" />
                         </svg>
-                    </span>
+
+                        <!-- Icon mata tertutup -->
+                        <svg x-show="show" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-500"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.973 9.973 0 012.091-3.362m3.411-2.413A9.953 9.953 0 0112 5c4.477 0 8.268 2.943 9.542 7a9.963 9.963 0 01-1.507 2.472M15 12a3 3 0 00-3-3m0 0a3 3 0 00-3 3m3-3L3 3m18 18l-3-3" />
+                        </svg>
+                    </button>
                 </div>
-            </div>
+
+                @error('confirm_password')
+                    <div class="mt-1 text-xs text-red-500">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div> --}}
 
             <div class="mb-5">
                 <input type="submit" value="Sign In"

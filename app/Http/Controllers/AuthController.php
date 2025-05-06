@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
     // Tampilkan halaman login
-    public function loginForm()
+    public function index()
     {
-        return view('pages.login.index');
+        return view('auth.login');
     }
+
 
     // register form
     public function registerForm()
     {
-        return view('pages.register.index');
+        return view('auth.register');
     }
 
     // store registrasi
@@ -31,11 +34,12 @@ class AuthController extends Controller
                 'password' => 'required|string|min:8',
             ]);
 
+            $validasi['role'] = 'user';
             $validasi['password'] = Hash::make($validasi['password']);
 
             User::create($validasi);
 
-            return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan.');
+            return redirect()->route('login')->with('success', 'User berhasil ditambahkan.');
         } catch (\Throwable $e) {
             return redirect()->back()->withInput()->with('error', 'Gagal menambahkan user');
         }
@@ -58,9 +62,9 @@ class AuthController extends Controller
 
             User::create($validasi);
 
-            return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan.');
+            return redirect()->route('superadmin.cafe')->with('success', 'Cafe berhasil ditambahkan.');
         } catch (\Throwable $e) {
-            return redirect()->back()->withInput()->with('error', 'Gagal menambahkan user');
+            return redirect()->back()->withInput()->with('error', 'Gagal menambahkan cafe');
         }
     }
 
@@ -77,7 +81,7 @@ class AuthController extends Controller
 
             if (Auth::attempt($credentials)) {
                 $request->session()->regenerate();
-                return $request;
+                // return $request;
                 return redirect()->intended('/dashboard')->with('success', 'Login berhasil.');
             }
 

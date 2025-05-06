@@ -11,6 +11,32 @@
 @endphp
 
 <body>
+
+    @if (session()->has('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sukses',
+                    text: @json(session('success')),
+                });
+            });
+        </script>
+    @endif
+
+    @if (session()->has('error'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: @json(session('error')),
+                });
+            });
+        </script>
+    @endif
+
+
     <!-- ===== Page Wrapper Start ===== -->
     <div class="flex h-screen overflow-hidden bg-gray-700 bg-center bg-no-repeat bg-cover bg-blend-multiply"
         style="background-image: url('/images/{{ $bgImage }}')" loading="lazy">
