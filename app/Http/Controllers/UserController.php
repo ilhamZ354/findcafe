@@ -49,7 +49,7 @@ class UserController extends Controller
 
             User::create($validasi);
 
-            return redirect()->route('superadmin.cafes')->with('success', 'Cafe berhasil ditambahkan.');
+            return redirect()->route('superadmin.cafe')->with('success', 'Cafe berhasil ditambahkan.');
         } catch (\Throwable $e) {
             return redirect()->back()->withInput()->with('error', 'Gagal menambahkan cafe');
         }
@@ -117,6 +117,18 @@ class UserController extends Controller
             return redirect()->route('superadmin.cafes')->with('success', 'Cafe berhasil diupdate.');
         } catch (\Throwable $e) {
             return redirect()->back()->withInput()->with('error', 'Gagal update cafe');
+        }
+    }
+
+    public function deleteCafe($id)
+    {
+        try {
+            $cafe = User::findOrFail($id);
+            $cafe->delete();
+
+            return redirect()->route('superadmin.cafe')->with('success', 'Cafe berhasil dihapus.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->with('error', 'Gagal menghapus cafe.');
         }
     }
 
