@@ -38,6 +38,8 @@ Route::middleware('auth')->group(
         Route::put('/superadmin/cafe/update/{id}', [UserController::class, 'updateCafe'])->name('superadmin.cafe.update');
         Route::delete('/superadmin/delete-cafe/{id}', [UserController::class, 'deleteCafe'])->name('superadmin.cafe.delete');
         Route::get('/superadmin/transaksi', [TransactionController::class, 'index'])->name('superadmin.transaksi');
+        Route::post('/superadmin/transaksis', [TransactionController::class, 'storeTransaksi'])->name('superadmin.transaksi.store');
+        Route::delete('/superadmin/delete-transaksi/{id}', [TransactionController::class, 'deleteTransaksi'])->name('superadmin.transaksi.delete');
 
         // =============CAFE===========
         Route::get('/cafe/data-cafe', [CafeController::class, 'index'])->name('cafe.data-cafe');

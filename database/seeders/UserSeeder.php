@@ -20,5 +20,19 @@ class UserSeeder extends Seeder
             'password' => bcrypt('kunci123'),
             'no_wa' => '0823211342345',
         ]);
+        \App\Models\User::create([
+            'username' => 'cafe',
+            'email' => 'cafe@gmail.com',
+            'role' => 'cafe',
+            'password' => bcrypt('kunci123'),
+            'no_wa' => '0823211342345',
+        ]);
+        \App\Models\User::create([
+            'username' => 'user',
+            'email' => 'user@gmail.com',
+            'role' => 'user',
+            'password' => bcrypt('kunci123'),
+            'no_wa' => '0823211342345',
+        ]);
     }
 }
