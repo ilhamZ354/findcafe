@@ -64,7 +64,7 @@
 
                                                 {{-- BUTTON DELETE --}}
                                                 <x-dashboard.button-icon color="red" text="Delete" method="DELETE"
-                                                    action="{{ route('superadmin.user.delete', $user->id) }}" id_row="1">
+                                                    action="{{ route('superadmin.user.delete', $user->id) }}" id_row="{{ $user->id }}">
                                                     <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg"
                                                         fill="none" viewBox="0 0 24 24">
                                                         <path stroke="currentColor" stroke-linecap="round"
