@@ -98,25 +98,45 @@ class UserController extends Controller
         return view('superadmin.cafe', compact('cafes'));
     }
 
+    public function editCafe($id)
+    {
+        $editCafe = User::findOrFail($id);
+        return view('superadmin.cafe', [
+            'cafes' => User::where('role', 'cafe')->get(),
+            'editCafe' => $editCafe,
+            'showEditModal' => true
+        ]);
+    }
+
     // update akun cafe
     // store akun cafe
-    public function updateCafe(Request $request, User $user)
+    public function updateCafe(Request $request, $id)
     {
         try {
             $validasi = $request->validate([
-                'username' => 'required|string|unique:users,username',
-                'email' => 'required|string|email|unique:users,email',
-                'role' => 'required|in:user,cafe',
+                'username' => 'required|string|unique:users,username,' . $id,
+                'email' => 'required|string|email|unique:users,email,' . $id,
                 'no_wa' => 'required|string|min:11',
+                'password' => 'nullable|string|min:6',
             ]);
 
-            $validasi['role'] = 'cafe';
+            $user = User::findOrFail($id);
 
-            $user->update($validasi);
+            $user->username = $validasi['username'];
+            $user->email = $validasi['email'];
+            $user->no_wa = $validasi['no_wa'];
+
+            if (!empty($validasi['password'])) {
+                $user->password = Hash::make($validasi['password']);
+            }
+
+            $user->save();
 
             return redirect()->route('superadmin.cafe')->with('success', 'Cafe berhasil diupdate.');
         } catch (\Throwable $e) {
-            return redirect()->back()->withInput()->with('error', 'Gagal update cafe');
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Gagal update cafe: ' . $e->getMessage());
         }
     }
 
@@ -129,31 +149,31 @@ class UserController extends Controller
             'showEditModal' => true
         ]);
     }
-    
+
     public function updateUser(Request $request, $id)
     {
         $validated = $request->validate([
             'username' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,'.$id,
+            'email' => 'required|email|max:255|unique:users,email,' . $id,
             'no_wa' => 'required|string|min:10',
             'password' => 'nullable|string|min:6',
         ]);
-    
+
         $user = User::findOrFail($id);
-    
+
         $user->username = $request->username;
         $user->email = $request->email;
         $user->no_wa = $request->no_wa;
-    
+
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
-    
+
         $user->save();
-    
+
         return redirect()->route('superadmin.users')->with('success', 'User updated successfully!');
     }
-    
+
     public function deleteCafe($id)
     {
         try {
