@@ -3,6 +3,12 @@
 <x-dashboard.layout>
     <!-- ===== Main Content Start ===== -->
     <main>
+        @if (session()->has('success'))
+            <script>
+                localStorage.removeItem("uploadedImages");
+            </script>
+        @endif
+
         <div class="flex items-start justify-between flex-grow w-full gap-4 px-4 py-4 md:px-6">
             {{-- card 1 --}}
             <div class="w-2/3 px-3 py-5 bg-white shadow-md rounded-xl">
@@ -12,10 +18,12 @@
                 </div>
 
                 {{-- form detail cafe --}}
-                <form action="{{ route('cafe.store') }}" method="POST" x-data="galleryUploader"
-                    enctype="multipart/form-data">
+                <form action="{{ route('cafe.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="flex flex-col gap-2 mb-3">
+                        {{-- image_profile --}}
+                        <x-form.profile-upload />
+
                         {{-- deskripsi --}}
                         <x-form.textarea label="Deskripsi" name="description" placeholder="Tulis deskripsi di sini..."
                             required rows="6" />
