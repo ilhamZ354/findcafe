@@ -55,7 +55,7 @@ class CafeController extends Controller
                 ->with('success', 'Data Cafe Berhasil Ditambahkan');
         } catch (ValidationException $e) {
             // Tangkap error validasi dan redirect ke halaman sebelumnya dengan membawa old input
-            return redirect()->back()->withErrors($e->validator)->withInput();
+            return redirect()->back()->with('error', 'Gagal menambahkan data cafe')->withErrors($e->validator)->withInput();
         } catch (\Exception $e) {
             // Tangkap error dan gagalkan store
             DB::rollBack();

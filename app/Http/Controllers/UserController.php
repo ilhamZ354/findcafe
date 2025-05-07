@@ -136,7 +136,7 @@ class UserController extends Controller
         } catch (\Throwable $e) {
             return redirect()->back()
                 ->withInput()
-                ->with('error', 'Gagal update cafe: ' . $e->getMessage());
+                ->with('error', 'Gagal update cafe: ')->withErrors($e->validator)->withInput();
         }
     }
 
@@ -161,17 +161,17 @@ class UserController extends Controller
 
         $user = User::findOrFail($id);
 
-        $user->username = $request->username;
-        $user->email = $request->email;
-        $user->no_wa = $request->no_wa;
+        $user->username = $validated['username'];
+        $user->email = $validated['email'];
+        $user->no_wa = $validated['no_wa'];
 
-        if ($request->filled('password')) {
-            $user->password = Hash::make($request->password);
+        if (!empty($validated['password'])) {
+            $user->password = Hash::make($validated['password']);
         }
 
         $user->save();
 
-        return redirect()->route('superadmin.users')->with('success', 'User updated successfully!');
+        return redirect()->route('superadmin.users')->with('success', 'User berhasil diperbarui!');
     }
 
     public function deleteCafe($id)
