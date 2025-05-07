@@ -6,8 +6,12 @@
         <div class="p-4 mx-auto max-w-screen-2xl md:p-6 2xl:p-10">
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
                 <!-- ====== Table Daftar User Start -->
-                <div x-data="{ openModal: false, openEditModal: false, openDeleteModal: false }" class="col-span-12 xl:col-span-8">
-                    <div
+                <div x-data="{ 
+                    openModal: false, 
+                    openEditModal: {{ isset($showEditModal) && $showEditModal ? 'true' : 'false' }}, 
+                    openDeleteModal: false 
+                }" class="col-span-12 xl:col-span-8">
+                <div
                         class="rounded-xl border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-5 -z-10">
                         <div class="flex items-center justify-between mb-6">
                             <h4 class="text-xl font-bold text-black dark:text-white">Daftar Pengguna</h4>
@@ -47,15 +51,16 @@
                                                 class="absolute right-0 z-40 w-32 mt-2 bg-white border rounded shadow-lg">
 
                                                 {{-- BUTTON UPDATE --}}
-                                                <x-dashboard.button-icon color="blue" text="Update"
-                                                    id_modal="update-trace">
-                                                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg"
-                                                        fill="none" viewBox="0 0 24 24">
-                                                        <path stroke="currentColor" stroke-linecap="round"
-                                                            stroke-linejoin="round" stroke-width="2"
-                                                            d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28" />
-                                                    </svg>
-                                                </x-dashboard.button-icon>
+                                                <a href="{{ route('superadmin.user.edit', $user->id) }}" class="block">
+                                                    <x-dashboard.button-icon color="blue" text="Edit" method="PUT">
+                                                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg"
+                                                            fill="none" viewBox="0 0 24 24">
+                                                            <path stroke="currentColor" stroke-linecap="round"
+                                                                stroke-linejoin="round" stroke-width="2"
+                                                                d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28" />
+                                                        </svg>
+                                                    </x-dashboard.button-icon>
+                                                </a>
 
                                                 {{-- BUTTON DELETE --}}
                                                 <x-dashboard.button-icon color="red" text="Delete" method="DELETE"
@@ -85,5 +90,20 @@
     <!-- modal -->
     @include('components.modal.superadmin.add-user')
     @include('components.modal.superadmin.update-user')
+
+    @if(isset($showEditModal) && $showEditModal)
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const updateModal = document.getElementById('update-user');
+        const modal = new Modal(updateModal);
+        modal.show();
+        
+        // Focus on first input when modal opens
+        updateModal.addEventListener('shown.bs.modal', function () {
+            document.getElementById('update-name').focus();
+        });
+    });
+    </script>
+    @endif
 
 </x-dashboard.layout>

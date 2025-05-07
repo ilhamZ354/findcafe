@@ -1,23 +1,25 @@
-<x-modal.modal-template id_modal="update-trace" title_modal="Update Cafe">
+<x-modal.modal-template id_modal="update-cafe" title_modal="Update Cafe">
     <!-- Modal body -->
-    <form class="p-4 md:p-5" method="POST" action="">
+    <form class="p-4 md:p-5" method="POST"
+        action="{{ route('superadmin.cafe.update', isset($editCafe) ? $editCafe->id : '') }}">
         @csrf
+        @method('PUT')
         <div class="grid grid-cols-1 gap-4 mb-4">
             {{-- Nama Cafe --}}
-            <x-form.input-field name="name" label="Nama Cafe" value="{{ $name ?? '' }}"
+            <x-form.input-field name="username" label="Nama Cafe" value="{{ isset($editCafe) ? $editCafe->username : '' }}"
                 placeholder="Masukkan nama cafe" required />
 
             {{-- Email --}}
-            <x-form.input-field name="email" type="email" label="Email" value="{{ $email ?? '' }}"
-                placeholder="Masukkan email" required />
+            <x-form.input-field name="email" type="email" label="Email"
+                value="{{ isset($editCafe) ? $editCafe->email : '' }}" placeholder="Masukkan email" required />
+
+            {{-- No WA --}}
+            <x-form.input-field name="no_wa" label="No Whatsapp"
+                value="{{ isset($editCafe) ? $editCafe->no_wa : '' }}" placeholder="Masukkan nomor WhatsApp" required />
 
             {{-- Password --}}
-            <x-form.input-field name="password" type="password" label="Password" showTogglePassword="true"
-                placeholder="**********" required />
-
-            {{-- Konfirmasi Password --}}
-            <x-form.input-field name="confirm_password" type="password" label="Konfirmasi Password"
-                showTogglePassword="true" placeholder="**********" required />
+            <x-form.input-field name="password" type="password" label="Password (Kosongkan jika tidak diubah)"
+                showTogglePassword="true" placeholder="**********" />
         </div>
 
         {{-- Button Simpan --}}

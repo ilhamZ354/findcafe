@@ -1,33 +1,38 @@
-<x-modal.modal-template id_modal="update-trace-user" title_modal="Update User">
+<x-modal.modal-template id_modal="update-user" title_modal="Update User">
     <!-- Modal body -->
-    <form class="p-4 md:p-5" method="POST" action="">
+    <form class="p-4 md:p-5" method="POST"
+        action="{{ route('superadmin.user.update', isset($editUser) ? $editUser->id : '') }}">
         @csrf
+        @method('PUT')
         <div class="grid grid-cols-1 gap-4 mb-4">
             {{-- hidden id user --}}
-            <input type="hidden" name="id" id="update-id" value="">
-
-            {{-- Role(hidden) --}}
-            <input type="hidden" name="role" value="user">
+            <input type="hidden" name="user_id" value="{{ isset($editUser) ? $editUser->id : '' }}">
 
             {{-- Nama Users --}}
-            <x-form.input-field name="username" label="Nama Users" id="update-name"
-                placeholder="Masukkan nama user" required />
+            <x-form.input-field name="username" label="Nama Users" id="update-name" placeholder="Masukkan nama user"
+                required value="{{ isset($editUser) ? $editUser->username : '' }}" />
 
             {{-- Email --}}
             <x-form.input-field name="email" type="email" label="Email" id="update-email"
-                placeholder="Masukkan email" required />
+                placeholder="Masukkan email" required value="{{ isset($editUser) ? $editUser->email : '' }}" />
 
             {{-- No WA --}}
             <x-form.input-field name="no_wa" label="No Whatsapp" minLength="10" id="update-no_wa"
-            placeholder="08xxxxxxxx" required />
+                placeholder="08xxxxxxxx" required value="{{ isset($editUser) ? $editUser->no_wa : '' }}" />
+
+            {{-- Role
+            <div>
+                <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
+                <select name="role" id="role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5" required>
+                    <option value="user" {{ isset($editUser) && $editUser->role == 'user' ? 'selected' : '' }}>User</option>
+                    <option value="admin" {{ isset($editUser) && $editUser->role == 'admin' ? 'selected' : '' }}>Admin</option>
+                    <option value="superadmin" {{ isset($editUser) && $editUser->role == 'superadmin' ? 'selected' : '' }}>Super Admin</option>
+                </select>
+            </div> --}}
 
             {{-- Password --}}
-            <x-form.input-field name="password" type="password" label="Password" showTogglePassword="true" id="update-password"
-                placeholder="**********" required />
-
-            {{-- Konfirmasi Password --}}
-            {{-- <x-form.input-field name="confirm_password" type="password" label="Konfirmasi Password"
-                showTogglePassword="true" placeholder="**********" required /> --}}
+            <x-form.input-field name="password" type="password" label="Password (Leave blank to keep current)"
+                showTogglePassword="true" id="update-password" placeholder="**********" />
         </div>
 
         {{-- Button Simpan --}}
