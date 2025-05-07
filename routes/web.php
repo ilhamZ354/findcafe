@@ -6,6 +6,7 @@ use App\Http\Controllers\UploadController;
 use App\Http\Controllers\CafeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\MenuController;
 
 // ============AUTH===========
 Route::get('/', [AuthController::class, 'index'])->name('login');
@@ -40,16 +41,19 @@ Route::middleware('auth')->group(
 
         // =============CAFE===========
         // Route::get('/cafe/data-cafe', [CafeController::class, 'index'])->name('cafe.data-cafe');
-        Route::get('/cafe/data-cafe', function () {
-            return view('cafe.data-cafe');
-        })->name('cafe.data-cafe');
+        Route::get('/cafe/data-cafe',[CafeController::class, 'index'])->name('cafe.data-cafe');
         Route::post('/cafe', [CafeController::class, 'store'])->name('cafe.store');
         Route::put('/cafe/{id}', [CafeController::class, 'update'])->name('cafe.update');
-        Route::get('/cafe/menu-cafe', function () {
-            return view('cafe.menu-cafe');
-        })->name('cafe.menu-cafe');
+        Route::get('/cafe/menu-cafe', [MenuController::class, 'index'] )->name('cafe.menu-cafe');
         Route::get('/cafe/transaksi', function () {
             return view('cafe.transaksi');
         })->name('cafe.transaksi');
+
+        // =============MENU UNTUK SUPERADMIN===========
+        Route::get('/cafe/menu', [MenuController::class, 'index'])->name('cafe.menu');
+        Route::post('/cafe/menu', [MenuController::class, 'store'])->name('cafe.menu.store');
+        Route::get('/cafe/menu/edit/{id}', [MenuController::class, 'edit'])->name('cafe.menu.edit');
+        Route::put('/cafe/menu/update/{id}', [MenuController::class, 'update'])->name('cafe.menu.update');
+        Route::delete('/cafe/menu/delete/{id}', [MenuController::class, 'destroy'])->name('cafe.menu.delete');
     }
 );
