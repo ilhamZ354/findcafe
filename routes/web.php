@@ -31,6 +31,8 @@ Route::middleware('auth')->group(
     Route::get('/superadmin/users', [UserController::class, 'listUsers'])->name('superadmin.users');
     Route::get('/superadmin/cafes', [UserController::class, 'listCafe'])->name('superadmin.cafe');
     Route::post('/superadmin/user', [UserController::class, 'storeUser'])->name('superadmin.user.store');
+    Route::get('/superadmin/user/edit/{id}', [UserController::class, 'editUser'])->name('superadmin.user.edit');
+    Route::put('/superadmin/user/update/{id}', [UserController::class, 'updateUser'])->name('superadmin.user.update');
     Route::delete('/superadmin/delete-user/{id}', [UserController::class, 'deleteUser'])->name('superadmin.user.delete');
     Route::get('/superadmin/transaksi', [TransactionController::class, 'index'])->name('superadmin.transaksi');
     Route::post('/superadmin/cafe', [UserController::class, 'storeCafe'])->name('superadmin.cafe.store');

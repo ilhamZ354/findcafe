@@ -114,12 +114,46 @@ class UserController extends Controller
 
             $user->update($validasi);
 
-            return redirect()->route('superadmin.cafes')->with('success', 'Cafe berhasil diupdate.');
+            return redirect()->route('superadmin.cafe')->with('success', 'Cafe berhasil diupdate.');
         } catch (\Throwable $e) {
             return redirect()->back()->withInput()->with('error', 'Gagal update cafe');
         }
     }
 
+    public function editUser($id)
+    {
+        $editUser = User::findOrFail($id);
+        return view('superadmin.users', [
+            'users' => User::all(),
+            'editUser' => $editUser,
+            'showEditModal' => true
+        ]);
+    }
+    
+    public function updateUser(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'username' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,'.$id,
+            'no_wa' => 'required|string|min:10',
+            'password' => 'nullable|string|min:6',
+        ]);
+    
+        $user = User::findOrFail($id);
+    
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->no_wa = $request->no_wa;
+    
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+    
+        $user->save();
+    
+        return redirect()->route('superadmin.users')->with('success', 'User updated successfully!');
+    }
+    
     public function deleteCafe($id)
     {
         try {
