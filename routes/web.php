@@ -39,10 +39,7 @@ Route::middleware('auth')->group(
         Route::get('/superadmin/transaksi', [TransactionController::class, 'index'])->name('superadmin.transaksi');
 
         // =============CAFE===========
-        // Route::get('/cafe/data-cafe', [CafeController::class, 'index'])->name('cafe.data-cafe');
-        Route::get('/cafe/data-cafe', function () {
-            return view('cafe.data-cafe');
-        })->name('cafe.data-cafe');
+        Route::get('/cafe/data-cafe', [CafeController::class, 'index'])->name('cafe.data-cafe');
         Route::post('/cafe', [CafeController::class, 'store'])->name('cafe.store');
         Route::put('/cafe/{id}', [CafeController::class, 'update'])->name('cafe.update');
         Route::get('/cafe/menu-cafe', function () {

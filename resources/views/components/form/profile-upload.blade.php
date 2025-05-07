@@ -1,7 +1,11 @@
+@props([
+    'value' => '',
+])
+
 <div>
     <label for="image_profile" class="block mb-2 text-sm font-medium text-gray-900">Foto Profile Cafe</label>
     <div class="relative w-fit">
-        <img src="{{ asset('images/profile-default.png') }}" alt="image-profile-default"
+        <img src="{{ $value !== '' ? $value : asset('images/profile-default.png') }}" alt="image-profile-default"
             class="object-cover w-32 h-32 rounded-full" id="image_profile_preview">
         <label for="image_profile_input"
             class="absolute p-1 text-white rounded-full cursor-pointer bottom-1 right-1 bg-grayTheme">
@@ -14,10 +18,11 @@
             <input type="file" name="image_profile_input" id="image_profile_input" class="hidden" accept="image/*">
         </label>
     </div>
-    <input type="hidden" name="image_profile" id="image_profile_url" class="hidden" accept="image/*">
+    <input type="hidden" name="image_profile" id="image_profile_url" value="{{ $value }}" class="hidden"
+        accept="image/*">
 </div>
 
-<script>
+{{-- <script>
     document.addEventListener("DOMContentLoaded", () => {
         const imageInput = document.getElementById('image_profile_input');
         const imagePreview = document.getElementById('image_profile_preview');
@@ -71,4 +76,4 @@
             }
         });
     });
-</script>
+</script> --}}

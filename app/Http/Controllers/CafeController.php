@@ -71,13 +71,23 @@ class CafeController extends Controller
     public function Update(Request $request, $id)
     {
         try {
-            $validasi = $request->validate([
+            $data = $request->all();
+
+            // Bersihkan input yang tidak dibutuhkan
+            unset($data['image_profile_input']);
+            // Decode kalau masih string
+            if (is_string($data['galleries'])) {
+                $data['galleries'] = json_decode($data['galleries'], true);
+            }
+
+
+            $validasi = Validator::make($data, [
                 'description' => ['required', 'string', 'min:3', 'max:100'],
                 'image_profile' => ['required', 'string'],
                 'address' => ['required', 'string', 'min:5'],
                 'location' => ['required', 'string', 'min:10'],
                 'galleries' => ['nullable', 'array'],
-            ]);
+            ])->validate();
 
             $validasi['cafe_id'] = Auth::id();
 
@@ -85,7 +95,7 @@ class CafeController extends Controller
             $cafe->update($validasi);
 
             return redirect()
-                ->route('cafe.index')
+                ->route('cafe.data-cafe')
                 ->with('success', 'Data Cafe Berhasil Diubah');
         } catch (ValidationException $e) {
             // Tangkap error validasi dan redirect ke halaman sebelumnya dengan membawa old input
@@ -96,7 +106,7 @@ class CafeController extends Controller
             return redirect()
                 ->back()
                 ->withInput()
-                ->with('error', 'Gagal update data cafe');
+                ->with('error', 'Gagal update data cafe' . $e->getMessage());
         }
     }
 }

@@ -12,31 +12,45 @@
         <div class="flex items-start justify-between flex-grow w-full gap-4 px-4 py-4 md:px-6">
             {{-- card 1 --}}
             <div class="w-2/3 px-3 py-5 bg-white shadow-md rounded-xl">
+
+                @if (!isset($cafe->id))
+                    <div class="p-4 my-10 text-lg text-red-800 rounded-lg bg-red-50 " role="alert">
+                        <span class="font-medium">Penting!</span> Mohon isi terlebih dahulu data detail cafe
+                        berikut.
+                    </div>
+                @endif
+
                 <div class="mb-6">
                     <h4 class="text-xl font-bold text-black dark:text-white">Data Detail Cafe</h4>
                     <span>Lengkapi data-data berikut untuk melengkapi informasi Cafe.</span>
                 </div>
 
                 {{-- form detail cafe --}}
-                <form action="{{ route('cafe.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ isset($cafe->id) ? route('cafe.update', $cafe->id) : route('cafe.store') }}"
+                    method="POST" enctype="multipart/form-data">
+                    @if (isset($cafe->id))
+                        @method('PUT')
+                    @endif
                     @csrf
                     <div class="flex flex-col gap-2 mb-3">
                         {{-- image_profile --}}
-                        <x-form.profile-upload />
+                        <x-form.profile-upload value="{{ $cafe->image_profile ?? '' }}" />
 
                         {{-- deskripsi --}}
                         <x-form.textarea label="Deskripsi" name="description" placeholder="Tulis deskripsi di sini..."
-                            required rows="6" />
+                            required rows="6" value="{{ $cafe->description ?? '' }}" />
 
                         {{-- gallery --}}
-                        <x-form.gallery-upload />
+                        <x-form.gallery-upload :values="$cafe->galleries ?? []" />
 
                         {{-- address --}}
-                        <x-form.input-field name="address" label="Alamat Cafe" placeholder="Masukkan alamat" required />
+                        <x-form.input-field name="address" label="Alamat Cafe" placeholder="Masukkan alamat"
+                            value="{{ $cafe->address ?? '' }}" required />
 
                         {{-- location(maps) --}}
                         <x-form.input-field name="location" label="Lokasi Cafe"
-                            placeholder="Masukkan lokasi (Link Google Maps)" required />
+                            placeholder="Masukkan lokasi (Link Google Maps)" value="{{ $cafe->location ?? '' }}"
+                            required />
                     </div>
 
                     {{-- button simpan --}}
@@ -53,7 +67,7 @@
 
             {{-- card 2 --}}
             <div class="flex flex-col items-center justify-start w-1/3 px-3 py-5 bg-white shadow-md rounded-xl">
-                <img src="{{ asset('images/profile-default.png') }}" alt="image-profile-default"
+                <img src="{{ $cafe->image_profile ?? asset('images/profile-default.png') }}" alt="image-profile-default"
                     class="object-cover w-20 h-20 rounded-full">
 
                 <hr class="w-full my-5 border-gray-300">
