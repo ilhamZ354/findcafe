@@ -14,12 +14,16 @@ class UserController extends Controller
     {
         try {
             $validasi = $request->validate([
-                'username' => 'required|string|unique:users,username',
-                'email' => 'required|string|email|unique:users,email',
-                'role' => 'required|in:user,cafe',
-                'no_wa' => 'required|string|min:11',
-                'password' => 'required|string|min:8',
+                'username' => ['required','string','unique:users,username'],
+                'email' => ['required','string','email','unique:users,email'],
+                'no_wa' => ['required','string','min:11'],
+                'password' => ['required','string','min:8'],
             ]);
+
+            $verify_password = $request['verify_password'];
+            if ($validasi['password'] != $verify_password) {
+                return redirect()->back()->withInput()->with('error', 'Password tidak sama');
+            }
 
             $validasi['role'] = 'user';
             $validasi['password'] = Hash::make($validasi['password']);
@@ -37,11 +41,10 @@ class UserController extends Controller
     {
         try {
             $validasi = $request->validate([
-                'username' => 'required|string|unique:users,username',
-                'email' => 'required|string|email|unique:users,email',
-                'role' => 'required|in:user,cafe',
-                'no_wa' => 'required|string|min:11',
-                'password' => 'required|string|min:8',
+                'username' => ['required','string','unique:users,username'],
+                'email' => ['required','string','email','unique:users,email'],
+                'no_wa' => ['required','string','min:11'],
+                'password' => ['required','string','min:8'],
             ]);
 
             $validasi['role'] = 'cafe';
@@ -55,16 +58,15 @@ class UserController extends Controller
         }
     }
 
-    // store akun users
+    // store akun users untuk superadmin
     public function storeUser(Request $request)
     {
         try {
             $validasi = $request->validate([
-                'username' => 'required|string|unique:users,username',
-                'email' => 'required|string|email|unique:users,email',
-                'role' => 'required|in:user',
-                'no_wa' => 'required|string|min:11',
-                'password' => 'required|string|min:8',
+                'username' => ['required','string','unique:users,username'],
+                'email' => ['required','string','email','unique:users,email'],
+                'no_wa' => ['required','string','min:11'],
+                'password' => ['required','string','min:8'],
             ]);
 
             $validasi['role'] = 'user';
@@ -98,39 +100,29 @@ class UserController extends Controller
         return view('superadmin.cafe', compact('cafes'));
     }
 
+    // view edit cafe untuk superadmin
     public function editCafe($id)
     {
         $editCafe = User::findOrFail($id);
         return view('superadmin.cafe', [
-            'cafes' => User::where('role', 'cafe')->get(),
             'editCafe' => $editCafe,
             'showEditModal' => true
         ]);
     }
 
-    // update akun cafe
-    // store akun cafe
+    // update akun cafe untuk superadmin
     public function updateCafe(Request $request, $id)
     {
         try {
             $validasi = $request->validate([
-                'username' => 'required|string|unique:users,username,' . $id,
-                'email' => 'required|string|email|unique:users,email,' . $id,
-                'no_wa' => 'required|string|min:11',
-                'password' => 'nullable|string|min:6',
+                'username' => ['required','string'],
+                'email' => ['required','string','email'],
+                'no_wa' => ['required','string','min:11'],
             ]);
 
             $user = User::findOrFail($id);
 
-            $user->username = $validasi['username'];
-            $user->email = $validasi['email'];
-            $user->no_wa = $validasi['no_wa'];
-
-            if (!empty($validasi['password'])) {
-                $user->password = Hash::make($validasi['password']);
-            }
-
-            $user->save();
+            $user->update($validasi);
 
             return redirect()->route('superadmin.cafe')->with('success', 'Cafe berhasil diupdate.');
         } catch (\Throwable $e) {
@@ -140,40 +132,39 @@ class UserController extends Controller
         }
     }
 
+    // view edit user untuk superadmin
     public function editUser($id)
     {
         $editUser = User::findOrFail($id);
         return view('superadmin.users', [
-            'users' => User::all(),
             'editUser' => $editUser,
             'showEditModal' => true
         ]);
     }
 
+    // edit user untuk superadmin dan user
     public function updateUser(Request $request, $id)
     {
-        $validated = $request->validate([
-            'username' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $id,
-            'no_wa' => 'required|string|min:10',
-            'password' => 'nullable|string|min:6',
-        ]);
+        try {
+            $validated = $request->validate([
+                'username' => ['required','string'],
+                'email' => ['required', 'string', 'email'],
+                'no_wa' => ['required','string','min:11'],
+            ]);
 
-        $user = User::findOrFail($id);
+            $user = User::findOrFail($id);
 
-        $user->username = $validated['username'];
-        $user->email = $validated['email'];
-        $user->no_wa = $validated['no_wa'];
+            $user->update($validated);
 
-        if (!empty($validated['password'])) {
-            $user->password = Hash::make($validated['password']);
+            return redirect()->route('superadmin.users')->with('success', 'User berhasil diperbarui!');
+        } catch (\Throwable $e) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Gagal update user: ')->withErrors($e->validator);
         }
-
-        $user->save();
-
-        return redirect()->route('superadmin.users')->with('success', 'User berhasil diperbarui!');
     }
 
+    // delete akun cafe untuk superadmin
     public function deleteCafe($id)
     {
         try {
@@ -186,6 +177,8 @@ class UserController extends Controller
         }
     }
 
+
+    // delete user untuk superadmin
     public function deleteUser($id)
     {
         try {

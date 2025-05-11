@@ -33,7 +33,7 @@ class MenuController extends Controller
 
         try {
             // validasi data
-            $request->validate([
+            $validasi = $request->validate([
                 'name' => ['required','string','min:2'],
                 'type' => ['required','in:makanan,minuman'],
                 'harga' => ['required','string'],
@@ -45,7 +45,7 @@ class MenuController extends Controller
 
             $request['cafe_id'] = Auth::id();
             // simpan data menu
-            Menu::create($request);
+            Menu::create($validasi);
 
             return redirect()->back()->with('success', 'Menu berhasil ditambahkan.');
         } catch (ValidationException $e) {
@@ -68,7 +68,6 @@ class MenuController extends Controller
         $menu = Menu::findOrFail($id);
 
         return view('menucafe.edit', [
-            'menus' => Menu::all(),
             'menu' => $menu,
             'showModalEdit' => true,
         ]);
@@ -78,7 +77,7 @@ class MenuController extends Controller
     public function update(Request $request, $id) {
         try {
             // validasi data
-            $request->validate([
+            $validasi = $request->validate([
                 'name' => ['required','string','min:2'],
                 'type' => ['required','in:makanan,minuman'],
                 'harga' => ['required','string'],
@@ -89,7 +88,7 @@ class MenuController extends Controller
             DB::beginTransaction();
 
             $menu = Menu::findOrFail($id);
-            $menu->update($request);
+            $menu->update($validasi);
 
             return redirect()->back()->with('success', 'Menu berhasil diubah.');
         } catch (ValidationException $e) {

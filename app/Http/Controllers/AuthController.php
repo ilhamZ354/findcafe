@@ -29,19 +29,19 @@ class AuthController extends Controller
         try {
             // dd($request->all());
             $credentials = $request->validate([
-                'email' => 'required|string',
-                'password' => 'required|string',
+                'email' => ['required','string'],
+                'password' => ['required','string'],
             ]);
 
             if (Auth::attempt($credentials)) {
                 $request->session()->regenerate();
                 // return $request;
-                return redirect()->intended('/dashboard')->with('success', 'Login berhasil.');
+                return redirect()->intended('/dashboard')->with('success', 'Login berhasil');
             }
 
-            return redirect()->route('login')->withInput()->with('error', 'Email atau password salah.');
+            return redirect()->route('login')->withInput()->withInput()->with('error', 'Email atau password salah');
         } catch (\Exception $e) {
-            return redirect()->route('login')->withInput()->with('error', 'Email atau password salah.');
+            return redirect()->route('login')->withInput()->with('error', 'Email atau password salah');
         }
     }
 
