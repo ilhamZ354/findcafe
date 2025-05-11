@@ -12,19 +12,24 @@ class TransactionController extends Controller
 {
     public function index(){
         // ambil semua data transaksi
-        $users = User::where('role', 'user')->get();
-        $cafes = User::where('role', 'cafe')->get();
         $transactions = Transaction::all();
-    
+
         // kembalikan ke view
-        return view('superadmin.transaksi', compact('users', 'cafes', 'transactions'));
+        return view('superadmin.transaksi', compact('transactions'));
     }
 
-    public function listTransaction(){
+    public function listTransactionForCafe(){
         // ambil data transaksi dari cafe
         $transactions = Transaction::where('cafe_id', Auth::id())->get();
         // kembalikan ke view
         return view('cafe.transaksi', compact('transactions'));
+    }
+
+    public function listTransactionForUser(){
+        // ambil data transaksi dari cafe
+        $transactions = Transaction::where('user_id', Auth::id())->get();
+        // kembalikan ke view
+        return view('user.cafe.transaksi', compact('transactions'));
     }
 
     public function storeTransaksi(Request $request)
@@ -39,14 +44,14 @@ class TransactionController extends Controller
             'status' => 'required|in:pending,confirmed,cancelled',
             'snap_token' => 'nullable|string',
         ]);
-    
+
         try {
             $cafeDetail = \DB::table('cafe_details')->where('cafe_id', $request->cafe_id)->first();
-            
+
             if (!$cafeDetail) {
                 return redirect()->back()->withInput()->with('error', 'Cafe details not found for the selected cafe.');
             }
-    
+
             Transaction::create([
                 'user_id' => $request->user_id,
                 'cafe_id' => $cafeDetail->id,
@@ -57,7 +62,7 @@ class TransactionController extends Controller
                 'status' => $request->status,
                 'snap_token' => $request->snap_token,
             ]);
-    
+
             return redirect()->route('superadmin.transaksi')->with('success', 'Transaksi berhasil ditambahkan.');
         } catch (\Throwable $e) {
             return redirect()->back()->withInput()->with('error', 'Gagal menambahkan transaksi.');
@@ -70,18 +75,18 @@ class TransactionController extends Controller
             $transaction = Transaction::findOrFail($id);
             $users = User::where('role', 'user')->get();
             $cafes = User::where('role', 'cafe')->get();
-            
+
             // search cafe (| transaction.cafe_id 👉 (cafe_details.id) 👉 cafe_details.cafe_id 👉 (users.id) |)
             $cafeUser = \DB::table('cafe_details')
                 ->join('users', 'cafe_details.cafe_id', '=', 'users.id')
                 ->where('cafe_details.id', $transaction->cafe_id)
                 ->select('users.id')
                 ->first();
-                
+
             if ($cafeUser) {
                 $transaction->cafe_user_id = $cafeUser->id;
             }
-    
+
             return view('superadmin.transaksi', [
                 'transactions' => Transaction::all(),
                 'users' => $users,
@@ -93,7 +98,7 @@ class TransactionController extends Controller
             return redirect()->route('superadmin.transaksi')->with('error', 'Transaksi tidak ditemukan.');
         }
     }
-    
+
 
     public function updateTransaksi(Request $request, $id)
     {
