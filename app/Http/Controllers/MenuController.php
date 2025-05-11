@@ -12,33 +12,35 @@ use Illuminate\Validation\ValidationException;
 
 class MenuController extends Controller
 {
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         // get semua menu
         $query = Menu::all();
 
         // apakah ada dicari tipe
         $tipe = $request->query('type');
-        if($tipe){
+        if ($tipe) {
             $query = Menu::where('type', $tipe)->get();
         }
 
-        return view('menucafe.index', [
+        return view('cafe.menu-cafe', [
             'menus' => $query,
             'type' => $tipe,
         ]);
     }
 
     // store data menu
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
 
         try {
             // validasi data
             $request->validate([
-                'name' => ['required','string','min:2'],
-                'type' => ['required','in:makanan,minuman'],
-                'harga' => ['required','string'],
-                'image' => ['required','string'],
-                'description' => ['required','string','min:3'],
+                'name' => ['required', 'string', 'min:2'],
+                'type' => ['required', 'in:makanan,minuman'],
+                'harga' => ['required', 'string'],
+                'image' => ['required', 'string'],
+                'description' => ['required', 'string', 'min:3'],
             ]);
 
             DB::beginTransaction();
@@ -59,11 +61,11 @@ class MenuController extends Controller
                 ->withInput()
                 ->with('error', 'Gagal menambahkan menu');
         }
-
     }
 
     // edit data menu
-    public function edit($id) {
+    public function edit($id)
+    {
         // ambil data menu
         $menu = Menu::findOrFail($id);
 
@@ -75,15 +77,16 @@ class MenuController extends Controller
     }
 
     // update data menu
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         try {
             // validasi data
             $request->validate([
-                'name' => ['required','string','min:2'],
-                'type' => ['required','in:makanan,minuman'],
-                'harga' => ['required','string'],
-                'image' => ['required','string'],
-                'description' => ['required','string','min:3'],
+                'name' => ['required', 'string', 'min:2'],
+                'type' => ['required', 'in:makanan,minuman'],
+                'harga' => ['required', 'string'],
+                'image' => ['required', 'string'],
+                'description' => ['required', 'string', 'min:3'],
             ]);
 
             DB::beginTransaction();

@@ -134,7 +134,7 @@
             </div>
 
             {{-- Confirm Password --}}
-            {{-- <div x-data="{ show: false }" class="mb-6">
+            <div x-data="{ show: false }" class="mb-6">
                 <label for="confirm_password" class="mb-2.5 block font-medium text-black">Konfirmasi Password</label>
                 <div class="relative">
                     <input :type="show ? 'text' : 'password'" placeholder="***********" name="confirm_password"
@@ -166,10 +166,10 @@
                         {{ $message }}
                     </div>
                 @enderror
-            </div> --}}
+            </div>
 
             <div class="mb-5">
-                <input type="submit" value="Sign In"
+                <input type="submit" value="Sign Up"
                     class="w-full p-4 font-medium text-white transition border rounded-lg cursor-pointer border-primary bg-primary hover:bg-opacity-90" />
             </div>
 

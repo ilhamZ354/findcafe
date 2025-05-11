@@ -19,7 +19,11 @@ class UserController extends Controller
                 'role' => 'required|in:user,cafe',
                 'no_wa' => 'required|string|min:11',
                 'password' => 'required|string|min:8',
+                'confirm_password' => 'required|string|min:8|same:password',
             ]);
+
+            // bersihkan confirm password
+            unset($validasi['confirm_password']);
 
             $validasi['role'] = 'user';
             $validasi['password'] = Hash::make($validasi['password']);
@@ -28,7 +32,7 @@ class UserController extends Controller
 
             return redirect()->route('login')->with('success', 'User berhasil ditambahkan.');
         } catch (\Throwable $e) {
-            return redirect()->back()->withInput()->with('error', 'Gagal menambahkan user');
+            return redirect()->back()->withInput()->with('error', 'Gagal menambahkan user. ')->withErrors($e->validator);
         }
     }
 
@@ -197,5 +201,4 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Gagal menghapus user.');
         }
     }
-
 }
