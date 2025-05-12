@@ -35,19 +35,27 @@ class MenuController extends Controller
 
         try {
             // validasi data
-            $request->validate([
-                'name' => ['required', 'string', 'min:2'],
-                'type' => ['required', 'in:makanan,minuman'],
-                'harga' => ['required', 'string'],
-                'image' => ['required', 'string'],
-                'description' => ['required', 'string', 'min:3'],
+            $validasi = $request->validate([
+                'name' => 'required|string|min:2',
+                'type' => 'required|in:makanan,minuman',
+                'price' => 'required|string',
+                'image' => 'required|image|max:2048',
+                'description' => 'required|string|min:3',
             ]);
 
             DB::beginTransaction();
 
-            $request['cafe_id'] = Auth::id();
-            // simpan data menu
-            Menu::create($request);
+            $validasi['cafe_id'] = Auth::id();
+
+            if ($request->hasFile('image')) {
+                $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
+                $request->file('image')->storeAs('menu-cafe_images', $imageName);
+                $validasi['image'] = $imageName;
+            }
+
+            Menu::create($validasi);
+
+            DB::commit();
 
             return redirect()->back()->with('success', 'Menu berhasil ditambahkan.');
         } catch (ValidationException $e) {
@@ -69,7 +77,7 @@ class MenuController extends Controller
         // ambil data menu
         $menu = Menu::findOrFail($id);
 
-        return view('menucafe.edit', [
+        return view('cafe.menu-cafe', [
             'menus' => Menu::all(),
             'menu' => $menu,
             'showModalEdit' => true,
@@ -84,8 +92,8 @@ class MenuController extends Controller
             $request->validate([
                 'name' => ['required', 'string', 'min:2'],
                 'type' => ['required', 'in:makanan,minuman'],
-                'harga' => ['required', 'string'],
-                'image' => ['required', 'string'],
+                'price' => ['required', 'string'],
+                'image' => ['required', 'image'],
                 'description' => ['required', 'string', 'min:3'],
             ]);
 
@@ -115,7 +123,7 @@ class MenuController extends Controller
             $menu = Menu::findOrFail($id);
             $menu->delete();
 
-            return redirect()->back()->with('success', 'Menu berhasil dihapus.');
+            return redirect()->route('cafe.menu')->with('success', 'Menu berhasil dihapus.');
         } catch (\Throwable $e) {
             return redirect()->back()->with('error', 'Gagal menghapus menu.');
         }
