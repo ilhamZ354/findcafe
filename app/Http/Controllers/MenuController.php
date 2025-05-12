@@ -39,7 +39,7 @@ class MenuController extends Controller
                 'name' => 'required|string|min:2',
                 'type' => 'required|in:makanan,minuman',
                 'price' => 'required|string',
-                'image' => 'required|image|max:2048',
+                'image' => 'required|image',
                 'description' => 'required|string|min:3',
             ]);
 
@@ -93,16 +93,35 @@ class MenuController extends Controller
                 'name' => ['required', 'string', 'min:2'],
                 'type' => ['required', 'in:makanan,minuman'],
                 'price' => ['required', 'string'],
-                'image' => ['required', 'image'],
                 'description' => ['required', 'string', 'min:3'],
             ]);
+
+            if ($request->hasFile('image')) {
+                $rules['image'] = 'required|image';
+            }
+
+            $validated = $request->validate($rules);
 
             DB::beginTransaction();
 
             $menu = Menu::findOrFail($id);
-            $menu->update($request);
 
-            return redirect()->back()->with('success', 'Menu berhasil diubah.');
+            if ($request->hasFile('image')) {
+                // Delete old image
+                if (file_exists(storage_path('app/public/menu-cafe_images/' . $menu->image))) {
+                    unlink(storage_path('app/public/menu-cafe_images/' . $menu->image));
+                }
+
+                $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
+                $request->file('image')->storeAs('menu-cafe_images', $imageName);
+                $validated['image'] = $imageName;
+            }
+
+            $menu->update($validated);
+
+            DB::commit();
+
+            return redirect()->route('cafe.menu')->with('success', 'Menu berhasil diubah.');
         } catch (ValidationException $e) {
             return redirect()->back()->with('error', 'Gagal mengubah menu.')->withErrors($e->validator)->withInput();
         } catch (\Exception $e) {
@@ -121,6 +140,12 @@ class MenuController extends Controller
     {
         try {
             $menu = Menu::findOrFail($id);
+
+            // Hapus gambar dari storage
+            if ($menu->image && \Storage::exists('menu-cafe_images/' . $menu->image)) {
+                \Storage::delete('menu-cafe_images/' . $menu->image);
+            }
+
             $menu->delete();
 
             return redirect()->route('cafe.menu')->with('success', 'Menu berhasil dihapus.');

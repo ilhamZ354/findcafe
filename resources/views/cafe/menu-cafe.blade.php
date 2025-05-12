@@ -8,7 +8,7 @@
                 <!-- ====== Table Menu Cafe Start -->
                 <div x-data="{
                     openModal: false,
-                    openEditModal: {{ isset($showEditModal) && $showEditModal ? 'true' : 'false' }},
+                    openEditModal: {{ isset($showModalEdit) && $showModalEdit ? 'true' : 'false' }},
                     openDeleteModal: false
                 }" class="col-span-12 xl:col-span-8">
                     <div
@@ -62,7 +62,7 @@
                                                     class="absolute right-0 z-40 w-32 mt-2 bg-white border rounded shadow-lg">
 
                                                     {{-- BUTTON UPDATE --}}
-                                                    {{-- <a href="{{ route('cafe.menu.edit', $menu->id) }}" class="block"> --}}
+                                                    <a href="{{ route('cafe.menu.edit', $menu->id) }}" class="block">
                                                     <x-dashboard.button-icon color="blue" text="Edit"
                                                         method="PUT">
                                                         <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg"
@@ -72,7 +72,7 @@
                                                                 d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28" />
                                                         </svg>
                                                     </x-dashboard.button-icon>
-                                                    {{-- </a> --}}
+                                                    </a>
 
                                                     {{-- BUTTON DELETE --}}
                                                     <x-dashboard.button-icon color="red" text="Delete"
@@ -102,18 +102,21 @@
 
     <!-- modal -->
     @include('components.modal.cafe.add-menu')
-    @include('components.modal.cafe.update-menu')
+    
+    @if (isset($menu)) 
+        @include('components.modal.cafe.update-menu')
+    @endif
 
-    @if (isset($showEditModal) && $showEditModal)
+    @if (isset($showModalEdit) && $showModalEdit)
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                const updateModal = document.getElementById('update-name');
+                const updateModal = document.getElementById('update-menu');
                 const modal = new Modal(updateModal);
                 modal.show();
 
                 // Focus on first input when modal opens
                 updateModal.addEventListener('shown.bs.modal', function() {
-                    document.getElementById('update-name').focus();
+                    document.querySelector('#update-menu input[name="name"]').focus();
                 });
             });
         </script>
