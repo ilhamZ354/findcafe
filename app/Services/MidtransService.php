@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Order;
+use App\Models\Transaction;
 use Exception;
 use Midtrans\Config;
 use Midtrans\Notification;
@@ -38,21 +38,21 @@ class MidtransService
     /**
      * Membuat snap token untuk transaksi berdasarkan data order.
      *
-     * @param Order $order Objek order yang berisi informasi transaksi.
+     * @param Transaction $order Objek order yang berisi informasi transaksi.
      *
      * @return string Snap token yang dapat digunakan di front-end untuk proses pembayaran.
      * @throws Exception Jika terjadi kesalahan saat menghasilkan snap token.
      */
-    public function createSnapToken(Order $order): string
+    public function createSnapToken(Transaction $transaksi): string
     {
         // data transaksi
         $params = [
             'transaction_details' => [
-                'order_id' => $order->order_id,
-                'gross_amount' => $order->total_price,
+                'transaksi_id' => $transaksi->transaksi_id,
+                'gross_amount' => $transaksi->nominal,
             ],
-            'item_details' => $this->mapItemsToDetails($order),
-            'customer_details' => $this->getCustomerDetails($order),
+            // 'item_details' => $this->mapItemsToDetails($transaksi),
+            'customer_details' => $this->getCustomerDetails($transaksi),
         ];
 
         try {
@@ -75,7 +75,7 @@ class MidtransService
 
         // Membuat signature key lokal dari data notifikasi
         $localSignatureKey = hash('sha512',
-            $notification->order_id . $notification->status_code .
+            $notification->transaksi_id . $notification->status_code .
             $notification->gross_amount . $this->serverKey);
 
         // Memeriksa apakah signature key valid
@@ -83,16 +83,16 @@ class MidtransService
     }
 
     /**
-     * Mendapatkan data order berdasarkan order_id yang ada di notifikasi Midtrans.
+     * Mendapatkan data order berdasarkan transaksi_id yang ada di notifikasi Midtrans.
      *
-     * @return Order Objek order yang sesuai dengan order_id yang diterima.
+     * @return Order Objek order yang sesuai dengan transaksi_id yang diterima.
      */
-    public function getOrder(): Order
+    public function getOrder(): Transaction
     {
         $notification = new Notification();
 
-        // Mengambil data order dari database berdasarkan order_id
-        return Order::where('order_id', $notification->order_id)->first();
+        // Mengambil data order dari database berdasarkan transaksi_id
+        return Transaction::where('transaksi_id', $notification->transaksi_id)->first();
     }
 
     /**
@@ -123,32 +123,31 @@ class MidtransService
      * @param Order $order Objek order yang berisi daftar item.
      * @return array Daftar item yang dipetakan dalam format yang sesuai.
      */
-    protected function mapItemsToDetails(Order $order): array
-    {
-        return $order->items()->get()->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'price' => $item->price,
-                'quantity' => $item->quantity,
-                'name' => $item->product_name,
-            ];
-        })->toArray();
-    }
+    // protected function mapItemsToDetails(Transaction $order): array
+    // {
+    //     return $order->items()->get()->map(function ($item) {
+    //         return [
+    //             'id' => $item->id,
+    //             'nominal' => $item->nominal,
+    //             'name' => $item->name,
+    //         ];
+    //     })->toArray();
+    // }
 
     /**
      * Mendapatkan informasi customer dari order.
      * Data ini dapat diambil dari relasi dengan tabel lain seperti users atau tabel khusus customer.
      *
-     * @param Order $order Objek order yang berisi informasi tentang customer.
+     * @param Transaction $order Objek order yang berisi informasi tentang customer.
      * @return array Data customer yang akan dikirim ke Midtrans.
      */
-    protected function getCustomerDetails(Order $order): array
+    protected function getCustomerDetails(Transaction $transaksi): array
     {
         // Sesuaikan data customer dengan informasi yang dimiliki oleh aplikasi Anda
         return [
-            'first_name' => 'Nama Customer', // Ganti dengan data nyata
-            'email' => 'Email@email.com', // Ganti dengan data nyata
-            'phone' => '081234567890', // Ganti dengan data nyata
+            'name' => $transaksi->name, // Ganti dengan data nyata
+            'catatan' => $transaksi->catatan, // Ganti dengan data nyata
+            'tgl_booking' => $transaksi->tgl_booking, // Ganti dengan data nyata
         ];
     }
 }

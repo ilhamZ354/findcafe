@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Transaction;
-use App\Models\User;
+use App\Models\Pembayaran;
 use illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Services\MidtransService;
 
 class TransactionController extends Controller
 {
@@ -37,7 +38,7 @@ class TransactionController extends Controller
     }
 
     // store transaksi untuk user
-    public function storeTransaksi(Request $request, $cafe)
+    public function storeTransaksi(MidtransService $midtransService, Request $request, $cafe)
     {
 
         try {
@@ -53,7 +54,7 @@ class TransactionController extends Controller
 
             DB::beginTransaction();
 
-            Transaction::create([
+            $transaksi = Transaction::create([
                 'user_id' => Auth::id(),
                 'cafe_id' => $cafe,
                 'transaksi_id' => $transaksi_id,
@@ -63,6 +64,18 @@ class TransactionController extends Controller
                 'status' => "unpaid",
             ]);
 
+            $snapToken = $midtransService->createSnapToken($transaksi->id);
+
+            Pembayaran::create([
+                'transaksi_id' => $transaksi->id,
+                'snap_token' => $snapToken,
+                'expired_at' => now()->addHours(24),
+                'paid_at' => null,
+                'status'=> 'pending',
+            ]);
+
+            DB::commit();
+            
             return redirect()->route('user.transaksi')->with('success', 'Transaksi berhasil ditambahkan.');
         } catch (\Throwable $e) {
             DB::rollBack();
