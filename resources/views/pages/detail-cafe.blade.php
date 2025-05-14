@@ -7,16 +7,14 @@
 
         <section id="header" class="mt-2">
             <div class="w-[calc(100vw-3rem)] h-[50vh] mx-auto rounded-xl relative">
-                <img src="{{ asset('images/background-cafe.jpg') }}" alt="Image Cafe"
+                <img src="{{ $data->image_profile }}" alt="Image Cafe"
                     class="object-cover w-full h-full shadow-xl rounded-xl brightness-50" loading="lazy">
 
                 <div class="absolute top-16 left-16">
                     <h1 class="text-6xl font-semibold tracking-wider text-white">
-                        Cafe Name</h1>
+                        {{ $data->username }}</h1>
 
-                    <p class="mt-2 text-sm font-light tracking-wide text-white">Jl. Uskup Agung No.2, Madras Hulu, Kec.
-                        Medan
-                        Polonia</p>
+                    <p class="mt-2 text-sm font-light tracking-wide text-white">{{ $data->address }}</p>
 
                     <button
                         class="mt-5 text-white bg-yellow-400 hover:bg-opacity-80 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Booking
@@ -30,7 +28,7 @@
             <div class="flex items-center justify-center mt-5 gap-7">
                 {{-- menu --}}
                 <div class="flex flex-col items-center justify-center">
-                    <a href="{{ route('menu-cafe', $id) }}"
+                    <a href="{{ route('menu-cafe', $data->cafe_id) }}"
                         class="block p-3 border rounded-full text-primaryBrown border-primaryBrown hover:bg-semiPrimaryBrown focus:ring-4 focus:outline-none focus:ring-lightPrimaryBrown">
                         <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                             height="24" fill="none" viewBox="0 0 24 24">
@@ -104,9 +102,9 @@
 
 
                 <div class="grid grid-cols-4 gap-4 mt-5">
-                    @foreach (range(1, 5) as $i)
+                    @foreach (json_decode($data->galleries, true) as $image)
                         <div class="w-full overflow-hidden shadow-xl h-60 rounded-xl group">
-                            <img src="{{ asset('images/background-cafe.jpg') }}" alt="gallery-1"
+                            <img src="{{ $image }}" alt="image{{ $loop->index }}"
                                 class="object-cover w-full h-full transition-all duration-500 transform brightness-75 group-hover:scale-110 group-hover:brightness-100"
                                 loading="lazy">
                         </div>

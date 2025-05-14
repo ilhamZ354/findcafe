@@ -63,9 +63,7 @@ Route::middleware('auth')->group(
 
         // =============USER===========
         Route::get('/home', [CafeController::class, 'listCafes'])->name('home');
-        Route::get('/detail-cafe/{id}', function ($id) {
-            return view('pages.detail-cafe', compact('id'));
-        })->name('detail-cafe');
+        Route::get('/detail-cafe/{id}', [CafeController::class, 'show'])->name('detail-cafe');
         Route::get('menu-cafe/{id}', function ($id) {
             return view('pages.menu-cafe', compact('id'));
         })->name('menu-cafe');
