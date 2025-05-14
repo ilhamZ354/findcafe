@@ -9,27 +9,30 @@ use App\Models\CafeDetail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Storage;
 
 class MenuController extends Controller
 {
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         // get semua menu
         $query = Menu::all();
 
         // apakah ada dicari tipe
         $tipe = $request->query('type');
-        if($tipe){
+        if ($tipe) {
             $query = Menu::where('type', $tipe)->get();
         }
 
-        return view('menucafe.index', [
+        return view('cafe.menu-cafe', [
             'menus' => $query,
             'type' => $tipe,
         ]);
     }
 
     // store data menu
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
 
         try {
             // validasi data
@@ -43,9 +46,17 @@ class MenuController extends Controller
 
             DB::beginTransaction();
 
-            $request['cafe_id'] = Auth::id();
-            // simpan data menu
+            $validasi['cafe_id'] = Auth::id();
+
+            if ($request->hasFile('image')) {
+                $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
+                $request->file('image')->storeAs('menu-cafe_images', $imageName);
+                $validasi['image'] = $imageName;
+            }
+
             Menu::create($validasi);
+
+            DB::commit();
 
             return redirect()->back()->with('success', 'Menu berhasil ditambahkan.');
         } catch (ValidationException $e) {
@@ -59,11 +70,11 @@ class MenuController extends Controller
                 ->withInput()
                 ->with('error', 'Gagal menambahkan menu');
         }
-
     }
 
     // edit data menu
-    public function edit($id) {
+    public function edit($id)
+    {
         // ambil data menu
         $menu = Menu::findOrFail($id);
 
@@ -74,7 +85,8 @@ class MenuController extends Controller
     }
 
     // update data menu
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         try {
             // validasi data
             $validasi = $request->validate([
@@ -85,12 +97,33 @@ class MenuController extends Controller
                 'description' => ['required','string','min:3'],
             ]);
 
+            if ($request->hasFile('image')) {
+                $rules['image'] = 'required|image';
+            }
+
+            $validated = $request->validate($rules);
+
             DB::beginTransaction();
 
             $menu = Menu::findOrFail($id);
             $menu->update($validasi);
 
-            return redirect()->back()->with('success', 'Menu berhasil diubah.');
+            if ($request->hasFile('image')) {
+                // Delete old image
+                if (file_exists(storage_path('app/public/menu-cafe_images/' . $menu->image))) {
+                    unlink(storage_path('app/public/menu-cafe_images/' . $menu->image));
+                }
+
+                $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
+                $request->file('image')->storeAs('menu-cafe_images', $imageName);
+                $validated['image'] = $imageName;
+            }
+
+            $menu->update($validated);
+
+            DB::commit();
+
+            return redirect()->route('cafe.menu')->with('success', 'Menu berhasil diubah.');
         } catch (ValidationException $e) {
             return redirect()->back()->with('error', 'Gagal mengubah menu.')->withErrors($e->validator)->withInput();
         } catch (\Exception $e) {
@@ -109,9 +142,15 @@ class MenuController extends Controller
     {
         try {
             $menu = Menu::findOrFail($id);
+
+            // Hapus gambar dari storage
+            if ($menu->image && \Storage::exists('menu-cafe_images/' . $menu->image)) {
+                \Storage::delete('menu-cafe_images/' . $menu->image);
+            }
+
             $menu->delete();
 
-            return redirect()->back()->with('success', 'Menu berhasil dihapus.');
+            return redirect()->route('cafe.menu')->with('success', 'Menu berhasil dihapus.');
         } catch (\Throwable $e) {
             return redirect()->back()->with('error', 'Gagal menghapus menu.');
         }

@@ -14,16 +14,16 @@ class UserController extends Controller
     {
         try {
             $validasi = $request->validate([
-                'username' => ['required','string','unique:users,username'],
-                'email' => ['required','string','email','unique:users,email'],
-                'no_wa' => ['required','string','min:11'],
-                'password' => ['required','string','min:8'],
+                'username' => 'required|string|unique:users,username',
+                'email' => 'required|string|email|unique:users,email',
+                'role' => 'required|in:user,cafe',
+                'no_wa' => 'required|string|min:11',
+                'password' => 'required|string|min:8',
+                'confirm_password' => 'required|string|min:8|same:password',
             ]);
 
-            $verify_password = $request['verify_password'];
-            if ($validasi['password'] != $verify_password) {
-                return redirect()->back()->withInput()->with('error', 'Password tidak sama');
-            }
+            // bersihkan confirm password
+            unset($validasi['confirm_password']);
 
             $validasi['role'] = 'user';
             $validasi['password'] = Hash::make($validasi['password']);
@@ -32,7 +32,7 @@ class UserController extends Controller
 
             return redirect()->route('login')->with('success', 'User berhasil ditambahkan.');
         } catch (\Throwable $e) {
-            return redirect()->back()->withInput()->with('error', 'Gagal menambahkan user');
+            return redirect()->back()->withInput()->with('error', 'Gagal menambahkan user. ')->withErrors($e->validator);
         }
     }
 
@@ -190,5 +190,4 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Gagal menghapus user.');
         }
     }
-
 }
