@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('cafe_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->integer('rating')->nullable(false);
-            $table->string('review')->nullable(false);
+            $table->integer('rating')->nullable();
+            $table->string('review')->nullable();
             $table->timestamps();
         });
     }
