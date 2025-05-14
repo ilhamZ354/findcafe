@@ -1,5 +1,11 @@
 @props([
-    'images' => [],
+    'images' => [
+        asset('images/carousel/gambar-1.png'),
+        asset('images/carousel/gambar-2.png'),
+        asset('images/carousel/gambar-3.png'),
+        asset('images/carousel/gambar-4.png'),
+        asset('images/carousel/gambar-5.png'),
+    ],
 ])
 
 <div class="container w-[calc(100vw-2rem)] max-w-[100vw] mx-auto mt-24 rounded-xl">

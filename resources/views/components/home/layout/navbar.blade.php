@@ -22,7 +22,7 @@
                     <ul class="flex flex-col gap-5 px-6 py-4 border-b border-stroke">
                         {{-- profile --}}
                         <li>
-                            <a href="{{ asset('tailadmin/build/profile.html') }}"
+                            <a href="{{ route('profile', Auth::user()->id) }}"
                                 class="flex items-center gap-1 text-xs font-medium duration-300 ease-in-out text-primary lg:text-base">
                                 <svg class="fill-current" width="22" height="22" viewBox="0 0 22 22"
                                     fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -77,5 +77,8 @@ Route::middleware('auth')->group(
         Route::get('/transaksi/{id}', function ($id) {
             return view('pages.transaksi', compact('id'));
         })->name('transaksi');
+        Route::get('/profile/{id}', function ($id) {
+            return view('pages.profile', compact('id'));
+        })->name('profile');
     }
 );
