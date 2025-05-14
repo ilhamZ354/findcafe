@@ -13,6 +13,6 @@
     <x-home.about></x-home.about>
 
     <x-home.waves-svg-top />
-    <x-home.services></x-home.services>
+    <x-home.services :data="$data" />
     <x-home.contact></x-home.contact>
 </x-home.layout>

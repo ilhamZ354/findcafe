@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\CafeDetail;
+use App\Models\RatingReview;
 use Illuminate\Validation\ValidationException;
 
 class CafeController extends Controller
@@ -46,7 +47,14 @@ class CafeController extends Controller
 
             $validasi['cafe_id'] = Auth::id();
 
-            CafeDetail::create($validasi);
+            $cafeDetail = CafeDetail::create($validasi);
+
+            RatingReview::create([
+                'cafe_id' => $cafeDetail->cafe_id,
+                'user_id' => Auth::id(),
+                'rating' => 5,
+                'review' => null,
+            ]);
 
             DB::commit();
 
@@ -108,5 +116,46 @@ class CafeController extends Controller
                 ->withInput()
                 ->with('error', 'Gagal update data cafe' . $e->getMessage());
         }
+    }
+
+    // list cafe untuk user
+    public function listCafes() {
+        $data = DB::table('users')
+            ->join('cafe_details', 'users.id', '=', 'cafe_details.cafe_id')
+            ->join('rating_reviews', 'cafe_details.cafe_id', '=', 'rating_reviews.cafe_id')
+            ->where('users.role', 'cafe')
+            ->select(
+                'users.id as user_id',
+                'users.username',
+                'users.email',
+                'cafe_details.id as cafe_detail_id',
+                'cafe_details.*',
+                'rating_reviews.id as review_id',
+                'rating_reviews.rating',
+                'rating_reviews.review'
+            )
+            ->get();
+
+        // dd($datas);
+        return view('pages.index', compact('data'));
+
+    }
+
+    public function show(CafeDetail $cafe) {
+
+        $data = DB::table('users')
+        ->join('cafe_details', 'users.id', '=', 'cafe_details.cafe_id')
+        ->join('rating_reviews', 'cafe_details.id', '=', 'rating_reviews.cafe_id')
+        ->where('users.id', $cafe->id) // cari dari id
+        ->select(
+            'users.id',
+            'users.username',
+            'users.email',
+            'cafe_details.*',
+            'rating_reviews.*'
+        )
+        ->get();
+
+        return view('pages.index', compact('data'));
     }
 }

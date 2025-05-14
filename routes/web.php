@@ -62,9 +62,7 @@ Route::middleware('auth')->group(
         Route::delete('/cafe/menu/delete/{id}', [MenuController::class, 'destroy'])->name('cafe.menu.delete');
 
         // =============USER===========
-        Route::get('/home', function () {
-            return view('pages.index');
-        })->name('home');
+        Route::get('/home', [CafeController::class, 'listCafes'])->name('home');
         Route::get('/detail-cafe/{id}', function ($id) {
             return view('pages.detail-cafe', compact('id'));
         })->name('detail-cafe');

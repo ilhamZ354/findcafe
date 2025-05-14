@@ -9,6 +9,7 @@ use App\Models\CafeDetail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Storage;
 
 class MenuController extends Controller
 {
@@ -36,11 +37,11 @@ class MenuController extends Controller
         try {
             // validasi data
             $validasi = $request->validate([
-                'name' => 'required|string|min:2',
-                'type' => 'required|in:makanan,minuman',
-                'price' => 'required|string',
-                'image' => 'required|image',
-                'description' => 'required|string|min:3',
+                'name' => ['required','string','min:2'],
+                'type' => ['required','in:makanan,minuman'],
+                'harga' => ['required','string'],
+                'image' => ['required','string'],
+                'description' => ['required','string','min:3'],
             ]);
 
             DB::beginTransaction();
@@ -77,8 +78,7 @@ class MenuController extends Controller
         // ambil data menu
         $menu = Menu::findOrFail($id);
 
-        return view('cafe.menu-cafe', [
-            'menus' => Menu::all(),
+        return view('menucafe.edit', [
             'menu' => $menu,
             'showModalEdit' => true,
         ]);
@@ -89,11 +89,12 @@ class MenuController extends Controller
     {
         try {
             // validasi data
-            $request->validate([
-                'name' => ['required', 'string', 'min:2'],
-                'type' => ['required', 'in:makanan,minuman'],
-                'price' => ['required', 'string'],
-                'description' => ['required', 'string', 'min:3'],
+            $validasi = $request->validate([
+                'name' => ['required','string','min:2'],
+                'type' => ['required','in:makanan,minuman'],
+                'harga' => ['required','string'],
+                'image' => ['required','string'],
+                'description' => ['required','string','min:3'],
             ]);
 
             if ($request->hasFile('image')) {
@@ -105,6 +106,7 @@ class MenuController extends Controller
             DB::beginTransaction();
 
             $menu = Menu::findOrFail($id);
+            $menu->update($validasi);
 
             if ($request->hasFile('image')) {
                 // Delete old image

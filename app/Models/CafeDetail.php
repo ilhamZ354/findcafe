@@ -20,11 +20,15 @@ class CafeDetail extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'cafe_id');
+        return $this->belongsTo(User::class);
     }
 
     public function menus(): HasMany
     {
         return $this->hasMany(Menu::class, 'cafe_id');
+    }
+
+    public function ratings() {
+        return $this->hasMany(RatingReview::class, 'cafe_id');
     }
 }

@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Models\User;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Transaction;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
-class AuthController extends Controller
+class ApiAuthController extends Controller
 {
     // Tampilkan halaman login
     public function index()
@@ -29,23 +30,19 @@ class AuthController extends Controller
         try {
             // dd($request->all());
             $credentials = $request->validate([
-                'email' => ['required','string'],
-                'password' => ['required','string'],
+                'email' => 'required|string',
+                'password' => 'required|string',
             ]);
 
             if (Auth::attempt($credentials)) {
                 $request->session()->regenerate();
-                // user
-                if (Auth::user()->role == 'user') {
-                    return redirect()->route('home');
-                } else {
-                    return redirect()->route('dashboard');
-                }
+                // return $request;
+                return redirect()->intended('/dashboard')->with('success', 'Login berhasil.');
             }
 
-            return redirect()->route('login')->withInput()->withInput()->with('error', 'Email atau password salah');
+            return redirect()->route('login')->withInput()->with('error', 'Email atau password salah.');
         } catch (\Exception $e) {
-            return redirect()->route('login')->withInput()->with('error', 'Email atau password salah');
+            return redirect()->route('login')->withInput()->with('error', 'Email atau password salah.');
         }
     }
 

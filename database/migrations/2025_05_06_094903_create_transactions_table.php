@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('cafe_id')->constrained('cafe_details')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('cafe_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->string('transaksi_id', 32)->unique();
+            $table->double('nominal', 8, 2);
             $table->string('name')->nullable(true);
             $table->string('catatan')->nullable(true);
-            $table->string('nominal')->nullable(false);
             $table->timestamp('tgl_booking')->nullable(false);
-            $table->string('status')->nullable(false);
-            $table->string('snap_token')->nullable(false);
+            $table->enum('status', ['unpaid', 'paid', 'failed'])->default('unpaid');
             $table->timestamps();
         });
     }
