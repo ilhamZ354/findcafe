@@ -34,12 +34,12 @@
                         <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                             @foreach (range(1, 5) as $i)
                                 <div class="w-full max-w-md bg-white border border-gray-200 rounded-lg shadow-sm">
-                                    <a href="/cafe/detail">
+                                    <a href="{{ route('detail-cafe', $i) }}">
                                         <img class="rounded-t-lg" src="{{ asset('images/background-cafe.jpg') }}"
                                             alt="product image" />
                                     </a>
                                     <div class="px-5 py-5">
-                                        <a href="#">
+                                        <a href="{{ route('detail-cafe', $i) }}">
                                             <h5 class="text-xl font-semibold tracking-tight text-gray-900">
                                                 Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport</h5>
                                             <p class="mt-2 text-sm text-grayTheme">
@@ -85,7 +85,7 @@
                                                 class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-smms-3">5.0</span>
                                         </div>
                                         <div class="flex items-center justify-end">
-                                            <a href="#"
+                                            <a href="{{ route('detail-cafe', $i) }}"
                                                 class="text-white bg-primaryBrown hover:bg-semiPrimaryBrown focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Lihat
                                                 lainnya</a>
                                         </div>

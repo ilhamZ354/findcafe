@@ -68,5 +68,14 @@ Route::middleware('auth')->group(
         Route::get('/detail-cafe/{id}', function ($id) {
             return view('pages.detail-cafe', compact('id'));
         })->name('detail-cafe');
+        Route::get('menu-cafe/{id}', function ($id) {
+            return view('pages.menu-cafe', compact('id'));
+        })->name('menu-cafe');
+        Route::get('/bookmark/{id}', function ($id) {
+            return view('pages.bookmark', compact('id'));
+        })->name('bookmark');
+        Route::get('/transaksi/{id}', function ($id) {
+            return view('pages.transaksi', compact('id'));
+        })->name('transaksi');
     }
 );

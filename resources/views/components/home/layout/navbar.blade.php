@@ -4,11 +4,6 @@
             <img src="{{ asset('images/logo-cafe-hunt.png') }}" class="h-10" alt="Cafe Hunt Logo">
         </a>
         <div class="flex space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse">
-            {{-- <button type="button"
-                class="px-4 py-2 text-sm font-medium text-white rounded-lg bg-primaryBrown hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
-                Mulai Menjelajah
-            </button> --}}
-
             <div>
                 <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar"
                     class="flex items-center justify-between w-full px-3 py-2 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-primaryBrown md:p-0 md:w-auto">
@@ -25,6 +20,7 @@
                 <div id="dropdownNavbar"
                     class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44">
                     <ul class="flex flex-col gap-5 px-6 py-4 border-b border-stroke">
+                        {{-- profile --}}
                         <li>
                             <a href="{{ asset('tailadmin/build/profile.html') }}"
                                 class="flex items-center gap-1 text-xs font-medium duration-300 ease-in-out text-primary lg:text-base">
@@ -38,6 +34,35 @@
                                         fill="" />
                                 </svg>
                                 My Profile
+                            </a>
+                        </li>
+
+                        {{-- bookmark --}}
+                        <li>
+                            <a href="{{ route('bookmark', Auth::user()->id) }}"
+                                class="flex items-center gap-1 text-xs font-medium duration-300 ease-in-out text-primary lg:text-base">
+                                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="m17 21-5-4-5 4V3.889a.92.92 0 0 1 .244-.629.808.808 0 0 1 .59-.26h8.333a.81.81 0 0 1 .589.26.92.92 0 0 1 .244.63V21Z" />
+                                </svg>
+
+                                Bookmark
+                            </a>
+                        </li>
+
+                        {{-- transaksi --}}
+                        <li>
+                            <a href="{{ route('transaksi', Auth::user()->id) }}"
+                                class="flex items-center gap-1 text-xs font-medium duration-300 ease-in-out text-primary lg:text-base">
+                                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M12 6.03v13m0-13c-2.819-.831-4.715-1.076-8.029-1.023A.99.99 0 0 0 3 6v11c0 .563.466 1.014 1.03 1.007 3.122-.043 5.018.212 7.97 1.023m0-13c2.819-.831 4.715-1.076 8.029-1.023A.99.99 0 0 1 21 6v11c0 .563-.466 1.014-1.03 1.007-3.122-.043-5.018.212-7.97 1.023" />
+                                </svg>
+                                Transaksi
                             </a>
                         </li>
                     </ul>
@@ -75,20 +100,20 @@
             <ul
                 class="flex flex-col p-4 mt-4 font-medium border border-gray-100 rounded-lg md:p-0 bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-transparent">
                 <li>
-                    <a href="#"
+                    <a href="http://localhost:8000/home#"
                         class="block px-3 py-2 text-white rounded bg-primaryBrown md:bg-transparent md:text-primaryBrown md:p-0"
                         aria-current="page">Home</a>
                 </li>
                 <li>
-                    <a href="#about"
+                    <a href="http://localhost:8000/home#about"
                         class="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primaryBrown md:p-0">Tentang</a>
                 </li>
                 <li>
-                    <a href="#services"
+                    <a href="http://localhost:8000/home#services"
                         class="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primaryBrown md:p-0">Layanan</a>
                 </li>
                 <li>
-                    <a href="#contact"
+                    <a href="http://localhost:8000/home#contact"
                         class="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primaryBrown md:p-0">Kontak</a>
                 </li>
             </ul>
