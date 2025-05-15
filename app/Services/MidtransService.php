@@ -43,26 +43,30 @@ class MidtransService
      * @return string Snap token yang dapat digunakan di front-end untuk proses pembayaran.
      * @throws Exception Jika terjadi kesalahan saat menghasilkan snap token.
      */
-    public function createSnapToken(Transaction $transaksi): string
+
+    public function createSnapToken($transaksiId)
     {
-        // data transaksi
+        $transaksi = Transaction::findOrFail($transaksiId);
+
         $params = [
             'transaction_details' => [
-                'transaksi_id' => $transaksi->transaksi_id,
+                'order_id' => $transaksi->transaksi_id,
                 'gross_amount' => $transaksi->nominal,
             ],
-            // 'item_details' => $this->mapItemsToDetails($transaksi),
-            'customer_details' => $this->getCustomerDetails($transaksi),
+            'customer_details' => [
+                'first_name' => $transaksi->name,
+            ]
         ];
 
         try {
-            // Membuat snap token
             return Snap::getSnapToken($params);
-        } catch (Exception $e) {
-            // Menangani error jika gagal mendapatkan snap token
-            throw new Exception($e->getMessage());
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Gagal update cafe: '. $e->getMessage());
         }
     }
+
 
     /**
      * Memvalidasi apakah signature key yang diterima dari Midtrans sesuai dengan signature key yang dihitung di server.

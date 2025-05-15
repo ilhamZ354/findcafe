@@ -134,4 +134,4 @@
     </div>
 </x-home.layout>
 
-@include('components.modal.user.booking')
+@include('components.modal.user.booking', ['cafe_id' =>  $data->cafe_id])

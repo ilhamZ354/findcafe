@@ -2,7 +2,7 @@
 
 <x-modal.modal-template id_modal="booking-modal" title_modal="Booking Cafe">
     <!-- Modal body -->
-    <form class="p-4 md:p-5" method="POST" action="#">
+    <form class="p-4 md:p-5" method="POST" action="{{  route('store-transaksi', $cafe_id)}}">
         @csrf
         <div class="grid grid-cols-1 gap-4 mb-4">
             {{-- Nama --}}

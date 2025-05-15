@@ -13,10 +13,10 @@ use Illuminate\Support\Facades\Storage;
 
 class MenuController extends Controller
 {
-    public function index(Request $request)
+    public function listMenu(Request $request, $cafe_id)
     {
         // get semua menu
-        $query = Menu::all();
+        $query = Menu::where('cafe_id', $cafe_id);
 
         // apakah ada dicari tipe
         $tipe = $request->query('type');

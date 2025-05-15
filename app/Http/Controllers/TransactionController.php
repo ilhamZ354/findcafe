@@ -6,52 +6,57 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Transaction;
 use App\Models\Pembayaran;
-use illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use App\Services\MidtransService;
 
 class TransactionController extends Controller
 {
     // view transaksi untuk superadmin
-    public function index(){
-        // ambil semua data transaksi
+    public function index()
+    {
         $transactions = Transaction::all();
-
-        // kembalikan ke view
         return view('superadmin.transaksi', compact('transactions'));
     }
 
     // list transaksi untuk cafe
-    public function listTransactionForCafe(){
-        // ambil data transaksi dari cafe
+    public function listTransactionForCafe()
+    {
         $transactions = Transaction::where('cafe_id', Auth::id())->get();
-        // kembalikan ke view
         return view('cafe.transaksi', compact('transactions'));
     }
 
     // list transaksi untuk user
-    public function listTransactionForUser(){
-        // ambil data transaksi dari cafe
-        $transactions = Transaction::where('user_id', Auth::id())->get();
-        // kembalikan ke view
+    public function listTransactionForUser()
+    {
+        $transactions = DB::table('transactions')
+                ->join('pembayarans', 'transactions.id', '=', 'pembayarans.transaksi_id')
+                ->where('transactions.id', Auth::id())
+                ->select(
+                    'transactions.*',
+                    'pembayarans.*',
+                )->get();
+
         return view('user.cafe.transaksi', compact('transactions'));
     }
 
     // store transaksi untuk user
     public function storeTransaksi(MidtransService $midtransService, Request $request, $cafe)
     {
-
         try {
-
-            $validasi = $request->validate([
-                'name' => ['required', 'string', 'max:255'],
-                'catatan' => ['nullable', 'string'],
-                'nominal' => ['required', 'min:0'],
-            ]);
-
-            $transaksi_id = 'TFX' . mt_rand(1000, 9999) . time();
+            $query = $request->all();
+            unset($query['nominal_display']);
 
             DB::beginTransaction();
+
+            $validasi = Validator::make($query, [
+                'name' => ['required', 'string', 'max:255'],
+                'catatan' => ['nullable', 'string'],
+                'nominal' => ['required', 'numeric', 'min:0'],
+            ])->validate();
+
+            $transaksi_id = 'TFX' . mt_rand(1000, 9999) . time();
 
             $transaksi = Transaction::create([
                 'user_id' => Auth::id(),
@@ -59,7 +64,7 @@ class TransactionController extends Controller
                 'transaksi_id' => $transaksi_id,
                 'name' => $validasi['name'],
                 'catatan' => $validasi['catatan'],
-                'nominal' => $validasi['nominal'],
+                'nominal' => $validasi['nominal'] ?? null,
                 'tgl_booking' => now(),
                 'status' => "unpaid",
             ]);
@@ -71,12 +76,12 @@ class TransactionController extends Controller
                 'snap_token' => $snapToken,
                 'expired_at' => now()->addHours(24),
                 'paid_at' => null,
-                'status'=> 'pending',
+                'status' => 'pending',
             ]);
 
             DB::commit();
-            
-            return redirect()->route('user.transaksi')->with('success', 'Transaksi berhasil ditambahkan.');
+
+            return redirect()->route('transaksi-user')->with('success', 'Transaksi berhasil ditambahkan.');
         } catch (\Throwable $e) {
             DB::rollBack();
             return redirect()->back()->withInput()->with('error', 'Gagal menambahkan transaksi.');
@@ -84,7 +89,8 @@ class TransactionController extends Controller
     }
 
     // view edit transaksi
-    public function edit($id){
+    public function edit($id)
+    {
         $transaction = Transaction::findOrFail($id);
 
         return view('user.transaksi', [
@@ -97,7 +103,6 @@ class TransactionController extends Controller
     public function updateTransaksi(Request $request, $id)
     {
         try {
-
             $validasi = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'catatan' => ['nullable', 'string'],
@@ -108,15 +113,17 @@ class TransactionController extends Controller
             $transaction = Transaction::findOrFail($id);
 
             DB::beginTransaction();
+            $transaction->update($validasi);
+            DB::commit();
 
-            $transaction::update($validasi);
-
-            return view('user.cafe.transaksi');
+            return redirect()->route('transaksi-user')->with('success', 'Transaksi berhasil diperbarui.');
         } catch (\Throwable $e) {
+            DB::rollBack();
             return redirect()->back()->with('error', 'Transaksi tidak ditemukan.');
         }
     }
 
+    // delete transaksi
     public function deleteTransaksi($id)
     {
         try {
