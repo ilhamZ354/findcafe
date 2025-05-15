@@ -148,7 +148,7 @@ class CafeController extends Controller
         $data = DB::table('users')
         ->join('cafe_details', 'users.id', '=', 'cafe_details.cafe_id')
         ->join('rating_reviews', 'cafe_details.cafe_id', '=', 'rating_reviews.cafe_id')
-        ->where('users.id', $cafe) // cari dari id
+        ->where('users.id', $cafe) // cari dari cafe id
         ->select(
             'users.id',
             'users.*',
