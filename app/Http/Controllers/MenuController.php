@@ -13,7 +13,24 @@ use Illuminate\Support\Facades\Storage;
 
 class MenuController extends Controller
 {
-    public function listMenu(Request $request, $cafe_id)
+    public function listMenuCafe(Request $request)
+    {
+        // get semua menu
+        $query = Menu::where('cafe_id', Auth::id());
+
+        // apakah ada dicari tipe
+        $tipe = $request->query('type');
+        if ($tipe) {
+            $query = Menu::where('type', $tipe)->get();
+        }
+
+        return view('cafe.menu-cafe', [
+            'menus' => $query,
+            'type' => $tipe,
+        ]);
+    }
+
+        public function listMenuUser(Request $request, $cafe_id)
     {
         // get semua menu
         $query = Menu::where('cafe_id', $cafe_id);

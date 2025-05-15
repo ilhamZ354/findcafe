@@ -53,7 +53,7 @@ Route::middleware('auth')->group(
         Route::put('/cafe/{id}', [CafeController::class, 'update'])->name('cafe.update');
         Route::get('/cafe/transaksi', [TransactionController::class, 'listTransactionForCafe'])->name('cafe.transaksi');
         // menu
-        Route::get('/cafe/menu', [MenuController::class, 'listMenu'])->name('cafe.menu');
+        Route::get('/cafe/menu', [MenuController::class, 'listMenuCafe'])->name('cafe.menu');
         Route::post('/cafe/menu', [MenuController::class, 'store'])->name('cafe.menu.store');
         Route::get('/cafe/menu/edit/{id}', [MenuController::class, 'edit'])->name('cafe.menu.edit');
         Route::put('/cafe/menu/update/{id}', [MenuController::class, 'update'])->name('cafe.menu.update');
@@ -66,7 +66,7 @@ Route::middleware('auth')->group(
         Route::get('/transaksi', [TransactionController::class, 'listTransactionForUser'])->name('transaksi-user');
         Route::put('/transaksi/{id}', [TransactionController::class, 'updateTransaksi'])->name('transaksi-user.update');
         // Route::post('/payment/midtrans-callback', [App\Http\Controllers\PaymentController::class, 'midtransCallback']);
-        Route::get('menu-cafe/{id}', [MenuController::class, 'listMenu'])->name('menu-cafe');
+        Route::get('menu-cafe/{id}', [MenuController::class, 'listMenuUser'])->name('menu-cafe');
         Route::get('/bookmark/{id}', function ($id) {
             return view('pages.bookmark', compact('id'));
         })->name('bookmark');
