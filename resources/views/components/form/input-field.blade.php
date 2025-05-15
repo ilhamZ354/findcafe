@@ -7,6 +7,7 @@
     'required' => false,
     'showTogglePassword' => false,
     'minLength' => null,
+    'min' => null,
 ])
 
 <div class="relative w-full" x-data="{ show: false }">
@@ -24,7 +25,7 @@
                     'text-gray-900 text-sm rounded-lg focus:ring-secondary focus:border-secondary block w-full p-2.5' .
                     ($showTogglePassword ? ' pr-10' : ''),
             ]) }}
-            placeholder="{{ $placeholder }}" minlength="{{ $minLength }}" />
+            placeholder="{{ $placeholder }}" minlength="{{ $minLength }}" min="{{ $min }}" />
 
         @if ($showTogglePassword)
             <button type="button" @click="show = !show"
