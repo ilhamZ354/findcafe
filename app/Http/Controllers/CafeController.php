@@ -119,7 +119,8 @@ class CafeController extends Controller
     }
 
     // list cafe untuk user
-    public function listCafes() {
+    public function listCafes()
+    {
         $data = DB::table('users')
             ->join('cafe_details', 'users.id', '=', 'cafe_details.cafe_id')
             ->join('rating_reviews', 'cafe_details.cafe_id', '=', 'rating_reviews.cafe_id')
@@ -138,24 +139,24 @@ class CafeController extends Controller
 
         // dd($data);
         return view('pages.index', compact('data'));
-
     }
 
-    public function show($cafe) {
+    public function show($cafe)
+    {
 
         // dd($cafe);
 
         $data = DB::table('users')
-        ->join('cafe_details', 'users.id', '=', 'cafe_details.cafe_id')
-        ->join('rating_reviews', 'cafe_details.cafe_id', '=', 'rating_reviews.cafe_id')
-        ->where('users.id', $cafe) // cari dari cafe id
-        ->select(
-            'users.id',
-            'users.*',
-            'cafe_details.*',
-            'rating_reviews.*'
-        )
-        ->first();
+            ->join('cafe_details', 'users.id', '=', 'cafe_details.cafe_id')
+            ->join('rating_reviews', 'cafe_details.cafe_id', '=', 'rating_reviews.cafe_id')
+            ->where('users.id', $cafe) // cari dari cafe id
+            ->select(
+                'users.id',
+                'users.*',
+                'cafe_details.*',
+                'rating_reviews.*'
+            )
+            ->first();
 
         // dd($data);
 

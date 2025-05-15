@@ -121,7 +121,7 @@
                         melakukan
                         booking
                         sekarang? Silahkan klik tombol dibawah ini 👇</p>
-                    <button type="button"
+                    <button type="button" data-modal-target="booking-modal" data-modal-toggle="booking-modal"
                         class="text-yellow-400 bg-yellow-50 backdrop-blur-md hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Booking
                         Sekarang!</button>
                 </div>
