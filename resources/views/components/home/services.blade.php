@@ -36,7 +36,7 @@
                         <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                             @foreach ($data as $cafe)
                                 <div class="w-full max-w-md bg-white border border-gray-200 rounded-lg shadow-sm">
-                                    <a href="{{ route('detail-cafe', $cafe->id) }}">
+                                    <a href="{{ route('detail-cafe', $cafe->cafe_detail_id) }}">
                                         <img class="rounded-t-lg" src="{{ $cafe->image_profile }}"
                                             alt="product image" />
                                     </a>

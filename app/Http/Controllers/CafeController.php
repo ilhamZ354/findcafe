@@ -136,17 +136,17 @@ class CafeController extends Controller
             )
             ->get();
 
-        // dd($datas);
+        // dd($data);
         return view('pages.index', compact('data'));
 
     }
 
-    public function show(CafeDetail $cafe) {
+    public function show($cafe) {
 
         $data = DB::table('users')
         ->join('cafe_details', 'users.id', '=', 'cafe_details.cafe_id')
         ->join('rating_reviews', 'cafe_details.id', '=', 'rating_reviews.cafe_id')
-        ->where('users.id', $cafe->id) // cari dari id
+        ->where('users.id', $cafe) // cari dari id
         ->select(
             'users.id',
             'users.username',
@@ -154,8 +154,10 @@ class CafeController extends Controller
             'cafe_details.*',
             'rating_reviews.*'
         )
-        ->get();
+        ->first();
 
-        return view('pages.index', compact('data'));
+        // dd($data);
+
+        return view('pages.detail-cafe', ['data' => $data]);
     }
 }
