@@ -64,15 +64,15 @@ Route::middleware('auth')->group(
         // =============USER===========
         Route::get('/home', [CafeController::class, 'listCafes'])->name('home');
         Route::get('/detail-cafe/{id}', [CafeController::class, 'show'])->name('detail-cafe');
+        Route::post('/detail-cafe/booking/{id}', [CafeController::class, 'store'])->name('store-transaksi');
+        Route::get('/user/transaksi', [TransactionController::class, 'listTransactionForUser'])->name('transaksi-user');
+
         Route::get('menu-cafe/{id}', function ($id) {
             return view('pages.menu-cafe', compact('id'));
         })->name('menu-cafe');
         Route::get('/bookmark/{id}', function ($id) {
             return view('pages.bookmark', compact('id'));
         })->name('bookmark');
-        Route::get('/transaksi/{id}', function ($id) {
-            return view('pages.transaksi', compact('id'));
-        })->name('transaksi');
         Route::get('/profile/{id}', function ($id) {
             return view('pages.profile', compact('id'));
         })->name('profile');

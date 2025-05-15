@@ -43,11 +43,10 @@ class TransactionController extends Controller
 
         try {
 
-            $request->validate([
+            $validasi = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'catatan' => ['nullable', 'string'],
                 'nominal' => ['required', 'min:0'],
-                'tgl_booking' => ['required', 'date'],
             ]);
 
             $transaksi_id = 'TFX' . mt_rand(1000, 9999) . time();
@@ -58,9 +57,10 @@ class TransactionController extends Controller
                 'user_id' => Auth::id(),
                 'cafe_id' => $cafe,
                 'transaksi_id' => $transaksi_id,
-                'name' => $request->name,
-                'catatan' => $request->catatan,
-                'nominal' => $request->nominal,
+                'name' => $validasi['name'],
+                'catatan' => $validasi['catatan'],
+                'nominal' => $validasi['nominal'],
+                'tgl_booking' => now(),
                 'status' => "unpaid",
             ]);
 
