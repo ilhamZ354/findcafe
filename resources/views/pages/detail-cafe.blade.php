@@ -24,7 +24,7 @@
         </section>
 
         <section id="body">
-            {{-- shortcut button --}}
+
             <div class="flex items-center justify-center mt-5 gap-7">
                 {{-- menu --}}
                 <div class="flex flex-col items-center justify-center">
