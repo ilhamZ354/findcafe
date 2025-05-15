@@ -36,12 +36,12 @@
                         <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                             @foreach ($data as $cafe)
                                 <div class="w-full max-w-md bg-white border border-gray-200 rounded-lg shadow-sm">
-                                    <a href="{{ route('detail-cafe', $cafe->cafe_detail_id) }}">
+                                    <a href="{{ route('detail-cafe', $cafe->cafe_id) }}">
                                         <img class="rounded-t-lg" src="{{ $cafe->image_profile }}"
                                             alt="product image" />
                                     </a>
                                     <div class="px-5 py-5">
-                                        <a href="{{ route('detail-cafe', $cafe->id) }}">
+                                        <a href="{{ route('detail-cafe', $cafe->cafe_id) }}">
                                             <h5 class="text-xl font-semibold tracking-tight text-gray-900">
                                                 {{ $cafe->username }}</h5>
                                             <p class="mt-2 text-sm text-grayTheme">
@@ -86,7 +86,7 @@
                                                 class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-smms-3">5.0</span>
                                         </div>
                                         <div class="flex items-center justify-end">
-                                            <a href="{{ route('detail-cafe', $cafe->id) }}"
+                                            <a href="{{ route('detail-cafe', $cafe->cafe_id) }}"
                                                 class="text-white bg-primaryBrown hover:bg-semiPrimaryBrown focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Lihat
                                                 lainnya</a>
                                         </div>
