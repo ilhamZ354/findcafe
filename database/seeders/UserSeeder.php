@@ -15,6 +15,7 @@ class UserSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         \App\Models\User::create([
             'username' => 'admin',
+            'name' => 'admin',
             'email' => 'admin@gmail.com',
             'role' => 'super-admin',
             'password' => bcrypt('kunci123'),
@@ -22,6 +23,7 @@ class UserSeeder extends Seeder
         ]);
         \App\Models\User::create([
             'username' => 'cafe',
+            'name' => 'Cafe Jalan',
             'email' => 'cafe@gmail.com',
             'role' => 'cafe',
             'password' => bcrypt('kunci123'),
@@ -29,6 +31,7 @@ class UserSeeder extends Seeder
         ]);
         \App\Models\User::create([
             'username' => 'user',
+            'name' => 'user',
             'email' => 'user@gmail.com',
             'role' => 'user',
             'password' => bcrypt('kunci123'),
