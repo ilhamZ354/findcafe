@@ -52,6 +52,10 @@ Route::middleware('auth')->group(
         Route::post('/cafe', [CafeController::class, 'store'])->name('cafe.store');
         Route::put('/cafe/{id}', [CafeController::class, 'update'])->name('cafe.update');
         Route::get('/cafe/transaksi', [TransactionController::class, 'listTransactionForCafe'])->name('cafe.transaksi');
+        Route::post('/cafe/transaksis', [TransactionController::class, 'storeTransaksiCafe'])->name('cafe.transaksi.store');
+        Route::get('/cafe/transaksi/edit/{id}', [TransactionController::class, 'editTransaksiCafe'])->name('cafe.transaksi.editTC');
+        Route::put('/cafe/transaksi/update/{id}', [TransactionController::class, 'updateTransaksiCafe'])->name('cafe.transaksi.updateTC');
+        Route::delete('/cafe/transaksi/delete/{id}', [TransactionController::class, 'destroyTransaksiCafe'])->name('cafe.transaksi.deleteTC');
         // menu
         Route::get('/cafe/menu', [MenuController::class, 'listMenuCafe'])->name('cafe.menu');
         Route::post('/cafe/menu', [MenuController::class, 'store'])->name('cafe.menu.store');

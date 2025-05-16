@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Transaction;
 use App\Models\Pembayaran;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -24,7 +25,11 @@ class TransactionController extends Controller
     public function listTransactionForCafe()
     {
         $transactions = Transaction::where('cafe_id', Auth::id())->get();
-        return view('cafe.transaksi', compact('transactions'));
+        $users = User::where('role', 'user')->get();
+        return view('cafe.transaksi', [
+            'transactions' => $transactions,
+            'users' => $users,
+        ]);
     }
 
     // list transaksi untuk user
@@ -133,6 +138,114 @@ class TransactionController extends Controller
             return redirect()->route('user.transaksi')->with('success', 'Transaksi berhasil dihapus.');
         } catch (\Throwable $e) {
             return redirect()->back()->with('error', 'Gagal menghapus transaksi.');
+        }
+    }
+
+    public function storeTransaksiCafe(Request $request)
+    {
+        try {
+            $validasi = $request->validate([
+                'user_id' => ['nullable', 'exists:users,id'],
+                'catatan' => ['nullable', 'string'],
+                'nominal' => ['required', 'numeric', 'min:0'],
+                'tgl_booking' => ['required', 'date'],
+                'status' => ['required', 'in:unpaid,paid,failed'],
+                'snap_token' => ['nullable', 'string'],
+                'expired_at' => ['nullable', 'date'],
+                'paid_at' => ['nullable', 'date'],
+            ]);
+
+            $user = User::find($validasi['user_id']);
+            $validasi['name'] = $user->name;
+
+            $validasi['cafe_id'] = Auth::id();
+            $validasi['transaksi_id'] = 'TFX' . mt_rand(1000, 9999) . time();
+
+            DB::beginTransaction();
+
+            $transaction = Transaction::create($validasi);
+
+            Pembayaran::create([
+                'transaksi_id' => $transaction->id,
+                'snap_token' => $request->input('snap_token'),
+                'expired_at' => $request->input('expired_at'),
+                'paid_at' => $validasi['status'] === 'paid' ? ($request->input('paid_at') ?: now()) : null,
+                'amount' => $validasi['nominal'],
+                'payment_method' => 'manual',
+                'status' => $validasi['status'] === 'paid' ? 'completed' : ($validasi['status'] === 'failed' ? 'failed' : 'pending'),
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('cafe.transaksi')->with('success', 'Transaksi berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Gagal menambahkan transaksi.');
+        }
+    }
+
+    public function editTransaksiCafe($id)
+    {
+        $transactions = Transaction::where('cafe_id', Auth::id())->get();
+        $transaction = $transactions->find($id);
+        $users = User::where('role', 'user')->get();
+        $payment = Pembayaran::where('transaksi_id', $id)->first();
+
+        return view('cafe.transaksi', compact('transactions', 'transaction', 'users', 'payment'))->with('showModalEdit', true);
+    }
+
+    public function updateTransaksiCafe(Request $request, $id)
+    {
+        try {
+            $validatedData = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'catatan' => ['nullable', 'string'],
+                'nominal' => ['required', 'numeric', 'min:0'],
+                'tgl_booking' => ['required', 'date'],
+                'status' => ['required', 'in:unpaid,paid,failed'],
+                'snap_token' => ['nullable', 'string'],
+                'expired_at' => ['nullable', 'date'],
+                'paid_at' => ['nullable', 'date'],
+            ]);
+
+            DB::beginTransaction();
+
+            $transaction = Transaction::findOrFail($id);
+            $transaction->update($validatedData);
+
+            Pembayaran::updateOrCreate(
+                ['transaksi_id' => $id],
+                [
+                    'snap_token' => $request->input('snap_token'),
+                    'expired_at' => $request->input('expired_at'),
+                    'paid_at' => $validatedData['status'] === 'paid' ? ($request->input('paid_at') ?: now()) : null,
+                    'amount' => $validatedData['nominal'],
+                    'payment_method' => 'manual',
+                    'status' => $validatedData['status'] === 'paid' ? 'completed' : ($validatedData['status'] === 'failed' ? 'failed' : 'pending'),
+                ],
+            );
+
+            DB::commit();
+            return redirect()->route('cafe.transaksi')->with('success', 'Transaksi berhasil diperbarui.');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return redirect()
+                ->back()
+                ->with('error', 'Transaksi gagal diperbarui: ' . $e->getMessage());
+        }
+    }
+
+    public function destroyTransaksiCafe($id)
+    {
+        try {
+            $transaction = Transaction::findOrFail($id);
+
+            Pembayaran::where('transaksi_id', $id)->delete();
+            $transaction->delete();
+
+            return redirect()->route('cafe.transaksi')->with('success', 'Transaksi berhasil dihapus');
+        } catch (\Throwable $e) {
+            return redirect()->back()->with('error', 'Transaksi tidak ditemukan.');
         }
     }
 }
