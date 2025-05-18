@@ -1,3 +1,13 @@
+@php
+    // handle images galleries
+    $galleriesRaw = $data->galleries ?? '[]';
+    if (substr($galleriesRaw, 0, 1) === '"' && substr($galleriesRaw, -1) === '"') {
+        $galleriesRaw = substr($galleriesRaw, 1, -1);
+    }
+    $galleriesRaw = stripcslashes($galleriesRaw);
+    $galleries = json_decode($galleriesRaw, true) ?? [];
+@endphp
+
 <x-home.layout title="Detail Cafe">
     <div class="relative">
         {{-- button back --}}
@@ -41,7 +51,7 @@
 
                 {{-- Location --}}
                 <div class="flex flex-col items-center justify-center">
-                    <a href="#" target="_blank"
+                    <a href="https://www.google.com/maps?q={{ $data->location }}" target="_blank"
                         class="block p-3 border rounded-full text-primaryBrown border-primaryBrown hover:bg-semiPrimaryBrown focus:ring-4 focus:outline-none focus:ring-lightPrimaryBrown">
                         <svg class="w-6 h-6 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                             height="24" fill="none" viewBox="0 0 24 24">
@@ -100,15 +110,18 @@
                         favoritmu.</span>
                 </div>
 
-
-                <div class="grid grid-cols-4 gap-4 mt-5">
-                    @foreach (json_decode($data->galleries, true) as $image)
-                        <div class="w-full overflow-hidden shadow-xl h-60 rounded-xl group">
-                            <img src="{{ $image }}" alt="image{{ $loop->index }}"
-                                class="object-cover w-full h-full transition-all duration-500 transform brightness-75 group-hover:scale-110 group-hover:brightness-100"
+                <div class="grid grid-cols-1 gap-4 mt-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    @forelse($galleries as $index => $url)
+                        <div class="overflow-hidden rounded-lg group">
+                            <img src="{{ $url }}" alt="Gallery image {{ $index + 1 }}"
+                                class="object-cover w-full h-48 transition-all duration-500 transform brightness-75 group-hover:scale-110 group-hover:brightness-100"
                                 loading="lazy">
                         </div>
-                    @endforeach
+                    @empty
+                        <div class="col-span-full text-center py-8 text-gray-500">
+                            <p>No gallery images available</p>
+                        </div>
+                    @endforelse
                 </div>
             </div>
 
@@ -134,4 +147,4 @@
     </div>
 </x-home.layout>
 
-@include('components.modal.user.booking', ['cafe_id' =>  $data->cafe_id])
+@include('components.modal.user.booking', ['cafe_id' => $data->cafe_id])
