@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Menu;
-use App\Models\CafeDetail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -21,11 +20,13 @@ class MenuController extends Controller
         // apakah ada dicari tipe
         $tipe = $request->query('type');
         if ($tipe) {
-            $query = Menu::where('type', $tipe)->get();
+            $query = Menu::where('type', $tipe);
         }
 
+        $menus = $query->get();
+
         return view('cafe.menu-cafe', [
-            'menus' => $query,
+            'menus' => $menus,
             'type' => $tipe,
         ]);
     }
@@ -38,11 +39,13 @@ class MenuController extends Controller
         // apakah ada dicari tipe
         $tipe = $request->query('type');
         if ($tipe) {
-            $query = Menu::where('type', $tipe)->get();
+            $query = Menu::where('type', $tipe);
         }
 
-        return view('cafe.menu-cafe', [
-            'menus' => $query,
+        $menus = $query->get();
+
+        return view('pages.menu-cafe', [
+            'menus' => $menus,
             'type' => $tipe,
         ]);
     }
@@ -161,8 +164,8 @@ class MenuController extends Controller
             $menu = Menu::findOrFail($id);
 
             // Hapus gambar dari storage
-            if ($menu->image && \Storage::exists('menu-cafe_images/' . $menu->image)) {
-                \Storage::delete('menu-cafe_images/' . $menu->image);
+            if ($menu->image && Storage::exists('menu-cafe_images/' . $menu->image)) {
+                Storage::delete('menu-cafe_images/' . $menu->image);
             }
 
             $menu->delete();
