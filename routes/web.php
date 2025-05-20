@@ -29,7 +29,7 @@ Route::middleware('auth')->group(
         // ============ SUPER ADMIN ===========
         // users
         Route::get('/superadmin/users', [UserController::class, 'listUsers'])->name('superadmin.users');
-        Route::post('/superadmin/user', [UserController::class, 'storeUser'])->name('superadmin.user.store');
+        // Route::post('/superadmin/user', [UserController::class, 'storeUser'])->name('superadmin.user.store');
         Route::get('/superadmin/user/edit/{id}', [UserController::class, 'editUser'])->name('superadmin.user.edit');
         Route::put('/superadmin/user/update/{id}', [UserController::class, 'updateUser'])->name('superadmin.user.update');
         Route::delete('/superadmin/delete-user/{id}', [UserController::class, 'deleteUser'])->name('superadmin.user.delete');

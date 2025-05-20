@@ -17,7 +17,8 @@ class TransactionController extends Controller
     // view transaksi untuk superadmin
     public function index()
     {
-        $transactions = Transaction::all();
+        $transactions = Transaction::with(['user', 'cafe'])->get();
+
         return view('superadmin.transaksi', compact('transactions'));
     }
 
@@ -36,12 +37,12 @@ class TransactionController extends Controller
     public function listTransactionForUser()
     {
         $transactions = DB::table('transactions')
-                ->join('pembayarans', 'transactions.id', '=', 'pembayarans.transaksi_id')
-                ->where('transactions.id', Auth::id())
-                ->select(
-                    'transactions.*',
-                    'pembayarans.*',
-                )->get();
+            ->join('pembayarans', 'transactions.id', '=', 'pembayarans.transaksi_id')
+            ->where('transactions.id', Auth::id())
+            ->select(
+                'transactions.*',
+                'pembayarans.*',
+            )->get();
 
         return view('user.cafe.transaksi', compact('transactions'));
     }
@@ -135,9 +136,9 @@ class TransactionController extends Controller
             $transaction = Transaction::findOrFail($id);
             $transaction->delete();
 
-            return redirect()->route('user.transaksi')->with('success', 'Transaksi berhasil dihapus.');
+            return redirect()->route('superadmin.transaksi')->with('success', 'Transaksi berhasil dihapus.');
         } catch (\Throwable $e) {
-            return redirect()->back()->with('error', 'Gagal menghapus transaksi.');
+            return redirect()->back()->with('error', 'Gagal menghapus transaksi.' . $e->getMessage());
         }
     }
 

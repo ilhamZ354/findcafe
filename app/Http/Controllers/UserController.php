@@ -15,6 +15,7 @@ class UserController extends Controller
         try {
             $validasi = $request->validate([
                 'username' => 'required|string|unique:users,username',
+                'name' => 'required|string',
                 'email' => 'required|string|email|unique:users,email',
                 'role' => 'required|in:user,cafe',
                 'no_wa' => 'required|string|min:11',
@@ -41,20 +42,22 @@ class UserController extends Controller
     {
         try {
             $validasi = $request->validate([
-                'username' => ['required','string','unique:users,username'],
-                'email' => ['required','string','email','unique:users,email'],
-                'no_wa' => ['required','string','min:11'],
-                'password' => ['required','string','min:8'],
+                'username' => ['required', 'string', 'unique:users,username'],
+                'name' => ['required', 'string'],
+                'email' => ['required', 'string', 'email', 'unique:users,email'],
+                'no_wa' => ['required', 'string', 'min:11'],
+                'password' => ['required', 'string', 'min:8'],
             ]);
 
             $validasi['role'] = 'cafe';
             $validasi['password'] = Hash::make($validasi['password']);
 
+
             User::create($validasi);
 
             return redirect()->route('superadmin.cafe')->with('success', 'Cafe berhasil ditambahkan.');
         } catch (\Throwable $e) {
-            return redirect()->back()->withInput()->with('error', 'Gagal menambahkan cafe');
+            return redirect()->back()->withInput()->with('error', 'Gagal menambahkan cafe' . $e->getMessage());
         }
     }
 
@@ -63,10 +66,10 @@ class UserController extends Controller
     {
         try {
             $validasi = $request->validate([
-                'username' => ['required','string','unique:users,username'],
-                'email' => ['required','string','email','unique:users,email'],
-                'no_wa' => ['required','string','min:11'],
-                'password' => ['required','string','min:8'],
+                'username' => ['required', 'string', 'unique:users,username'],
+                'email' => ['required', 'string', 'email', 'unique:users,email'],
+                'no_wa' => ['required', 'string', 'min:11'],
+                'password' => ['required', 'string', 'min:8'],
             ]);
 
             $validasi['role'] = 'user';
@@ -103,8 +106,14 @@ class UserController extends Controller
     // view edit cafe untuk superadmin
     public function editCafe($id)
     {
+        // ambil semua data cafe
+        $cafes = User::where('role', 'cafe')->get();
+
+        // find data cafe
         $editCafe = User::findOrFail($id);
+
         return view('superadmin.cafe', [
+            'cafes' => $cafes,
             'editCafe' => $editCafe,
             'showEditModal' => true
         ]);
@@ -115,9 +124,9 @@ class UserController extends Controller
     {
         try {
             $validasi = $request->validate([
-                'username' => ['required','string'],
-                'email' => ['required','string','email'],
-                'no_wa' => ['required','string','min:11'],
+                'username' => ['required', 'string'],
+                'email' => ['required', 'string', 'email'],
+                'no_wa' => ['required', 'string', 'min:11'],
             ]);
 
             $user = User::findOrFail($id);
@@ -128,15 +137,21 @@ class UserController extends Controller
         } catch (\Throwable $e) {
             return redirect()->back()
                 ->withInput()
-                ->with('error', 'Gagal update cafe: ')->withErrors($e->validator)->withInput();
+                ->with('error', 'Gagal update cafe')->withErrors($e->validator);
         }
     }
 
     // view edit user untuk superadmin
     public function editUser($id)
     {
+        // ambil semua data user
+        $users = User::where('role', 'user')->get();
+
+        // find data user
         $editUser = User::findOrFail($id);
+
         return view('superadmin.users', [
+            'users' => $users,
             'editUser' => $editUser,
             'showEditModal' => true
         ]);
@@ -147,9 +162,10 @@ class UserController extends Controller
     {
         try {
             $validated = $request->validate([
-                'username' => ['required','string'],
+                'username' => ['required', 'string'],
+                'name' => ['required', 'string'],
                 'email' => ['required', 'string', 'email'],
-                'no_wa' => ['required','string','min:11'],
+                'no_wa' => ['required', 'string', 'min:11'],
             ]);
 
             $user = User::findOrFail($id);
@@ -160,7 +176,7 @@ class UserController extends Controller
         } catch (\Throwable $e) {
             return redirect()->back()
                 ->withInput()
-                ->with('error', 'Gagal update user: ')->withErrors($e->validator);
+                ->with('error', 'Gagal update user')->withErrors($e->validator);
         }
     }
 

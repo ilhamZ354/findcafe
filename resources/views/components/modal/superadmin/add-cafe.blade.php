@@ -6,8 +6,12 @@
             {{-- Role(hidden) --}}
             <input type="hidden" name="role" value="cafe">
 
+            {{-- username Cafe --}}
+            <x-form.input-field name="username" value="{{ $username ?? '' }}" label="Username Cafe"
+                placeholder="Masukkan username cafe" required />
+
             {{-- Nama Cafe --}}
-            <x-form.input-field name="username" value="{{ $username ?? '' }}" label="Nama Cafe"
+            <x-form.input-field name="name" value="{{ $name ?? '' }}" label="Nama Cafe"
                 placeholder="Masukkan nama cafe" required />
 
             {{-- Email --}}
@@ -16,7 +20,7 @@
 
             {{-- No WA --}}
             <x-form.input-field name="no_wa" value="{{ $no_wa ?? '' }}" label="No Whatsapp" minLength="10"
-                placeholder="08xxxxxxxx" required />
+                placeholder="08xxxxxxxx" required maxlength="13" />
 
             {{-- Password --}}
             <x-form.input-field name="password" type="password" label="Password" showTogglePassword="true"

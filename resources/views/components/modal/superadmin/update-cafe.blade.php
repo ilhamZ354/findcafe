@@ -5,9 +5,13 @@
         @csrf
         @method('PUT')
         <div class="grid grid-cols-1 gap-4 mb-4">
-            {{-- Nama Cafe --}}
-            <x-form.input-field name="username" label="Nama Cafe" value="{{ isset($editCafe) ? $editCafe->username : '' }}"
-                placeholder="Masukkan nama cafe" required />
+            {{-- Usename Cafe --}}
+            <x-form.input-field name="username" label="Username Cafe"
+                value="{{ isset($editCafe) ? $editCafe->username : '' }}" placeholder="Masukkan username cafe" required />
+
+            {{-- nama Cafe --}}
+            <x-form.input-field name="name" label="Nama Cafe" value="{{ isset($editCafe) ? $editCafe->name : '' }}"
+                placeholder="Masukkan name cafe" required />
 
             {{-- Email --}}
             <x-form.input-field name="email" type="email" label="Email"
@@ -15,7 +19,8 @@
 
             {{-- No WA --}}
             <x-form.input-field name="no_wa" label="No Whatsapp"
-                value="{{ isset($editCafe) ? $editCafe->no_wa : '' }}" placeholder="Masukkan nomor WhatsApp" required />
+                value="{{ isset($editCafe) ? $editCafe->no_wa : '' }}" placeholder="Masukkan nomor WhatsApp" required
+                maxlength="13" />
 
             {{-- Password --}}
             <x-form.input-field name="password" type="password" label="Password (Kosongkan jika tidak diubah)"

@@ -14,9 +14,9 @@
                     <div
                         class="rounded-xl border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-5 -z-10">
                         <div class="flex items-center justify-between mb-6">
-                            <h4 class="text-xl font-bold text-black dark:text-white">Daftar Transaksi Pengguna</h4>
-                            <button data-modal-target="add-transaksi" data-modal-toggle="add-transaksi"
-                                class="px-4 py-2 text-white rounded-lg bg-primary">Tambah</button>
+                            <h4 class="text-xl font-bold text-black">Daftar Transaksi Pengguna</h4>
+                            {{-- <button data-modal-target="add-transaksi" data-modal-toggle="add-transaksi"
+                                class="px-4 py-2 text-white rounded-lg bg-primary">Tambah</button> --}}
                         </div>
 
 
@@ -36,20 +36,20 @@
                                 </tr>
                             </thead>
                             <tbody class="text-sm text-center divide-y divide-gray-200">
-                                @if (isset($transactions) && $transactions->isEmpty())
+                                @if (isset($transactions) && $transactions->isNotEmpty())
                                     @foreach ($transactions as $transaction)
                                         <tr class="hover:bg-gray-50">
-                                            <td class="p-3 font-medium text-black dark:text-white">
-                                                {{ $transaction->user_id }}</td>
-                                            <td class="p-3 font-medium text-meta-3">{{ $transaction->cafe_id }}</td>
-                                            <td class="p-3 font-medium text-black sm:table-cell dark:text-white">
+                                            <td class="p-3 font-medium text-black">
+                                                {{ $transaction->user->name }}</td>
+                                            <td class="p-3 font-medium text-meta-3">{{ $transaction->cafe->name }}</td>
+                                            <td class="p-3 font-medium text-black sm:table-cell">
                                                 {{ $transaction->name }}</td>
-                                            <td class="p-3 font-medium text-black dark:text-white">
+                                            <td class="p-3 font-medium text-black">
                                                 {{ $transaction->catatan }}</td>
                                             <td class="p-3 font-medium text-meta-3">{{ $transaction->nominal }}</td>
-                                            <td class="p-3 font-medium text-black sm:table-cell dark:text-white">
-                                                {{ $transaction->tgl_booking }}</td>
-                                            <td class="p-3 font-medium text-black dark:text-white">
+                                            <td class="p-3 font-medium text-black sm:table-cell">
+                                                {{ $transaction->tgl_booking->format('d F Y') }}</td>
+                                            <td class="p-3 font-medium text-black">
                                                 {{ $transaction->status }}</td>
                                             <td class="p-3 font-medium text-meta-3">{{ $transaction->snap_token }}</td>
                                             </td>
@@ -69,7 +69,7 @@
                                                         class="absolute right-0 z-40 w-32 mt-2 bg-white border rounded shadow-lg">
 
                                                         {{-- BUTTON UPDATE --}}
-                                                        <a href="{{ route('superadmin.transaksi.edit', $transaction->id) }}"
+                                                        {{-- <a href="{{ route('superadmin.transaksi.edit', $transaction->id) }}"
                                                             class="block">
                                                             <x-dashboard.button-icon color="blue" text="Edit"
                                                                 method="PUT">
@@ -80,7 +80,7 @@
                                                                         d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28" />
                                                                 </svg>
                                                             </x-dashboard.button-icon>
-                                                        </a>
+                                                        </a> --}}
 
                                                         {{-- BUTTON DELETE --}}
                                                         <x-dashboard.button-icon color="red" text="Delete"
@@ -118,8 +118,8 @@
     <!-- ===== Main Content End ===== -->
 
     <!-- modal -->
-    @include('components.modal.superadmin.add-transaksi')
-    @include('components.modal.superadmin.update-transaksi')
+    {{-- @include('components.modal.superadmin.add-transaksi')
+    @include('components.modal.superadmin.update-transaksi') --}}
 
     @if (isset($showEditModal) && $showEditModal)
         <script>

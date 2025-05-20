@@ -42,6 +42,31 @@
                 @enderror
             </div>
 
+            {{-- name --}}
+            <div class="mb-4">
+                <label class="mb-2.5 block font-medium text-black">Nama</label>
+                <div class="relative">
+                    <input type="text" placeholder="Enter your name" name="name" value="{{ old('name') }}"
+                        class="w-full py-4 pl-6 pr-10 bg-transparent border rounded-lg outline-none border-stroke focus:border-primary focus-visible:shadow-none"
+                        required />
+
+                    <span class="absolute right-4 top-4">
+                        <svg class="w-6 h-6 text-slate-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2"
+                                d="M7 19H5a1 1 0 0 1-1-1v-1a3 3 0 0 1 3-3h1m4-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm7.441 1.559a1.907 1.907 0 0 1 0 2.698l-6.069 6.069L10 19l.674-3.372 6.07-6.07a1.907 1.907 0 0 1 2.697 0Z" />
+                        </svg>
+
+                    </span>
+                </div>
+
+                @error('name')
+                    <div class="mt-1 text-xs text-red-500">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+
             {{-- Email --}}
             <div class="mb-4">
                 <label class="mb-2.5 block font-medium text-black">Email</label>

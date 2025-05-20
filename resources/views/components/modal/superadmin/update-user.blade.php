@@ -8,9 +8,14 @@
             {{-- hidden id user --}}
             <input type="hidden" name="user_id" value="{{ isset($editUser) ? $editUser->id : '' }}">
 
+            {{-- usrname Users --}}
+            <x-form.input-field name="username" label="Username Users" id="update-username"
+                placeholder="Masukkan username user" required
+                value="{{ isset($editUser) ? $editUser->username : '' }}" />
+
             {{-- Nama Users --}}
-            <x-form.input-field name="username" label="Nama Users" id="update-name" placeholder="Masukkan nama user"
-                required value="{{ isset($editUser) ? $editUser->username : '' }}" />
+            <x-form.input-field name="name" label="Nama Users" id="update-name" placeholder="Masukkan nama user"
+                required value="{{ isset($editUser) ? $editUser->name : '' }}" />
 
             {{-- Email --}}
             <x-form.input-field name="email" type="email" label="Email" id="update-email"
@@ -31,7 +36,7 @@
             </div> --}}
 
             {{-- Password --}}
-            <x-form.input-field name="password" type="password" label="Password (Leave blank to keep current)"
+            <x-form.input-field name="password" type="password" label="Password (Kosongkan jika tidak diubah)"
                 showTogglePassword="true" id="update-password" placeholder="**********" />
         </div>
 

@@ -9,7 +9,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Transaction extends Model
 {
     protected $fillable = [
-        'cafe_id', 'user_id', 'transaksi_id', 'name', 'catatan', 'nominal', 'tgl_booking', 'status'
+        'cafe_id',
+        'user_id',
+        'transaksi_id',
+        'name',
+        'catatan',
+        'nominal',
+        'tgl_booking',
+        'status'
+    ];
+
+    protected $casts = [
+        'tgl_booking' => 'datetime', // 🟢 ini penting!
     ];
 
     public function user(): BelongsTo
