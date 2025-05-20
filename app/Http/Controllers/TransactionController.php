@@ -38,13 +38,13 @@ class TransactionController extends Controller
     {
         $transactions = DB::table('transactions')
             ->join('pembayarans', 'transactions.id', '=', 'pembayarans.transaksi_id')
-            ->where('transactions.id', Auth::id())
+            ->where('transactions.user_id', Auth::id())
             ->select(
                 'transactions.*',
                 'pembayarans.*',
             )->get();
 
-        return view('user.cafe.transaksi', compact('transactions'));
+        return view('pages.transaksi', compact('transactions'));
     }
 
     // store transaksi untuk user

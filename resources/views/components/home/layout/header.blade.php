@@ -6,6 +6,7 @@
         {{ $slot }} | Cafe Hunt
     </title>
     <!-- SweetAlert2 CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])

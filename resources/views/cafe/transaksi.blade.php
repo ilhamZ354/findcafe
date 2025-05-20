@@ -14,16 +14,15 @@
                     <div
                         class="rounded-xl border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-5 -z-10">
                         <div class="flex items-center justify-between mb-6">
-                            <h4 class="text-xl font-bold text-black dark:text-white">Transaksi Cafe</h4>
-                            <button data-modal-target="add-transaksi" data-modal-toggle="add-transaksi"
-                                class="px-4 py-2 text-white rounded-lg bg-primary">Tambah</button>
+                            <h4 class="text-xl font-bold text-black dark:text-white">Booking Cafe</h4>
+                            {{-- <button data-modal-target="add-transaksi" data-modal-toggle="add-transaksi"
+                                class="px-4 py-2 text-white rounded-lg bg-primary">Tambah</button> --}}
                         </div>
 
                         {{-- table --}}
                         <table class="min-w-full overflow-x-auto border-collapse rounded-sm table-auto">
                             <thead>
                                 <tr class="text-center bg-gray-100">
-                                    <th class="p-3 text-sm font-medium">Nama Cafe</th>
                                     <th class="p-3 text-sm font-medium">Nama Pelanggan</th>
                                     <th class="p-3 text-sm font-medium sm:table-cell">Catatan</th>
                                     <th class="p-3 text-sm font-medium sm:table-cell">Nominal</th>
@@ -35,16 +34,26 @@
                             <tbody class="divide-y divide-gray-200">
                                 @foreach ($transactions as $transaction)
                                     <tr class="hover:bg-gray-50">
-                                        <td class="p-3 font-medium text-black dark:text-white">
-                                            {{ $transaction->cafe->username }}
-                                        </td>
+                                        {{-- nama pelanggan --}}
                                         <td class="p-3 font-medium text-meta-3">{{ $transaction->name }}</td>
-                                        <td class="p-3 font-medium text-black sm:table-cell dark:text-white">
+
+                                        {{-- catatan --}}
+                                        <td class="p-3 font-medium text-center text-black sm:table-cell">
                                             {{ $transaction->catatan }}</td>
                                         </td>
-                                        <td class="p-3 font-medium text-meta-3">{{ $transaction->nominal }}</td>
-                                        <td class="p-3 font-medium text-meta-3">{{ $transaction->tgl_booking }}</td>
+
+                                        {{-- nominal --}}
+                                        <td class="p-3 font-medium text-meta-3">Rp
+                                            {{ number_format($transaction->nominal, 0, ',', '.') }}</td>
+
+                                        {{-- tanggal booking --}}
+                                        <td class="p-3 font-medium text-meta-3">
+                                            {{ $transaction->tgl_booking->format('d F Y') }}</td>
+
+                                        {{-- status --}}
                                         <td class="p-3 font-medium text-meta-3">{{ $transaction->status }}</td>
+
+                                        {{-- aksi --}}
                                         <td class="p-3 sm:table-cell">
                                             <div x-data="{ open: false }" class="relative inline-block text-left">
                                                 <button @click="open = !open"
@@ -62,7 +71,7 @@
                                                     class="absolute right-0 z-40 w-32 mt-2 bg-white border rounded shadow-lg">
 
                                                     {{-- BUTTON UPDATE --}}
-                                                    <a href="{{ route('cafe.transaksi.editTC', $transaction->id) }}"
+                                                    {{-- <a href="{{ route('cafe.transaksi.editTC', $transaction->id) }}"
                                                         class="block">
                                                         <x-dashboard.button-icon color="blue" text="Edit"
                                                             method="PUT">
@@ -73,7 +82,7 @@
                                                                     d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28" />
                                                             </svg>
                                                         </x-dashboard.button-icon>
-                                                    </a>
+                                                    </a> --}}
 
                                                     {{-- BUTTON DELETE --}}
                                                     <x-dashboard.button-icon color="red" text="Delete"
@@ -102,7 +111,7 @@
     <!-- ===== Main Content End ===== -->
 
     <!-- modal -->
-    @include('components.modal.cafe.add-transaksi')
+    {{-- @include('components.modal.cafe.add-transaksi')
 
     @if (isset($transaction))
         @include('components.modal.cafe.update-transaksi')
@@ -121,6 +130,6 @@
                 });
             });
         </script>
-    @endif
+    @endif --}}
 
 </x-dashboard.layout>

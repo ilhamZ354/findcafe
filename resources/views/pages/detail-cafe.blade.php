@@ -22,7 +22,7 @@
 
                 <div class="absolute top-16 left-16">
                     <h1 class="text-6xl font-semibold tracking-wider text-white">
-                        {{ $data->username }}</h1>
+                        {{ $data->name }}</h1>
 
                     <p class="mt-2 text-sm font-light tracking-wide text-white">{{ $data->address }}</p>
 
@@ -92,14 +92,9 @@
             {{-- desk --}}
             <div class="mt-10">
                 <p class="mx-20 italic tracking-wider text-center text-grayTheme"> <span
-                        class="text-5xl font-extrabold text-slate-900">"</span>Lorem ipsum dolor sit
-                    amet
-                    consectetur adipisicing elit. Amet quo eius officiis dolor, repudiandae
-                    necessitatibus consectetur fuga non fugit placeat illum ex magni, repellat quaerat autem. Minus
-                    cupiditate
-                    magni accusantium aspernatur! Tempora!</p>
+                        class="text-5xl font-extrabold text-slate-900">"</span>{{ $data->description }}</p>
 
-                <h6 class="mt-2 font-medium text-center">~ Cafe Name</h6>
+                <h6 class="mt-2 font-medium text-center">~ {{ $data->name }}</h6>
             </div>
 
             {{-- Gallery --}}
@@ -118,7 +113,7 @@
                                 loading="lazy">
                         </div>
                     @empty
-                        <div class="col-span-full text-center py-8 text-gray-500">
+                        <div class="py-8 text-center text-gray-500 col-span-full">
                             <p>No gallery images available</p>
                         </div>
                     @endforelse

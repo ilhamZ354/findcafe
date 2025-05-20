@@ -51,6 +51,7 @@ Route::middleware('auth')->group(
         Route::get('/cafe/data-cafe', [CafeController::class, 'index'])->name('cafe.data-cafe');
         Route::post('/cafe', [CafeController::class, 'store'])->name('cafe.store');
         Route::put('/cafe/{id}', [CafeController::class, 'update'])->name('cafe.update');
+        // transaksi
         Route::get('/cafe/transaksi', [TransactionController::class, 'listTransactionForCafe'])->name('cafe.transaksi');
         Route::post('/cafe/transaksis', [TransactionController::class, 'storeTransaksiCafe'])->name('cafe.transaksi.store');
         Route::get('/cafe/transaksi/edit/{id}', [TransactionController::class, 'editTransaksiCafe'])->name('cafe.transaksi.editTC');
@@ -67,7 +68,7 @@ Route::middleware('auth')->group(
         Route::get('/home', [CafeController::class, 'listCafes'])->name('home');
         Route::get('/detail-cafe/{id}', [CafeController::class, 'show'])->name('detail-cafe');
         Route::post('/detail-cafe/booking/{id}', [TransactionController::class, 'storeTransaksi'])->name('store-transaksi');
-        Route::get('/transaksi', [TransactionController::class, 'listTransactionForUser'])->name('transaksi-user');
+        Route::get('/transaksi/{id}', [TransactionController::class, 'listTransactionForUser'])->name('transaksi-user');
         Route::put('/transaksi/{id}', [TransactionController::class, 'updateTransaksi'])->name('transaksi-user.update');
         // Route::post('/payment/midtrans-callback', [App\Http\Controllers\PaymentController::class, 'midtransCallback']);
         Route::get('menu-cafe/{id}', [MenuController::class, 'listMenuUser'])->name('menu-cafe');
