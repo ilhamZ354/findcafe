@@ -59,6 +59,12 @@ class User extends Authenticatable
         return $this->hasOne(CafeDetail::class, 'cafe_id');
     }
 
+    // relasi ke menus
+    public function menu(): HasMany
+    {
+        return $this->hasMany(Menu::class);
+    }
+
     // relasi ke rating review
     public function ratingReviews(): HasMany
     {

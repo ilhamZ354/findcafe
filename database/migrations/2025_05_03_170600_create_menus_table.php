@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('cafe_id')->constrained('cafe_details')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('cafe_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('name')->nullable(false);
             $table->string('image')->nullable(false);
             $table->enum('type',['makanan','minuman'])->default('makanan');

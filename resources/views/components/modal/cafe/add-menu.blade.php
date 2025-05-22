@@ -3,8 +3,6 @@
     <form class="p-4 md:p-5" method="POST" action="{{ route('cafe.menu.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="grid grid-cols-1 gap-4 mb-4">
-            {{-- Role(hidden) --}}
-            <input type="hidden" name="role" value="menu">
 
             {{-- Nama Menu --}}
             <x-form.input-field name="name" value="{{ old('name') }}" label="Nama Menu"
@@ -15,7 +13,7 @@
                 placeholder="Deskripsi menu (opsional)" />
 
             {{-- Gambar --}}
-            <x-form.input-field name="image" type="file" label="Gambar Menu" accept="image/*" required />
+            <x-form.menu-image value="{{ old('image') }}"/>
 
             {{-- Tipe --}}
             <x-form.select-field name="type" label="Tipe Menu" required :options="[
@@ -24,7 +22,7 @@
             ]" />
 
             {{-- Harga --}}
-            <x-form.input-field name="price" type="number" value="{{ old('price') }}" label="Harga"
+            <x-form.input-field name="harga" type="text" value="{{ old('harga') }}" label="Harga"
                 placeholder="Masukkan harga menu" required />
         </div>
 

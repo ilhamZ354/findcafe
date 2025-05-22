@@ -13,6 +13,12 @@ class Menu extends Model
 
     public function cafeDetail(): BelongsTo
     {
-        return $this->belongsTo(CafeDetail::class, 'cafe_id');
+        return $this->belongsTo(CafeDetail::class, 'cafe_id', 'cafe_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'cafe_id');
+    }
+
 }

@@ -33,8 +33,8 @@
                                     {{ $loop->iteration }}</td>
 
                                 {{-- cafe --}}
-                                {{-- <td class="p-3 font-medium text-meta-3">{{ $transaction->cafe->name }}</td> --}}
-                                <td class="p-3">{{ $transaction->cafe_id }}</td>
+                                <td class="p-3 font-medium text-meta-3">{{ $transaction->cafe_name }}</td>
+                                {{-- <td class="p-3">{{ $transaction->cafe_id }}</td> --}}
 
                                 {{-- atas nama --}}
                                 <td class="p-3 font-medium text-black sm:table-cell">
@@ -110,23 +110,33 @@
             // Ambil snap token dari dataset
             const snapToken = this.dataset.snapToken;
 
+            // console.log(snapToken);
+
             snap.pay(snapToken, {
                 // Optional
                 onSuccess: function(result) {
                     /// Redirect ke halaman kamu sendiri
-                    window.location.href = `/transaksi/${userId}?status=success`;
+                    // $params = [
+                    //     'status' => 'success',
+                    //     'paid_at' => $result->transaction_time
+                    // ]
+                    window.location.href = `/transaksi?status=success`;
                     console.log(result)
                 },
                 // Optional
                 onPending: function(result) {
                     /// Redirect ke halaman kamu sendiri
-                    window.location.href = `/transaksi/${userId}?status=pending`;
+                    // $params = [
+                    //     'status' => 'pending',
+                    //     'paid_at' => $result->transaction_time
+                    // ]
+                    // window.location.href = `/transaksi?status=pending`;
                     console.log(result)
                 },
                 // Optional
                 onError: function(result) {
                     /// Redirect ke halaman kamu sendiri
-                    window.location.href = `/transaksi/${userId}?status=failed`;
+                    window.location.href = `/transaksi?status=failed`;
                     console.log(result)
                 }
             });

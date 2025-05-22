@@ -1,20 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const imageInput = document.getElementById("image_profile_input");
-    const imagePreview = document.getElementById("image_profile_preview");
-    const imageInputUrl = document.getElementById("image_profile_url");
+    const imageInput = document.getElementById("image_profile_input") || document.getElementById("image_menu_input");
+    const imagePreview = document.getElementById("image_profile_preview") || document.getElementById("image_menu_preview");
+    const imageInputUrl = document.getElementById("image_profile_url") || document.getElementById("image_menu_url");
+
+    if (!imageInput || !imagePreview || !imageInputUrl) return;
 
     imageInput.addEventListener("change", async function () {
         const file = this.files[0];
         if (!file) return;
 
-        // Tampilkan preview lokal dulu
+        // Preview gambar
         const reader = new FileReader();
         reader.onload = function (e) {
             imagePreview.src = e.target.result;
         };
         reader.readAsDataURL(file);
 
-        // Upload gambar ke server
+        // Upload ke server
         const formData = new FormData();
         formData.append("image", file);
 
@@ -38,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // Ganti preview dengan URL dari server
             imagePreview.src = data.url;
             imageInputUrl.value = data.url;
         } catch (error) {

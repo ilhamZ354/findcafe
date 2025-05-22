@@ -55,6 +55,9 @@ class MidtransService
             ],
             'customer_details' => [
                 'first_name' => $transaksi->name,
+            ],
+            'callbacks' => [
+                'finish' => route('transaksi-user'),
             ]
         ];
 

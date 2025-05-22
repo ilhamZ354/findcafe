@@ -20,7 +20,7 @@ class Transaction extends Model
     ];
 
     protected $casts = [
-        'tgl_booking' => 'datetime', // 🟢 ini penting!
+        'tgl_booking' => 'datetime',
     ];
 
     public function user(): BelongsTo
