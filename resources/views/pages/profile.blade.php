@@ -26,9 +26,11 @@
                                 </div>
                             </div>
                             <div class="mt-4">
-                                <h3 class="mb-1.5 text-2xl font-medium text-black capitalize">
-                                    {{ Auth::user()->username }}
+                                <h3 class="text-2xl font-medium text-black capitalize">
+                                    {{ Auth::user()->name }}
                                 </h3>
+                                <span
+                                    class="mb-4 text-xs italic font-light text-grayTheme">{{ Auth::user()->username }}</span>
                                 <p class="text-xl font-medium">{{ Auth::user()->email }}</p>
                                 <span class="text-lg font-light text-grayTheme">Phone : {{ Auth::user()->no_wa }}</span>
                             </div>

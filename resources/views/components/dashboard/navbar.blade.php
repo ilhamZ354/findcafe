@@ -2,7 +2,6 @@
 <header class="sticky top-0 z-30 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
     <div class="flex items-center justify-between flex-grow px-4 py-4 shadow-2 md:px-6 2xl:px-11">
         <div class="flex items-center gap-2 sm:gap-4 lg:hidden">
-            <!-- Hamburger Toggle BTN -->
             <button
                 class="z-99999 block rounded-sm border border-stroke bg-white p-1.5 shadow-sm dark:bg-boxdark lg:hidden"
                 @click.stop="sidebarToggle = !sidebarToggle">
@@ -192,7 +191,7 @@
                     {{-- Detail User --}}
                     <span class="hidden text-right lg:block">
                         <span
-                            class="block text-sm font-medium text-black capitalize">{{ auth()->user()->username ?? 'Anonim' }}</span>
+                            class="block text-sm font-medium text-black capitalize">{{ auth()->user()->name ?? 'Anonim' }}</span>
                         <span class="block text-xs font-medium">{{ auth()->user()->role ?? '' }}</span>
                     </span>
 
