@@ -23,11 +23,6 @@ class CafeDetail extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function menus(): HasMany
-    {
-        return $this->hasMany(Menu::class, 'cafe_id');
-    }
-
     public function ratings() {
         return $this->hasMany(RatingReview::class, 'cafe_id');
     }

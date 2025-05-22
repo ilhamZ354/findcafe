@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Services\MidtransService;
+use PhpParser\Node\Stmt\TryCatch;
 
 class TransactionController extends Controller
 {
@@ -38,11 +39,15 @@ class TransactionController extends Controller
     {
         $transactions = DB::table('transactions')
             ->join('pembayarans', 'transactions.id', '=', 'pembayarans.transaksi_id')
+            ->join('users', 'transactions.cafe_id', '=', 'users.id')
             ->where('transactions.user_id', Auth::id())
             ->select(
                 'transactions.*',
                 'pembayarans.*',
+                'users.name as cafe_name',
             )->get();
+
+        // dd($transactions);
 
         return view('pages.transaksi', compact('transactions'));
     }
@@ -87,7 +92,7 @@ class TransactionController extends Controller
 
             DB::commit();
 
-            return redirect()->route('transaksi-user')->with('success', 'Transaksi berhasil ditambahkan.');
+            return redirect()->route('transaksi-user', Auth::id())->with('success', 'Transaksi berhasil ditambahkan.');
         } catch (\Throwable $e) {
             DB::rollBack();
             return redirect()->back()->withInput()->with('error', 'Gagal menambahkan transaksi.');
@@ -233,6 +238,47 @@ class TransactionController extends Controller
             return redirect()
                 ->back()
                 ->with('error', 'Transaksi gagal diperbarui: ' . $e->getMessage());
+        }
+    }
+
+    // update status transaksi
+    public function updateStatusTransaksi($result, $statusTransaksi)
+    {
+        try {
+            $status = $statusTransaksi;
+            $paymentStatus = 'pending';
+
+            if ($status === 'paid') {
+                $paymentStatus = 'completed';
+            } elseif ($status === 'failed') {
+                $paymentStatus = 'cancelled';
+            }
+
+            $transaksi_id = $result->order_id;
+            $paid_at = $result->transaction_time;
+
+            DB::beginTransaction();
+
+            $transaksi = Transaction::where('transaksi_id', $transaksi_id)->firstOrFail();
+            $transaksi->update([
+                'status' => $status
+            ]);
+
+            $payment = Pembayaran::where('transaksi_id', $transaksi->id)->firstOrFail();
+            $payment->update([
+                'status' => $paymentStatus,
+                'paid_at' => $paid_at
+            ]);
+
+            DB::commit();
+
+            return response()->json(['message' => 'Status transaksi berhasil diperbarui.']);
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat memperbarui status transaksi.',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 
