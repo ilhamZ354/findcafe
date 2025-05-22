@@ -3,7 +3,6 @@ import Swal from "sweetalert2";
 import "./bootstrap";
 import "./handleGalleryUpload";
 import "./handleUploadImage";
-
 // ALPINE GLOBALS
 window.Alpine = Alpine;
 Alpine.start();

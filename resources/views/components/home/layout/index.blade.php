@@ -1,14 +1,16 @@
-@props(['title' => 'Home'])
+@props(['title' => 'Home', 'footer' => true, 'navbar' => true])
 
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth" data-theme="light">
 
 <x-home.layout.header>
     {{ $title }}
 </x-home.layout.header>
 
 <body>
-    <x-home.layout.navbar></x-home.layout.navbar>
+    @if ($navbar)
+        <x-home.layout.navbar></x-home.layout.navbar>
+    @endif
 
     {{-- Pemberitahuan --}}
     @if (request()->get('status') == 'pending')
@@ -63,7 +65,9 @@
         {{ $slot }}
     </main>
 
-    <x-home.layout.footer></x-home.layout.footer>
+    @if ($footer)
+        <x-home.layout.footer></x-home.layout.footer>
+    @endif
 
     <script defer src="{{ asset('tailadmin/build/bundle.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>

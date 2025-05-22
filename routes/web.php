@@ -78,5 +78,8 @@ Route::middleware('auth')->group(
         Route::get('/profile/{id}', function ($id) {
             return view('pages.profile', compact('id'));
         })->name('profile');
+        Route::get('/chat-cafe/{id}', function ($id) {
+            return view('pages.chat', compact('id'));
+        })->name('chat-cafe');
     }
 );
