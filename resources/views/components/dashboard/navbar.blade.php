@@ -192,7 +192,7 @@
                     {{-- Detail User --}}
                     <span class="hidden text-right lg:block">
                         <span
-                            class="block text-sm font-medium text-black capitalize">{{ auth()->user()->username ?? 'Anonim' }}</span>
+                            class="block text-sm font-medium text-black capitalize">{{ auth()->user()->name ?? 'Anonim' }}</span>
                         <span class="block text-xs font-medium">{{ auth()->user()->role ?? '' }}</span>
                     </span>
 
