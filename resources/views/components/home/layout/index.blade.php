@@ -60,6 +60,31 @@
         </script>
     @endif
 
+    {{-- Alert --}}
+    @if (session()->has('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sukses',
+                    text: @json(session('success')),
+                });
+            });
+        </script>
+    @endif
+
+    @if (session()->has('error'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: @json(session('error')),
+                });
+            });
+        </script>
+    @endif
+
     {{-- Main Content --}}
     <main>
         {{ $slot }}

@@ -42,7 +42,7 @@
 
                                 {{-- catatan --}}
                                 <td class="p-3">
-                                    {{ $transaction->catatan }}</td>
+                                    {{ $transaction->catatan ?? '-' }}</td>
 
                                 {{-- nominal --}}
                                 <td class="p-3 font-medium text-meta-3">Rp
