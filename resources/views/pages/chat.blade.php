@@ -10,7 +10,7 @@
             <hr>
 
             {{-- Komponen Livewire --}}
-            <livewire:chat-room :to-user-id="$toUserId" />
+            <x-livewire.message :to-user-id="$toUserId" />
         </div>
     </div>
 </x-home.layout>

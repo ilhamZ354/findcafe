@@ -53,6 +53,6 @@ class ChatRoom extends Component
 
     public function render()
     {
-        return view('livewire.chat-room');
+        return view('livewire.chat');
     }
 }
