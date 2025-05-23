@@ -68,7 +68,7 @@ Route::middleware('auth')->group(
         Route::put('/transaksi/{id}', [TransactionController::class, 'updateTransaksi'])->name('transaksi-user.update');
         Route::put('transaksi/pay/{status}', [TransactionController::class, 'updateStatusTransaksi'])->name('transaksi-user.update-status');
         // Route::post('/payment/midtrans-callback', [App\Http\Controllers\PaymentController::class, 'midtransCallback']);
-        Route::get('menu-cafe/{id}', [MenuController::class, 'listMenuUser'])->name('menu-cafe');
+        Route::get('/menu-cafe/{id}', [MenuController::class, 'listMenuUser'])->name('menu-cafe');
         Route::get('/bookmark/{id}', function ($id) {
             return view('pages.bookmark', compact('id'));
         })->name('bookmark');
