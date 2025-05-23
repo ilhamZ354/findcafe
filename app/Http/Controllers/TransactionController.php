@@ -26,7 +26,7 @@ class TransactionController extends Controller
     // list transaksi untuk cafe
     public function listTransactionForCafe()
     {
-        $transactions = Transaction::where('cafe_id', Auth::id())->get();
+        $transactions = Transaction::where('cafe_id', Auth::id())->with('user')->orderByDesc('created_at')->paginate(20);
         $users = User::where('role', 'user')->get();
         return view('cafe.transaksi', [
             'transactions' => $transactions,
@@ -246,14 +246,15 @@ class TransactionController extends Controller
     }
 
     // update status transaksi
-    public function updateStatusTransaksi($result, $statusTransaksi)
+    public function updateStatusTransaksi(Request $request)
     {
         try {
-            $status = $statusTransaksi;
+            $status = $request->input('statusTransaksi');
+            $result = (object) $request->input('result'); // Cast ke object biar bisa pakai ->
+
             $paymentStatus = 'pending';
 
-
-            if ($status === 'success') {
+            if ($status === 'paid') {
                 $paymentStatus = 'processing';
             } elseif ($status === 'failed') {
                 $paymentStatus = 'cancelled';

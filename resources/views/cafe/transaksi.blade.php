@@ -24,6 +24,7 @@
                             <thead>
                                 <tr class="text-center bg-gray-100">
                                     <th class="p-3 text-sm font-medium">Nama Pelanggan</th>
+                                    <th class="p-3 text-sm font-medium">Atas Nama</th>
                                     <th class="p-3 text-sm font-medium sm:table-cell">Catatan</th>
                                     <th class="p-3 text-sm font-medium sm:table-cell">Nominal</th>
                                     <th class="p-3 text-sm font-medium sm:table-cell">Tanggal Booking</th>
@@ -35,23 +36,35 @@
                                 @foreach ($transactions as $transaction)
                                     <tr class="hover:bg-gray-50">
                                         {{-- nama pelanggan --}}
-                                        <td class="p-3 font-medium text-meta-3">{{ $transaction->name }}</td>
+                                        <td class="p-3 font-medium">{{ $transaction->user->name }}</td>
+
+                                        {{-- atas nama --}}
+                                        <td class="p-3 font-medium">{{ $transaction->name }}</td>
 
                                         {{-- catatan --}}
-                                        <td class="p-3 font-medium text-center text-black sm:table-cell">
+                                        <td class="p-3 text-center text-black sm:table-cell max-w-32">
                                             {{ $transaction->catatan }}</td>
                                         </td>
 
                                         {{-- nominal --}}
-                                        <td class="p-3 font-medium text-meta-3">Rp
+                                        <td class="p-3 font-bold break-words text-meta-3">Rp
                                             {{ number_format($transaction->nominal, 0, ',', '.') }}</td>
 
                                         {{-- tanggal booking --}}
-                                        <td class="p-3 font-medium text-meta-3">
+                                        <td class="p-3">
                                             {{ $transaction->tgl_booking->format('d F Y') }}</td>
 
                                         {{-- status --}}
-                                        <td class="p-3 font-medium text-meta-3">{{ $transaction->status }}</td>
+                                        <td
+                                            class="p-3 uppercase <?= $transaction->status === 'paid' ? 'text-green-500' : 'text-red-500' ?>">
+                                            @if ($transaction->status === 'paid')
+                                                <span
+                                                    class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm border border-green-400">{{ $transaction->status }}</span>
+                                            @else
+                                                <span
+                                                    class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm border border-red-400">{{ $transaction->status }}</span>
+                                            @endif
+                                        </td>
 
                                         {{-- aksi --}}
                                         <td class="p-3 sm:table-cell">
@@ -85,17 +98,48 @@
                                                     </a> --}}
 
                                                     {{-- BUTTON DELETE --}}
-                                                    <x-dashboard.button-icon color="red" text="Delete"
-                                                        method="DELETE"
-                                                        action="{{ route('cafe.transaksi.deleteTC', $transaction->id) }}"
-                                                        id_row="{{ $transaction->id }}">
-                                                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg"
-                                                            fill="none" viewBox="0 0 24 24">
-                                                            <path stroke="currentColor" stroke-linecap="round"
-                                                                stroke-linejoin="round" stroke-width="2"
-                                                                d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                                                        </svg>
-                                                    </x-dashboard.button-icon>
+                                                    @if ($transaction->status === 'paid')
+                                                        {{-- button selesai --}}
+                                                        <x-dashboard.button-icon color="green" text="Selesai"
+                                                            method="PUT" action="#">
+                                                            <svg class="w-6 h-6" aria-hidden="true"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" fill="none" viewBox="0 0 24 24">
+                                                                <path stroke="currentColor" stroke-linecap="round"
+                                                                    stroke-linejoin="round" stroke-width="2"
+                                                                    d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                            </svg>
+                                                        </x-dashboard.button-icon>
+
+                                                        {{-- Batalkan --}}
+                                                        <x-dashboard.button-icon color="red" text="Batalkan"
+                                                            method="DELETE"
+                                                            action="{{ route('cafe.transaksi.deleteTC', $transaction->id) }}"
+                                                            id_row="{{ $transaction->id }}">
+                                                            <svg class="w-6 h-6" aria-hidden="true"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" fill="none" viewBox="0 0 24 24">
+                                                                <path stroke="currentColor" stroke-linecap="round"
+                                                                    stroke-width="2"
+                                                                    d="m6 6 12 12m3-6a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                            </svg>
+
+                                                        </x-dashboard.button-icon>
+                                                    @else
+                                                        {{-- BUTTON DELETE --}}
+                                                        <x-dashboard.button-icon color="red" text="Delete"
+                                                            method="DELETE"
+                                                            action="{{ route('cafe.transaksi.deleteTC', $transaction->id) }}"
+                                                            id_row="{{ $transaction->id }}">
+                                                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg"
+                                                                fill="none" viewBox="0 0 24 24">
+                                                                <path stroke="currentColor" stroke-linecap="round"
+                                                                    stroke-linejoin="round" stroke-width="2"
+                                                                    d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                                                            </svg>
+                                                        </x-dashboard.button-icon>
+                                                    @endif
+
                                                 </div>
                                             </div>
                                         </td>
@@ -103,6 +147,12 @@
                                 @endforeach
                             </tbody>
                         </table>
+
+                        @if (count($transactions) !== 0)
+                            <div class="px-4 mt-7">
+                                {{ $transactions->links() }}
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

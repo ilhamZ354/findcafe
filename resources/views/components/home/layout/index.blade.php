@@ -48,7 +48,6 @@
             Swal.fire({
                 icon: 'error',
                 title: 'Terjadi Kesalahan',
-                // text: 'Terjadi kesalahan saat melakukan pembayaran. Silahkan coba lagi.',
                 text: 'Terjadi kesalahan saat melakukan pembayaran. Silahkan coba lagi.',
             }).then((result) => {
                 if (result.isConfirmed) {
