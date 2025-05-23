@@ -138,7 +138,7 @@
 
 
         {{-- chat cafe --}}
-        <x-button.chat-cafe></x-button.chat-cafe>
+        <x-button.chat-cafe cafe_id="{{ $data->cafe_id }}"></x-button.chat-cafe>
     </div>
 </x-home.layout>
 

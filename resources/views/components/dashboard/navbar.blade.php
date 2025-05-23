@@ -1,9 +1,9 @@
 <!-- ===== Header Start ===== -->
-<header class="sticky top-0 z-30 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
+<header class="sticky top-0 z-30 flex w-full bg-white drop-shadow-1 dark:drop-shadow-none">
     <div class="flex items-center justify-between flex-grow px-4 py-4 shadow-2 md:px-6 2xl:px-11">
         <div class="flex items-center gap-2 sm:gap-4 lg:hidden">
-            <button
-                class="z-99999 block rounded-sm border border-stroke bg-white p-1.5 shadow-sm dark:bg-boxdark lg:hidden"
+            <!-- Hamburger Toggle BTN -->
+            <button class="z-99999 block rounded-sm border border-stroke bg-white p-1.5 shadow-sm lg:hidden"
                 @click.stop="sidebarToggle = !sidebarToggle">
                 <span class="relative block h-5.5 w-5.5 cursor-pointer">
                     <span class="absolute right-0 w-full h-full du-block">
@@ -58,7 +58,7 @@
             <ul class="flex items-center gap-2 2xsm:gap-4">
                 <!-- Chat Notification Area -->
                 <li class="relative" x-data="{ dropdownOpen: false, notifying: true }" @click.outside="dropdownOpen = false">
-                    <a class="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] border-stroke bg-gray hover:text-primary"
+                    <a class="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] border-stroke bg-gray hover:text-primaryBrown"
                         href="#" @click.prevent="dropdownOpen = ! dropdownOpen; notifying = false">
                         <span :class="!notifying && 'hidden'"
                             class="absolute -right-0.5 -top-0.5 z-1 h-2 w-2 rounded-full bg-meta-1">
@@ -85,7 +85,7 @@
 
                     <!-- Dropdown Start -->
                     <div x-show="dropdownOpen"
-                        class="absolute -right-16 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:bg-boxdark sm:right-0 sm:w-80">
+                        class="absolute -right-16 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-stroke bg-white shadow-default sm:right-0 sm:w-80">
                         <div class="px-4.5 py-3">
                             <h5 class="text-sm font-medium text-bodydark2">Messages</h5>
                         </div>
@@ -209,11 +209,11 @@
 
                 <!-- Dropdown Start -->
                 <div x-show="dropdownOpen"
-                    class="absolute right-0 flex flex-col mt-5 bg-white border rounded-xl w-52 border-stroke shadow-default dark:bg-boxdark">
+                    class="absolute right-0 flex flex-col mt-5 bg-white border rounded-xl w-52 border-stroke shadow-default">
                     <ul class="flex flex-col gap-5 px-6 py-4 border-b border-stroke">
                         <li>
                             <a href="{{ asset('tailadmin/build/profile.html') }}"
-                                class="flex items-center gap-1 text-xs font-medium duration-300 ease-in-out text-primary lg:text-base">
+                                class="flex items-center gap-1 text-xs font-medium duration-300 ease-in-out text-primaryBrown lg:text-base">
                                 <svg class="fill-current" width="22" height="22" viewBox="0 0 22 22"
                                     fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path

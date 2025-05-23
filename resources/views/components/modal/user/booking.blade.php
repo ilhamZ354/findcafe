@@ -2,18 +2,22 @@
 
 <x-modal.modal-template id_modal="booking-modal" title_modal="Booking Cafe">
     <!-- Modal body -->
-    <form class="p-4 md:p-5" method="POST" action="{{  route('store-transaksi', $cafe_id)}}">
+    <form class="p-4 md:p-5" method="POST" action="{{ route('store-transaksi', $cafe_id) }}">
         @csrf
         <div class="grid grid-cols-1 gap-4 mb-4">
             {{-- Nama --}}
             <x-form.input-field name="name" value="{{ old('name') }}" label="Atas Nama"
                 placeholder="Masukkan nama untuk booking" required />
 
+            {{-- tanggal booking --}}
+            <x-form.input-field name="tgl_booking" type="datetime-local" value="{{ old('tgl_booking') }}"
+                label="Tanggal & Waktu Booking" required />
+
             {{-- nominal --}}
             <x-form.input-field type="text" name="nominal_display" label="Nominal" placeholder="Nominal booking"
                 min="0" required />
 
-            <input type="hidden" name="nominal" id="nominal">
+            <input type="hidden" name="nominal" id="nominal" value="{{ old('nominal') }}">
 
             {{-- Catatan --}}
             <x-form.input-field name="catatan" value="{{ old('catatan') }}" label="Catatan"

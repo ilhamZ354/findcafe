@@ -23,7 +23,7 @@
                         {{-- profile --}}
                         <li>
                             <a href="{{ route('profile', Auth::user()->id) }}"
-                                class="flex items-center gap-1 text-xs font-medium duration-300 ease-in-out text-primary lg:text-base">
+                                class="flex items-center gap-1 text-xs font-medium duration-300 ease-in-out text-primaryBrown lg:text-base">
                                 <svg class="fill-current" width="22" height="22" viewBox="0 0 22 22"
                                     fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -40,7 +40,7 @@
                         {{-- bookmark --}}
                         <li>
                             <a href="{{ route('bookmark', Auth::user()->id) }}"
-                                class="flex items-center gap-1 text-xs font-medium duration-300 ease-in-out text-primary lg:text-base">
+                                class="flex items-center gap-1 text-xs font-medium duration-300 ease-in-out text-primaryBrown lg:text-base">
                                 <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -55,7 +55,7 @@
                         {{-- transaksi --}}
                         <li>
                             <a href="{{ route('transaksi-user', Auth::user()->id) }}"
-                                class="flex items-center gap-1 text-xs font-medium duration-300 ease-in-out text-primary lg:text-base">
+                                class="flex items-center gap-1 text-xs font-medium duration-300 ease-in-out text-primaryBrown lg:text-base">
                                 <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"

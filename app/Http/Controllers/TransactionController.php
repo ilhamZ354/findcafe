@@ -44,8 +44,10 @@ class TransactionController extends Controller
             ->select(
                 'transactions.*',
                 'pembayarans.*',
-                'users.name as cafe_name',
-            )->get();
+                'users.name as cafe_name'
+            )
+            ->orderByDesc('transactions.created_at') // Menampilkan data terbaru terlebih dahulu
+            ->get();
 
         // dd($transactions);
 
@@ -63,6 +65,7 @@ class TransactionController extends Controller
 
             $validasi = Validator::make($query, [
                 'name' => ['required', 'string', 'max:255'],
+                'tgl_booking' => ['required'],
                 'catatan' => ['nullable', 'string'],
                 'nominal' => ['required', 'numeric', 'min:0'],
             ])->validate();
@@ -74,11 +77,12 @@ class TransactionController extends Controller
                 'cafe_id' => $cafe,
                 'transaksi_id' => $transaksi_id,
                 'name' => $validasi['name'],
-                'catatan' => $validasi['catatan'],
+                'catatan' => $validasi['catatan'] ?? null,
                 'nominal' => $validasi['nominal'] ?? null,
-                'tgl_booking' => now(),
+                'tgl_booking' => $validasi['tgl_booking'],
                 'status' => "unpaid",
             ]);
+
 
             $snapToken = $midtransService->createSnapToken($transaksi->id);
 
@@ -92,10 +96,10 @@ class TransactionController extends Controller
 
             DB::commit();
 
-            return redirect()->route('transaksi-user', Auth::id())->with('success', 'Transaksi berhasil ditambahkan.');
+            return redirect()->route('transaksi-user')->with('success', 'Transaksi berhasil ditambahkan.');
         } catch (\Throwable $e) {
             DB::rollBack();
-            return redirect()->back()->withInput()->with('error', 'Gagal menambahkan transaksi.');
+            return redirect()->back()->withInput()->with('error', 'Gagal menambahkan transaksi.' . $e->getMessage());
         }
     }
 
@@ -248,8 +252,9 @@ class TransactionController extends Controller
             $status = $statusTransaksi;
             $paymentStatus = 'pending';
 
-            if ($status === 'paid') {
-                $paymentStatus = 'completed';
+
+            if ($status === 'success') {
+                $paymentStatus = 'processing';
             } elseif ($status === 'failed') {
                 $paymentStatus = 'cancelled';
             }

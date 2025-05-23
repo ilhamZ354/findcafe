@@ -1,4 +1,4 @@
-<x-home.layout title="Transaksi">
+<x-home.layout title="Profile">
     <div class="min-h-[55vh] px-5 my-20 md:px-10">
         <div class="flex items-center justify-start w-full gap-2">
             {{-- button back --}}

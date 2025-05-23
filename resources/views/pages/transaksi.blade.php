@@ -42,7 +42,7 @@
 
                                 {{-- catatan --}}
                                 <td class="p-3">
-                                    {{ $transaction->catatan }}</td>
+                                    {{ $transaction->catatan ?? '-' }}</td>
 
                                 {{-- nominal --}}
                                 <td class="p-3 font-medium text-meta-3">Rp
@@ -110,34 +110,63 @@
             // Ambil snap token dari dataset
             const snapToken = this.dataset.snapToken;
 
-            // console.log(snapToken);
-
             snap.pay(snapToken, {
                 // Optional
                 onSuccess: function(result) {
-                    /// Redirect ke halaman kamu sendiri
-                    // $params = [
-                    //     'status' => 'success',
-                    //     'paid_at' => $result->transaction_time
-                    // ]
-                    window.location.href = `/transaksi?status=success`;
-                    console.log(result)
+                    /// fetch perbarui status
+                    console.log("Ini berhasil kesini");
+                    fetch(`${window.location.origin}/transaksi/pay/status`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector(
+                                    'meta[name="csrf-token"]').getAttribute(
+                                    'content'),
+                            },
+                            body: JSON.stringify({
+                                result: result,
+                                statusTransaksi: 'success'
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                            window.location.href = `/transaksi?status=success`;
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            window.location.href =
+                                `/transaksi?status=error&message=${error.error}`;
+                        });
                 },
                 // Optional
                 onPending: function(result) {
                     /// Redirect ke halaman kamu sendiri
-                    // $params = [
-                    //     'status' => 'pending',
-                    //     'paid_at' => $result->transaction_time
-                    // ]
-                    // window.location.href = `/transaksi?status=pending`;
-                    console.log(result)
+                    window.location.href = `/transaksi?status=pending`;
                 },
                 // Optional
                 onError: function(result) {
-                    /// Redirect ke halaman kamu sendiri
-                    window.location.href = `/transaksi?status=failed`;
-                    console.log(result)
+                    /// fetch perbarui status
+                    fetch('/transaksi/pay/status', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector(
+                                    'meta[name="csrf-token"]').getAttribute(
+                                    'content'),
+                            },
+                            body: JSON.stringify({
+                                result: result,
+                                statusTransaksi: 'failed'
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            window.location.href = `/transaksi?status=failed`;
+                        })
+                        .catch(error => {
+                            window.location.href = `/transaksi?status=error`;
+                        });
                 }
             });
         });

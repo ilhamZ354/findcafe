@@ -11,15 +11,23 @@
 <div class="container w-[calc(100vw-2rem)] max-w-[100vw] mx-auto mt-24 rounded-xl">
     <div id="default-carousel" class="relative w-[calc(100vw-2rem)]" data-carousel="slide">
         <!-- Carousel wrapper -->
-        <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+        {{-- <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
             @foreach ($images as $image)
                 <div class="hidden duration-700 ease-in-out" data-carousel-item>
                     <img src="{{ $image }}"
                         class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
                 </div>
             @endforeach
-
+        </div> --}}
+        <div id="myCarousel" class="relative h-56 overflow-hidden rounded-lg md:h-96">
+            @foreach ($images as $image)
+                <div class="hidden duration-700 ease-in-out" data-mycarousel-item>
+                    <img src="{{ $image }}"
+                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+                </div>
+            @endforeach
         </div>
+
         <!-- Slider indicators -->
         <div class="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2 rtl:space-x-reverse">
             <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1"
@@ -34,7 +42,7 @@
                 data-carousel-slide-to="4"></button>
         </div>
         <!-- Slider controls -->
-        <button type="button"
+        {{-- <button type="button"
             class="absolute top-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer start-0 group focus:outline-none"
             data-carousel-prev>
             <span
@@ -59,7 +67,6 @@
                 </svg>
                 <span class="sr-only">Next</span>
             </span>
-        </button>
+        </button> --}}
     </div>
-
 </div>
