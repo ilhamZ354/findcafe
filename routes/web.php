@@ -68,15 +68,19 @@ Route::middleware('auth')->group(
         Route::put('/transaksi/{id}', [TransactionController::class, 'updateTransaksi'])->name('transaksi-user.update');
         Route::put('transaksi/pay/status', [TransactionController::class, 'updateStatusTransaksi'])->name('transaksi-user.update-status');
         // Route::post('/payment/midtrans-callback', [App\Http\Controllers\PaymentController::class, 'midtransCallback']);
-        Route::get('menu-cafe/{id}', [MenuController::class, 'listMenuUser'])->name('menu-cafe');
+        Route::get('/menu-cafe/{id}', [MenuController::class, 'listMenuUser'])->name('menu-cafe');
         Route::get('/bookmark/{id}', function ($id) {
             return view('pages.bookmark', compact('id'));
         })->name('bookmark');
         Route::get('/profile/{id}', function ($id) {
             return view('pages.profile', compact('id'));
         })->name('profile');
-        Route::get('/chat-cafe/{id}', function ($id) {
-            return view('pages.chat', compact('id'));
+        // Route::get('/chat-cafe/{id}', function ($id) {
+        //     return view('pages.chat', compact('id'));
+        // })->name('chat-cafe');
+        Route::get('/chat-cafe/{toUserId}', function ($toUserId) {
+            return view('pages.chat', ['toUserId' => $toUserId]);
         })->name('chat-cafe');
+
     }
 );
