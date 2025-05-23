@@ -41,7 +41,7 @@ Route::middleware('auth')->group(
         Route::get('/superadmin/transaksi', [TransactionController::class, 'index'])->name('superadmin.transaksi');
         Route::get('/superadmin/transaksi/edit/{id}', [TransactionController::class, 'editTransaksi'])->name('superadmin.transaksi.edit');
         Route::delete('/superadmin/transaksi/delete/{id}', [TransactionController::class, 'deleteTransaksi'])->name('superadmin.transaksi.delete');
-        
+
         // ============= CAFE ===========
         // untuk data cafe
         Route::post('/cafe', [CafeController::class, 'store'])->name('cafe.store');
@@ -66,7 +66,7 @@ Route::middleware('auth')->group(
         Route::post('/detail-cafe/booking/{id}', [TransactionController::class, 'storeTransaksi'])->name('store-transaksi');
         Route::get('/transaksi', [TransactionController::class, 'listTransactionForUser'])->name('transaksi-user');
         Route::put('/transaksi/{id}', [TransactionController::class, 'updateTransaksi'])->name('transaksi-user.update');
-        Route::put('transaksi/pay/{status}', [TransactionController::class, 'updateStatusTransaksi'])->name('transaksi-user.update-status');
+        Route::put('transaksi/pay/status', [TransactionController::class, 'updateStatusTransaksi'])->name('transaksi-user.update-status');
         // Route::post('/payment/midtrans-callback', [App\Http\Controllers\PaymentController::class, 'midtransCallback']);
         Route::get('menu-cafe/{id}', [MenuController::class, 'listMenuUser'])->name('menu-cafe');
         Route::get('/bookmark/{id}', function ($id) {

@@ -16,7 +16,8 @@
                 <label class="mb-2.5 block font-medium text-black">Email</label>
                 <div class="relative">
                     <input type="email" name="email" placeholder="Enter your email"
-                        class="w-full py-4 pl-6 pr-10 bg-white border rounded-lg outline-none border-stroke focus:border-primary focus-visible:shadow-none" />
+                        class="w-full py-4 pl-6 pr-10 bg-white border rounded-lg outline-none border-stroke focus:border-primary focus-visible:shadow-none"
+                        autocomplete="off" />
 
                     <span class="absolute right-4 top-4">
                         <svg class="fill-current" width="22" height="22" viewBox="0 0 22 22" fill="none"

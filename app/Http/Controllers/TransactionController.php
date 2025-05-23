@@ -96,7 +96,7 @@ class TransactionController extends Controller
 
             DB::commit();
 
-            return redirect()->route('transaksi-user', Auth::id())->with('success', 'Transaksi berhasil ditambahkan.');
+            return redirect()->route('transaksi-user')->with('success', 'Transaksi berhasil ditambahkan.');
         } catch (\Throwable $e) {
             DB::rollBack();
             return redirect()->back()->withInput()->with('error', 'Gagal menambahkan transaksi.' . $e->getMessage());
@@ -252,8 +252,9 @@ class TransactionController extends Controller
             $status = $statusTransaksi;
             $paymentStatus = 'pending';
 
-            if ($status === 'paid') {
-                $paymentStatus = 'completed';
+
+            if ($status === 'success') {
+                $paymentStatus = 'processing';
             } elseif ($status === 'failed') {
                 $paymentStatus = 'cancelled';
             }
