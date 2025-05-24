@@ -11,10 +11,12 @@
                         style="background-image: url('/images/background-cafe.jpg')">
                         <div
                             class="border-black/12.5 mb-0 rounded-t-2xl border-b-0 border-solid p-6 pt-4 pb-0 text-center h-full mx-auto max-w-4xl">
-                            <h6 class="mb-3 text-5xl font-bold tracking-wider text-white text-shadow-md">Selamat Datang
+                            <h6 class="mb-3 text-2xl font-bold tracking-wider text-white md:text-5xl text-shadow-md">
+                                Selamat Datang
                                 di
                                 Dashboard <span class="text-semiPrimaryBrown">Cafe Hunt</span></h6>
-                            <p class="mt-1 text-lg font-light text-lightPrimaryBrown">Lihat, pantau, dan kelola seluruh
+                            <p class="mt-1 text-base font-light md:text-lg text-lightPrimaryBrown">Lihat, pantau, dan
+                                kelola seluruh
                                 data Cafe
                                 Mitra dan data lainnya.</p>
                         </div>

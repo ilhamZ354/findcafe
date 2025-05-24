@@ -9,9 +9,10 @@
             </script>
         @endif
 
-        <div class="flex items-start justify-between flex-grow w-full gap-4 px-4 py-4 md:px-6">
+        <div
+            class="flex flex-col-reverse items-start justify-between flex-grow w-full gap-4 px-4 py-4 md:flex-row md:px-6">
             {{-- card 1 --}}
-            <div class="w-2/3 px-3 py-5 bg-white shadow-md rounded-xl">
+            <div class="w-full px-3 py-5 bg-white shadow-md md:w-2/3 rounded-xl">
 
                 @if (!isset($cafe->id))
                     <div class="p-4 my-10 text-lg text-red-800 rounded-lg bg-red-50 " role="alert">
@@ -66,7 +67,8 @@
             </div>
 
             {{-- card 2 --}}
-            <div class="flex flex-col items-center justify-start w-1/3 px-3 py-5 bg-white shadow-md rounded-xl">
+            <div
+                class="flex flex-col items-center justify-start w-full px-3 py-5 bg-white shadow-md md:w-1/3 rounded-xl">
                 <img src="{{ $cafe->image_profile ?? asset('images/profile-default.png') }}" alt="image-profile-default"
                     class="object-cover w-20 h-20 rounded-full">
 

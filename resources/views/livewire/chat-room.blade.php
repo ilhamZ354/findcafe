@@ -1,5 +1,5 @@
 <main
-    class="flex flex-col justify-between h-[calc(100vh-5.5rem)] w-full max-h-[calc(100vh-5.5rem)] px-10 pb-1 mx-auto mb-3">
+    class="flex flex-col justify-between h-[calc(100vh-5.5rem)] w-full max-h-[calc(100vh-5.5rem)] px-3 md:px-10 pb-1 mx-auto mb-3">
 
     {{-- Container chat dengan polling setiap 3 detik --}}
     <div id="chat-container" wire:poll.100ms="getMessages" class="h-[calc(100vh-9.5rem)] overflow-y-auto hide-scrollbar">

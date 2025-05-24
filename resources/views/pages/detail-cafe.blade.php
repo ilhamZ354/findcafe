@@ -11,7 +11,7 @@
 <x-home.layout title="Detail Cafe">
     <div class="relative">
         {{-- button back --}}
-        <div class="mx-5 mt-20">
+        <div class="mx-5 mt-24 md:mt-20">
             <x-button.back-pages href="http://localhost:8000/home#services"></x-button.back-pages>
         </div>
 
@@ -21,7 +21,7 @@
                     class="object-cover w-full h-full shadow-xl rounded-xl brightness-50" loading="lazy">
 
                 <div class="absolute top-16 left-16">
-                    <h1 class="text-6xl font-semibold tracking-wider text-white">
+                    <h1 class="text-2xl font-semibold tracking-wider text-white md:text-6xl">
                         {{ $data->name }}</h1>
 
                     <p class="mt-2 text-sm font-light tracking-wide text-white">{{ $data->address }}</p>
@@ -170,8 +170,9 @@
             <div class="relative">
                 <x-home.waves-svg-top />
                 <div
-                    class="absolute bottom-0 left-0 right-0 flex flex-col items-center justify-center max-w-3xl gap-3 p-5 mx-auto mb-5 md:px-20">
-                    <p class="text-lg font-medium tracking-widest text-center text-white">Anda tertarik dan ingin
+                    class="absolute left-0 right-0 flex flex-col items-center justify-center max-w-3xl gap-3 p-5 mx-auto md:mb-5 top-10 md:bottom-0 md:px-20">
+                    <p class="text-sm font-medium tracking-widest text-center text-white md:text-lg">Anda tertarik dan
+                        ingin
                         melakukan
                         booking
                         sekarang? Silahkan klik tombol dibawah ini 👇</p>
