@@ -5,9 +5,13 @@
     <div id="chat-container" x-data x-init="$nextTick(() => { $refs.chat.scrollTop = $refs.chat.scrollHeight })" x-ref="chat" wire:poll.100ms="getMessages"
         class="h-[calc(100vh-9.5rem)] overflow-y-auto hide-scrollbar">
         @foreach ($messages as $message)
-            <div wire:key="message-{{ $message['id'] }}"
+            <div wire:key="message-text-{{ $loop->index }}"
                 class="chat {{ $message['is_mine'] ? 'chat-end' : 'chat-start' }}">
                 <div class="chat-image avatar">
+                    <div class="w-10 rounded-full">
+                        <img alt="Tailwind CSS chat bubble component"
+                            src="{{ $message['is_mine'] ? asset('images/profile-default.png') : $cafeImage }}" />
+                    </div>
                 </div>
                 <div class="chat-header">
                     <time class="text-xs opacity-50">{{ $message['time'] }}</time>
@@ -21,8 +25,7 @@
     </div>
 
     {{-- Form input pesan --}}
-    <form action="" onsubmit="handleSendMessage()" wire:submit.prevent="sendMessage"
-        class="flex items-center justify-between h-16 gap-3 mt-2">
+    <form action="" wire:submit.prevent="sendMessage" class="flex items-center justify-between h-16 gap-3 mt-2">
         <textarea wire:key="message-text-{{ $messageKey }}" wire:model.defer="messageText"
             wire:keydown.enter.prevent="sendMessage" wire:keydown.shift.enter="" rows="1"
             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300"
@@ -39,3 +42,15 @@
         </button>
     </form>
 </main>
+
+<script>
+    setInterval(() => {
+        const el = document.getElementById('scroll-anchor');
+        if (el) {
+            el.scrollIntoView({
+                behavior: 'smooth',
+                block: 'end'
+            });
+        }
+    }, 100);
+</script>

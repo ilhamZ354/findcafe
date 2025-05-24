@@ -12,6 +12,7 @@ class ChatRoom extends Component
     public $messages = [];
     public $messageText = '';
     public $toUserId;
+    public $cafeImage;
     public int $messageKey = 0;
 
     #[On('refreshMessages')]
@@ -41,9 +42,10 @@ class ChatRoom extends Component
         })->toArray();
     }
 
-    public function mount($toUserId)
+    public function mount($toUserId, $cafeImage)
     {
         $this->toUserId = $toUserId;
+        $this->cafeImage = $cafeImage;
         $this->getMessages();
     }
 
@@ -68,6 +70,8 @@ class ChatRoom extends Component
 
     public function render()
     {
-        return view('livewire.chat-room');
+        return view('livewire.chat-room', [
+            'cafeImage' => $this->cafeImage
+        ]);
     }
 }

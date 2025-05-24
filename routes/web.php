@@ -79,9 +79,7 @@ Route::middleware('auth')->group(
         // Route::get('/chat-cafe/{id}', function ($id) {
         //     return view('pages.chat', compact('id'));
         // })->name('chat-cafe');
-        Route::get('/chat-cafe/{toUserId}', function ($toUserId) {
-            return view('pages.chat', ['toUserId' => $toUserId]);
-        })->name('chat-cafe');
+        Route::get('/chat-cafe/{toUserId}', [CafeController::class, 'chatCafe'])->name('chat-cafe');
         // Route::get('/chat-cafe/{toUserId}', ChatRoom::class)->name('chat-cafe');
 
     }
