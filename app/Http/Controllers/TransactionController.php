@@ -26,7 +26,7 @@ class TransactionController extends Controller
     // list transaksi untuk cafe
     public function listTransactionForCafe()
     {
-        $transactions = Transaction::where('cafe_id', Auth::id())->with('user')->orderByDesc('created_at')->paginate(20);
+        $transactions = Transaction::where('cafe_id', Auth::id())->with(['user', 'payments'])->orderByDesc('created_at')->paginate(20);
         $users = User::where('role', 'user')->get();
         return view('cafe.transaksi', [
             'transactions' => $transactions,
@@ -47,7 +47,7 @@ class TransactionController extends Controller
                 'users.name as cafe_name'
             )
             ->orderByDesc('transactions.created_at') // Menampilkan data terbaru terlebih dahulu
-            ->get();
+            ->paginate(20);
 
         // dd($transactions);
 
@@ -194,56 +194,56 @@ class TransactionController extends Controller
         }
     }
 
-    public function editTransaksiCafe($id)
-    {
-        $transactions = Transaction::where('cafe_id', Auth::id())->get();
-        $transaction = $transactions->find($id);
-        $users = User::where('role', 'user')->get();
-        $payment = Pembayaran::where('transaksi_id', $id)->first();
+    // public function editTransaksiCafe($id)
+    // {
+    //     $transactions = Transaction::where('cafe_id', Auth::id())->get();
+    //     $transaction = $transactions->find($id);
+    //     $users = User::where('role', 'user')->get();
+    //     $payment = Pembayaran::where('transaksi_id', $id)->first();
 
-        return view('cafe.transaksi', compact('transactions', 'transaction', 'users', 'payment'))->with('showModalEdit', true);
-    }
+    //     return view('cafe.transaksi', compact('transactions', 'transaction', 'users', 'payment'))->with('showModalEdit', true);
+    // }
 
-    public function updateTransaksiCafe(Request $request, $id)
-    {
-        try {
-            $validatedData = $request->validate([
-                'name' => ['required', 'string', 'max:255'],
-                'catatan' => ['nullable', 'string'],
-                'nominal' => ['required', 'numeric', 'min:0'],
-                'tgl_booking' => ['required', 'date'],
-                'status' => ['required', 'in:unpaid,paid,failed'],
-                'snap_token' => ['nullable', 'string'],
-                'expired_at' => ['nullable', 'date'],
-                'paid_at' => ['nullable', 'date'],
-            ]);
+    // public function updateTransaksiCafe(Request $request, $id)
+    // {
+    //     try {
+    //         $validatedData = $request->validate([
+    //             'name' => ['required', 'string', 'max:255'],
+    //             'catatan' => ['nullable', 'string'],
+    //             'nominal' => ['required', 'numeric', 'min:0'],
+    //             'tgl_booking' => ['required', 'date'],
+    //             'status' => ['required', 'in:unpaid,paid,failed'],
+    //             'snap_token' => ['nullable', 'string'],
+    //             'expired_at' => ['nullable', 'date'],
+    //             'paid_at' => ['nullable', 'date'],
+    //         ]);
 
-            DB::beginTransaction();
+    //         DB::beginTransaction();
 
-            $transaction = Transaction::findOrFail($id);
-            $transaction->update($validatedData);
+    //         $transaction = Transaction::findOrFail($id);
+    //         $transaction->update($validatedData);
 
-            Pembayaran::updateOrCreate(
-                ['transaksi_id' => $id],
-                [
-                    'snap_token' => $request->input('snap_token'),
-                    'expired_at' => $request->input('expired_at'),
-                    'paid_at' => $validatedData['status'] === 'paid' ? ($request->input('paid_at') ?: now()) : null,
-                    'amount' => $validatedData['nominal'],
-                    'payment_method' => 'manual',
-                    'status' => $validatedData['status'] === 'paid' ? 'completed' : ($validatedData['status'] === 'failed' ? 'failed' : 'pending'),
-                ],
-            );
+    //         Pembayaran::updateOrCreate(
+    //             ['transaksi_id' => $id],
+    //             [
+    //                 'snap_token' => $request->input('snap_token'),
+    //                 'expired_at' => $request->input('expired_at'),
+    //                 'paid_at' => $validatedData['status'] === 'paid' ? ($request->input('paid_at') ?: now()) : null,
+    //                 'amount' => $validatedData['nominal'],
+    //                 'payment_method' => 'manual',
+    //                 'status' => $validatedData['status'] === 'paid' ? 'completed' : ($validatedData['status'] === 'failed' ? 'failed' : 'pending'),
+    //             ],
+    //         );
 
-            DB::commit();
-            return redirect()->route('cafe.transaksi')->with('success', 'Transaksi berhasil diperbarui.');
-        } catch (\Throwable $e) {
-            DB::rollBack();
-            return redirect()
-                ->back()
-                ->with('error', 'Transaksi gagal diperbarui: ' . $e->getMessage());
-        }
-    }
+    //         DB::commit();
+    //         return redirect()->route('cafe.transaksi')->with('success', 'Transaksi berhasil diperbarui.');
+    //     } catch (\Throwable $e) {
+    //         DB::rollBack();
+    //         return redirect()
+    //             ->back()
+    //             ->with('error', 'Transaksi gagal diperbarui: ' . $e->getMessage());
+    //     }
+    // }
 
     // update status transaksi
     public function updateStatusTransaksi(Request $request)
@@ -305,10 +305,30 @@ class TransactionController extends Controller
             ]);
 
             DB::commit();
-            return redirect()->route('transaksi-user')->with('success', 'Transaksi berhasil dibatalkan.');
+            return redirect()->to(url()->previous())->with('success', 'Transaksi berhasil dibatalkan.');
         } catch (\Throwable $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Terjadi kesalahan saat membatalkan transaksi.');
+        }
+    }
+
+
+    // finish transaksi
+    public function finishTransaksi($id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $payment = Pembayaran::where('transaksi_id', $id)->firstOrFail();
+            $payment->update([
+                'status' => 'completed',
+            ]);
+
+            DB::commit();
+            return redirect()->route('cafe.transaksi')->with('success', 'Transaksi berhasil diselesaikan.');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyelesaikan transaksi.');
         }
     }
 

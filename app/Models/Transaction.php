@@ -35,6 +35,6 @@ class Transaction extends Model
 
     public function payments()
     {
-        return $this->hasMany(Pembayaran::class);
+        return $this->hasOne(Pembayaran::class, 'transaksi_id');
     }
 }

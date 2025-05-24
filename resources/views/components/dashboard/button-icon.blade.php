@@ -32,7 +32,9 @@
         @csrf
         @method("$method")
         <button type="button" @if ($disabled) disabled @endif
-            @if ($method == 'DELETE') onclick="confirmDelete({{ $id_row }})" @endif
+            @if ($method == 'DELETE') onclick="confirmDelete({{ $id_row }})"
+    @elseif ($method == 'PUT')
+        onclick="confirmUpdate({{ $id_row }})" @endif
             class="flex items-center w-full px-4 py-2 text-sm hover:bg-gray-100 {{ $colorClasses }}">
             {{ $slot }}
 
@@ -57,6 +59,25 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 // Jika user klik "Hapus", kirim form-nya
+                document.getElementById('deleteForm' + id).submit();
+            }
+        });
+    }
+
+    function confirmUpdate(id) {
+        console.log("button-click")
+        Swal.fire({
+            title: 'Apakah kamu yakin?',
+            text: "Data ini akan diupdate.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Update',
+            cancelButtonText: 'Batal',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
                 document.getElementById('deleteForm' + id).submit();
             }
         });

@@ -104,6 +104,12 @@
                     <!-- Tambah baris data lainnya di sini -->
                 </tbody>
             </table>
+
+            @if (count($transactions) !== 0)
+                <div class="px-4 mt-7">
+                    {{ $transactions->links() }}
+                </div>
+            @endif
         </div>
     </div>
 
@@ -220,8 +226,8 @@
             showCancelButton: true,
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
+            cancelButtonText: 'Batal',
             confirmButtonText: 'Ya, batalkan',
-            cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
                 const form = document.getElementById('formCancel-' + transactionId);

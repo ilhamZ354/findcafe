@@ -20,8 +20,13 @@ class ChatRoom extends Component
     // #[On('refreshMessages')]
     public function getMessages()
     {
-        Logger('getMessages');
+        // tandai telah dibaca
+        Chat::where('from_user_id', $this->toUserId)
+            ->where('to_user_id', Auth::id())
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
 
+        // ambil data
         $chats = Chat::with('sender')
             ->where(function ($q) {
                 $q->where('from_user_id', Auth::id())

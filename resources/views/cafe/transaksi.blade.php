@@ -23,6 +23,7 @@
                         <table class="min-w-full overflow-x-auto border-collapse rounded-sm table-auto">
                             <thead>
                                 <tr class="text-center bg-gray-100">
+                                    <th class="p-3 text-sm font-medium">No.</th>
                                     <th class="p-3 text-sm font-medium">Nama Pelanggan</th>
                                     <th class="p-3 text-sm font-medium">Atas Nama</th>
                                     <th class="p-3 text-sm font-medium sm:table-cell">Catatan</th>
@@ -34,7 +35,12 @@
                             </thead>
                             <tbody class="divide-y divide-gray-200">
                                 @foreach ($transactions as $transaction)
-                                    <tr class="hover:bg-gray-50">
+                                    <tr
+                                        class="<?= $transaction->payments->status === 'completed' ? 'bg-green-100' : ($transaction->payments->status === 'cancelled' ? 'bg-red-50' : 'hover:bg-gray-50') ?>">
+
+                                        {{-- no. --}}
+                                        <td class="p-3 font-medium">{{ $loop->iteration }}</td>
+
                                         {{-- nama pelanggan --}}
                                         <td class="p-3 font-medium">{{ $transaction->user->name }}</td>
 
@@ -67,82 +73,89 @@
                                         </td>
 
                                         {{-- aksi --}}
-                                        <td class="p-3 sm:table-cell">
-                                            <div x-data="{ open: false }" class="relative inline-block text-left">
-                                                <button @click="open = !open"
-                                                    class="p-2 rounded-full hover:bg-gray-100">
-                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="w-5 h-5 text-gray-500" viewBox="0 0 20 20"
-                                                        fill="currentColor">
-                                                        <circle cx="10" cy="5" r="2" />
-                                                        <circle cx="10" cy="10" r="2" />
-                                                        <circle cx="10" cy="15" r="2" />
-                                                    </svg>
-                                                </button>
+                                        @if ($transaction->payments->status == 'completed')
+                                            <td></td>
+                                        @else
+                                            <td class="p-3 sm:table-cell">
+                                                <div x-data="{ open: false }" class="relative inline-block text-left">
+                                                    <button @click="open = !open"
+                                                        class="p-2 rounded-full hover:bg-gray-100">
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                            class="w-5 h-5 text-gray-500" viewBox="0 0 20 20"
+                                                            fill="currentColor">
+                                                            <circle cx="10" cy="5" r="2" />
+                                                            <circle cx="10" cy="10" r="2" />
+                                                            <circle cx="10" cy="15" r="2" />
+                                                        </svg>
+                                                    </button>
 
-                                                <div x-show="open" @click.away="open = false"
-                                                    class="absolute right-0 z-40 w-32 mt-2 bg-white border rounded shadow-lg">
+                                                    <div x-show="open" @click.away="open = false"
+                                                        class="absolute right-0 z-40 w-32 mt-2 bg-white border rounded shadow-lg">
 
-                                                    {{-- BUTTON UPDATE --}}
-                                                    {{-- <a href="{{ route('cafe.transaksi.editTC', $transaction->id) }}"
-                                                        class="block">
-                                                        <x-dashboard.button-icon color="blue" text="Edit"
-                                                            method="PUT">
-                                                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg"
-                                                                fill="none" viewBox="0 0 24 24">
-                                                                <path stroke="currentColor" stroke-linecap="round"
-                                                                    stroke-linejoin="round" stroke-width="2"
-                                                                    d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28" />
-                                                            </svg>
-                                                        </x-dashboard.button-icon>
-                                                    </a> --}}
+                                                        @if ($transaction->status === 'paid')
+                                                            {{-- button selesai --}}
+                                                            <form
+                                                                action="{{ route('cafe.transaksi.finish', $transaction->id) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <button type="submit"
+                                                                    onclick="confirmSelesai({{ $transaction->id }})"
+                                                                    {{ \Carbon\Carbon::parse($transaction->tgl_booking)->lt(now()->startOfDay()) ? '' : 'disabled' }}
+                                                                    class="flex items-center w-full px-4 py-2 text-sm text-green-500 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-white">
+                                                                    <svg class="w-6 h-6" aria-hidden="true"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        width="24" height="24" fill="none"
+                                                                        viewBox="0 0 24 24">
+                                                                        <path stroke="currentColor"
+                                                                            stroke-linecap="round"
+                                                                            stroke-linejoin="round" stroke-width="2"
+                                                                            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                                    </svg>
 
-                                                    {{-- BUTTON DELETE --}}
-                                                    @if ($transaction->status === 'paid')
-                                                        {{-- button selesai --}}
-                                                        <x-dashboard.button-icon color="green" text="Selesai"
-                                                            method="PUT" action="#">
-                                                            <svg class="w-6 h-6" aria-hidden="true"
-                                                                xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" fill="none" viewBox="0 0 24 24">
-                                                                <path stroke="currentColor" stroke-linecap="round"
-                                                                    stroke-linejoin="round" stroke-width="2"
-                                                                    d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                                            </svg>
-                                                        </x-dashboard.button-icon>
+                                                                    Selesai
+                                                                </button>
+                                                            </form>
 
-                                                        {{-- Batalkan --}}
-                                                        <x-dashboard.button-icon color="red" text="Batalkan"
-                                                            method="DELETE"
-                                                            action="{{ route('cafe.transaksi.deleteTC', $transaction->id) }}"
-                                                            id_row="{{ $transaction->id }}">
-                                                            <svg class="w-6 h-6" aria-hidden="true"
-                                                                xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" fill="none" viewBox="0 0 24 24">
-                                                                <path stroke="currentColor" stroke-linecap="round"
-                                                                    stroke-width="2"
-                                                                    d="m6 6 12 12m3-6a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                                            </svg>
+                                                            {{-- Batalkan --}}
+                                                            <form
+                                                                action="{{ route('cafe.transaksi.cancel', $transaction->id) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <button type="submit"
+                                                                    class="flex items-center w-full px-4 py-2 text-sm text-red-500 hover:bg-gray-100">
+                                                                    <svg class="w-6 h-6 " aria-hidden="true"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        width="24" height="24" fill="none"
+                                                                        viewBox="0 0 24 24">
+                                                                        <path stroke="currentColor"
+                                                                            stroke-linecap="round" stroke-width="2"
+                                                                            d="m6 6 12 12m3-6a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                                    </svg>
 
-                                                        </x-dashboard.button-icon>
-                                                    @else
-                                                        {{-- BUTTON DELETE --}}
-                                                        <x-dashboard.button-icon color="red" text="Delete"
-                                                            method="DELETE"
-                                                            action="{{ route('cafe.transaksi.deleteTC', $transaction->id) }}"
-                                                            id_row="{{ $transaction->id }}">
-                                                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg"
-                                                                fill="none" viewBox="0 0 24 24">
-                                                                <path stroke="currentColor" stroke-linecap="round"
-                                                                    stroke-linejoin="round" stroke-width="2"
-                                                                    d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                                                            </svg>
-                                                        </x-dashboard.button-icon>
-                                                    @endif
+                                                                    Batalkan
+                                                                </button>
+                                                            </form>
+                                                        @else
+                                                            {{-- BUTTON DELETE --}}
+                                                            <x-dashboard.button-icon color="red" text="Delete"
+                                                                method="DELETE"
+                                                                action="{{ route('cafe.transaksi.delete', $transaction->id) }}"
+                                                                id_row="{{ $transaction->id }}">
+                                                                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg"
+                                                                    fill="none" viewBox="0 0 24 24">
+                                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                                        stroke-linejoin="round" stroke-width="2"
+                                                                        d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                                                                </svg>
+                                                            </x-dashboard.button-icon>
+                                                        @endif
 
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -158,28 +171,4 @@
             </div>
         </div>
     </main>
-    <!-- ===== Main Content End ===== -->
-
-    <!-- modal -->
-    {{-- @include('components.modal.cafe.add-transaksi')
-
-    @if (isset($transaction))
-        @include('components.modal.cafe.update-transaksi')
-    @endif
-
-    @if (isset($showModalEdit) && $showModalEdit)
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const updateModal = document.getElementById('update-transaksi');
-                const modal = new Modal(updateModal);
-                modal.show();
-
-                // Focus on first input when modal opens
-                updateModal.addEventListener('shown.bs.modal', function() {
-                    document.querySelector('#update-transaksi input[name="name"]').focus();
-                });
-            });
-        </script>
-    @endif --}}
-
 </x-dashboard.layout>
