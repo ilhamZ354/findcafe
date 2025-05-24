@@ -12,6 +12,7 @@ class ChatRoom extends Component
     public $messages = [];
     public $messageText = '';
     public $toUserId;
+    public int $messageKey = 0;
 
     #[On('refreshMessages')]
     public function getMessages()
@@ -56,7 +57,9 @@ class ChatRoom extends Component
             'message' => $this->messageText,
         ]);
 
+        // $this->reset('messageText');
         $this->messageText = '';
+        $this->messageKey++;
         $this->getMessages();
 
         // Scroll ke bawah setelah kirim pesan
