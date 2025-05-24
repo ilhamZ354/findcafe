@@ -62,7 +62,6 @@ Route::middleware('auth')->group(
         // Route::get('/cafe/transaksi/edit/{id}', [TransactionController::class, 'editTransaksiCafe'])->name('cafe.transaksi.editTC');
         // Route::put('/cafe/transaksi/update/{id}', [TransactionController::class, 'updateTransaksiCafe'])->name('cafe.transaksi.updateTC');
         Route::delete('/cafe/transaksi/delete/{id}', [TransactionController::class, 'destroyTransaksiCafe'])->name('cafe.transaksi.delete');
-        Route::put('/cafe/transaksi/cancel/{id}', [TransactionController::class, 'cancelTransaksi'])->name('cafe.transaksi.cancel');
         Route::put('/cafe/transaksi/finish/{id}', [TransactionController::class, 'finishTransaksi'])->name('cafe.transaksi.finish');
         // chat
         Route::get('/cafe/list-chat', [ChatController::class, 'listChat'])->name('cafe.list-chat');

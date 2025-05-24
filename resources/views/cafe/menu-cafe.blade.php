@@ -1,3 +1,8 @@
+@php
+    $typeMenus = ['All', 'Makanan', 'Minuman'];
+@endphp
+
+
 @section('title-header', 'Dashboard')
 
 <x-dashboard.layout>
@@ -19,6 +24,21 @@
                                 class="px-4 py-2 text-white rounded-lg bg-primary">Tambah</button>
                         </div>
 
+                        {{-- parameter filter --}}
+                        <form class="my-10" method="GET" action="{{ route('cafe.menu', Auth::id()) }}">
+                            <label for="typeMenus" class="block mb-2 text-sm font-medium text-primaryBrown md:mx-5">
+                                Jenis Menu
+                            </label>
+                            <select id="type" name="type" onchange="this.form.submit()"
+                                class="block px-3 py-2 border rounded-md shadow-sm w-44 text-primaryBrown border-primaryBrown focus:ring-4 focus:outline-none focus:ring-lightPrimaryBrown">
+                                @foreach ($typeMenus as $typeMenu)
+                                    <option value="{{ $typeMenu }}"
+                                        {{ $typeMenu == request('type') ? 'selected' : '' }}>{{ $typeMenu }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </form>
+
                         {{-- table --}}
                         <table class="min-w-full overflow-x-auto border-collapse rounded-sm table-auto">
                             <thead>
@@ -39,17 +59,36 @@
                                             : asset('storage/' . $menuItem->image);
                                     @endphp
                                     <tr class="hover:bg-gray-50">
-                                        <td class="p-3 font-medium text-black dark:text-white">{{ $menuItem->type }}
+                                        {{-- type --}}
+                                        <td class="p-3 font-medium text-black dark:text-white">
+                                            @if ($menuItem->type == 'makanan')
+                                                <span
+                                                    class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm border border-blue-400">{{ $menuItem->type }}</span>
+                                            @else
+                                                <span
+                                                    class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm border border-red-400">{{ $menuItem->type }}</span>
+                                            @endif
                                         </td>
+
+                                        {{-- name --}}
                                         <td class="p-3 font-medium text-meta-3">{{ $menuItem->name }}</td>
+
+                                        {{-- description --}}
                                         <td class="p-3 font-medium text-black sm:table-cell dark:text-white">
                                             {{ $menuItem->description }}
                                         </td>
-                                        <td class="p-3 font-medium text-meta-3">{{ $menuItem->harga }}</td>
+
+                                        {{-- price --}}
+                                        <td class="p-3 font-medium text-meta-3">Rp
+                                            {{ number_format($menuItem->harga, 0, ',', '.') }}</td>
+
+                                        {{-- image --}}
                                         <td class="p-3">
                                             <img src="{{ $imagePath }}" alt="{{ $menuItem->name }}"
-                                                class="w-16 h-16 object-cover rounded" />
+                                                class="object-cover w-16 h-16 rounded" />
                                         </td>
+
+                                        {{-- action --}}
                                         <td class="p-3 sm:table-cell">
                                             <div x-data="{ open: false }" class="relative inline-block text-left">
                                                 <button @click="open = !open"
@@ -67,16 +106,16 @@
                                                     class="absolute right-0 z-40 w-32 mt-2 bg-white border rounded shadow-lg">
 
                                                     {{-- BUTTON UPDATE --}}
-                                                    <a href="{{ route('cafe.menu.edit', $menuItem->id) }}" class="block">
-                                                        <x-dashboard.button-icon color="blue" text="Edit"
-                                                            method="PUT">
-                                                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg"
-                                                                fill="none" viewBox="0 0 24 24">
-                                                                <path stroke="currentColor" stroke-linecap="round"
-                                                                    stroke-linejoin="round" stroke-width="2"
-                                                                    d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28" />
-                                                            </svg>
-                                                        </x-dashboard.button-icon>
+                                                    <a href="{{ route('cafe.menu.edit', $menuItem->id) }}"
+                                                        class="flex items-center w-full px-4 py-2 text-sm text-blue-500 hover:bg-gray-100">
+                                                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg"
+                                                            fill="none" viewBox="0 0 24 24">
+                                                            <path stroke="currentColor" stroke-linecap="round"
+                                                                stroke-linejoin="round" stroke-width="2"
+                                                                d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28" />
+                                                        </svg>
+
+                                                        Edit
                                                     </a>
 
                                                     {{-- BUTTON DELETE --}}
