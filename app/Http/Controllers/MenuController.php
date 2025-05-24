@@ -15,13 +15,22 @@ class MenuController extends Controller
 {
     public function listMenuCafe(Request $request)
     {
+        // ambil dulu id detail cafe
+        $cafe = CafeDetail::where('cafe_id', Auth::id())->first();
+        if (!$cafe) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Cafe Detail tidak ditemukan!');
+        }
+
         // get semua menu
-        $query = Menu::where('cafe_id', Auth::id());
+        $query = Menu::where('cafe_id', $cafe->id);
 
         // apakah ada dicari tipe
         $tipe = $request->query('type');
-        if ($tipe) {
-            $query = Menu::where('type', $tipe);
+        if ($tipe && $tipe !== "All") {
+            $query = Menu::where('type', $tipe)->where('cafe_id', $cafe->id);
         }
 
         $menus = $query->get();
@@ -54,11 +63,20 @@ class MenuController extends Controller
 
     public function show($id)
     {
+        // ambil dulu id detail cafe
+        $cafe = CafeDetail::where('cafe_id', Auth::id())->first();
+        if (!$cafe) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Cafe Detail tidak ditemukan!');
+        }
+
         //get menu berdasarkan id menu
         $query = Menu::findOrFail($id);
 
         // $menus = $query->first();
-        $menus = Menu::where('cafe_id', Auth::id())->get();
+        $menus = Menu::where('cafe_id', $cafe->id)->get();
 
         return view('cafe.menu-cafe', [
             'menus' => $menus,        // collection utk table
@@ -96,7 +114,8 @@ class MenuController extends Controller
                 $validasi['image'] = $image_path;
             }
 
-            $validasi['cafe_id'] = $cafe->cafe_id;
+            $validasi['cafe_id'] = $cafe->id;
+
 
             Menu::create($validasi);
 
