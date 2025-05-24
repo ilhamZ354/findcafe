@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Chat;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
 
 class ChatRoom extends Component
 {
@@ -13,7 +13,32 @@ class ChatRoom extends Component
     public $messageText = '';
     public $toUserId;
 
-    protected $listeners = ['refreshMessages' => 'getMessages'];
+    #[On('refreshMessages')]
+    public function getMessages()
+    {
+        $chats = Chat::with('sender')
+            ->where(function ($q) {
+                $q->where('from_user_id', Auth::id())
+                    ->where('to_user_id', $this->toUserId);
+            })
+            ->orWhere(function ($q) {
+                $q->where('from_user_id', $this->toUserId)
+                    ->where('to_user_id', Auth::id());
+            })
+            ->orderBy('created_at')
+            ->get()
+            ->values(); // pastikan indexnya rapi
+
+        // Ubah ke array sederhana agar perubahan bisa dideteksi Livewire
+        $this->messages = $chats->map(function ($msg) {
+            return [
+                'id' => $msg->id,
+                'message' => $msg->message,
+                'is_mine' => $msg->from_user_id === Auth::id(),
+                'time' => $msg->created_at->format('H:i'),
+            ];
+        })->toArray();
+    }
 
     public function mount($toUserId)
     {
@@ -21,23 +46,9 @@ class ChatRoom extends Component
         $this->getMessages();
     }
 
-    public function getMessages()
-    {
-        $this->messages = Chat::where(function($q) {
-                $q->where('from_user_id', Auth::id())
-                  ->where('to_user_id', $this->toUserId);
-            })
-            ->orWhere(function($q) {
-                $q->where('from_user_id', $this->toUserId)
-                  ->where('to_user_id', Auth::id());
-            })
-            ->orderBy('created_at')
-            ->get();
-    }
-
     public function sendMessage()
     {
-        if (!$this->messageText) return;
+        if (trim($this->messageText) === '') return;
 
         Chat::create([
             'from_user_id' => Auth::id(),
@@ -48,11 +59,12 @@ class ChatRoom extends Component
         $this->messageText = '';
         $this->getMessages();
 
-        $this->emitTo('notification-bell', 'newMessageReceived');
+        // Scroll ke bawah setelah kirim pesan
+        $this->dispatch('messageSent');
     }
 
     public function render()
     {
-        return view('livewire.chat');
+        return view('livewire.chat-room');
     }
 }
