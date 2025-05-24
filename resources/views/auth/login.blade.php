@@ -3,7 +3,7 @@
 
 <x-auth.layout>
     <!-- ====== Forms Section Start -->
-    <div class="w-1/2 mx-auto p-4 sm:p-12.5 xl:p-17.5 bg-white rounded-xl">
+    <div class="w-[90%] md:w-1/2 mx-auto p-4 sm:p-12.5 xl:p-17.5 bg-white rounded-xl">
         <span class="mb-1.5 block font-medium">Mari mulai petualangan baru dengan Cafe Hunt</span>
         <h2 class="flex items-center gap-1 text-2xl font-bold text-primary mb-9 sm:text-title-xl2">
             Sign In

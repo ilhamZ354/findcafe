@@ -21,55 +21,58 @@
 
 
                         {{-- table --}}
-                        <table class="min-w-full overflow-x-auto border-collapse rounded-sm table-auto">
-                            <thead>
-                                <tr class="text-center bg-gray-100">
-                                    <th class="p-3 text-sm font-medium">User</th>
-                                    <th class="p-3 text-sm font-medium">Cafe</th>
-                                    <th class="p-3 text-sm font-medium sm:table-cell">Name</th>
-                                    <th class="p-3 text-sm font-medium sm:table-cell">Catatan</th>
-                                    <th class="p-3 text-sm font-medium sm:table-cell">Nominal</th>
-                                    <th class="p-3 text-sm font-medium sm:table-cell">Tanggal Booking</th>
-                                    <th class="p-3 text-sm font-medium sm:table-cell">Status</th>
-                                    <th class="p-3 text-sm font-medium sm:table-cell">Snap Token</th>
-                                    <th class="p-3 text-sm font-medium sm:table-cell">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-sm text-center divide-y divide-gray-200">
-                                @if (isset($transactions) && $transactions->isNotEmpty())
-                                    @foreach ($transactions as $transaction)
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="p-3 font-medium text-black">
-                                                {{ $transaction->user->name }}</td>
-                                            <td class="p-3 font-medium text-meta-3">{{ $transaction->cafe->name }}</td>
-                                            <td class="p-3 font-medium text-black sm:table-cell">
-                                                {{ $transaction->name }}</td>
-                                            <td class="p-3 font-medium text-black">
-                                                {{ $transaction->catatan }}</td>
-                                            <td class="p-3 font-medium text-meta-3">{{ $transaction->nominal }}</td>
-                                            <td class="p-3 font-medium text-black sm:table-cell">
-                                                {{ $transaction->tgl_booking->format('d F Y') }}</td>
-                                            <td class="p-3 font-medium text-black">
-                                                {{ $transaction->status }}</td>
-                                            <td class="p-3 font-medium text-meta-3">{{ $transaction->snap_token }}</td>
-                                            </td>
-                                            <td class="p-3 sm:table-cell">
-                                                <div x-data="{ open: false }" class="relative inline-block text-left">
-                                                    <button @click="open = !open"
-                                                        class="p-2 rounded-full hover:bg-gray-100">
-                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                            class="w-5 h-5 text-gray-500" viewBox="0 0 20 20"
-                                                            fill="currentColor">
-                                                            <circle cx="10" cy="5" r="2" />
-                                                            <circle cx="10" cy="10" r="2" />
-                                                            <circle cx="10" cy="15" r="2" />
-                                                        </svg>
-                                                    </button>
-                                                    <div x-show="open" @click.away="open = false"
-                                                        class="absolute right-0 z-40 w-32 mt-2 bg-white border rounded shadow-lg">
+                        <div class="h-full max-w-full overflow-x-auto rounded-sm -z-50">
+                            <table class="w-full border-collapse rounded-sm table-auto">
+                                <thead>
+                                    <tr class="text-center bg-gray-100">
+                                        <th class="p-3 text-sm font-medium">User</th>
+                                        <th class="p-3 text-sm font-medium">Cafe</th>
+                                        <th class="p-3 text-sm font-medium sm:table-cell">Name</th>
+                                        <th class="p-3 text-sm font-medium sm:table-cell">Catatan</th>
+                                        <th class="p-3 text-sm font-medium sm:table-cell">Nominal</th>
+                                        <th class="p-3 text-sm font-medium sm:table-cell">Tanggal Booking</th>
+                                        <th class="p-3 text-sm font-medium sm:table-cell">Status</th>
+                                        <th class="p-3 text-sm font-medium sm:table-cell">Snap Token</th>
+                                        <th class="p-3 text-sm font-medium sm:table-cell">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm text-center divide-y divide-gray-200">
+                                    @if (isset($transactions) && $transactions->isNotEmpty())
+                                        @foreach ($transactions as $transaction)
+                                            <tr class="hover:bg-gray-50">
+                                                <td class="p-3 font-medium text-black">
+                                                    {{ $transaction->user->name }}</td>
+                                                <td class="p-3 font-medium text-meta-3">{{ $transaction->cafe->name }}
+                                                </td>
+                                                <td class="p-3 font-medium text-black sm:table-cell">
+                                                    {{ $transaction->name }}</td>
+                                                <td class="p-3 font-medium text-black">
+                                                    {{ $transaction->catatan }}</td>
+                                                <td class="p-3 font-medium text-meta-3">{{ $transaction->nominal }}</td>
+                                                <td class="p-3 font-medium text-black sm:table-cell">
+                                                    {{ $transaction->tgl_booking->format('d F Y') }}</td>
+                                                <td class="p-3 font-medium text-black">
+                                                    {{ $transaction->status }}</td>
+                                                <td class="p-3 font-medium text-meta-3">{{ $transaction->snap_token }}
+                                                </td>
+                                                </td>
+                                                <td class="p-3 sm:table-cell">
+                                                    <div x-data="{ open: false }" class="inline-block text-left ">
+                                                        <button @click="open = !open"
+                                                            class="p-2 rounded-full hover:bg-gray-100">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                class="w-5 h-5 text-gray-500" viewBox="0 0 20 20"
+                                                                fill="currentColor">
+                                                                <circle cx="10" cy="5" r="2" />
+                                                                <circle cx="10" cy="10" r="2" />
+                                                                <circle cx="10" cy="15" r="2" />
+                                                            </svg>
+                                                        </button>
+                                                        <div x-show="open" @click.away="open = false"
+                                                            class="absolute right-0 z-40 w-32 mt-2 bg-white border rounded shadow-lg">
 
-                                                        {{-- BUTTON UPDATE --}}
-                                                        {{-- <a href="{{ route('superadmin.transaksi.edit', $transaction->id) }}"
+                                                            {{-- BUTTON UPDATE --}}
+                                                            {{-- <a href="{{ route('superadmin.transaksi.edit', $transaction->id) }}"
                                                             class="block">
                                                             <x-dashboard.button-icon color="blue" text="Edit"
                                                                 method="PUT">
@@ -82,34 +85,41 @@
                                                             </x-dashboard.button-icon>
                                                         </a> --}}
 
-                                                        {{-- BUTTON DELETE --}}
-                                                        <x-dashboard.button-icon color="red" text="Delete"
-                                                            method="DELETE"
-                                                            action="{{ route('superadmin.transaksi.delete', $transaction->id) }}"
-                                                            id_row="{{ $transaction->id }}">
-                                                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg"
-                                                                fill="none" viewBox="0 0 24 24">
-                                                                <path stroke="currentColor" stroke-linecap="round"
-                                                                    stroke-linejoin="round" stroke-width="2"
-                                                                    d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                                                            </svg>
-                                                        </x-dashboard.button-icon>
+                                                            {{-- BUTTON DELETE --}}
+                                                            <x-dashboard.button-icon color="red" text="Delete"
+                                                                method="DELETE"
+                                                                action="{{ route('superadmin.transaksi.delete', $transaction->id) }}"
+                                                                id_row="{{ $transaction->id }}">
+                                                                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg"
+                                                                    fill="none" viewBox="0 0 24 24">
+                                                                    <path stroke="currentColor" stroke-linecap="round"
+                                                                        stroke-linejoin="round" stroke-width="2"
+                                                                        d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                                                                </svg>
+                                                            </x-dashboard.button-icon>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="p-3 italic font-medium text-black" colspan="9">
+                                                Tidak ada data
                                             </td>
                                         </tr>
-                                    @endforeach
-                                @else
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="p-3 italic font-medium text-black" colspan="9">
-                                            Tidak ada data
-                                        </td>
-                                    </tr>
-                                @endif
+                                    @endif
 
-                                <!-- Tambah baris data lainnya di sini -->
-                            </tbody>
-                        </table>
+                                    <!-- Tambah baris data lainnya di sini -->
+                                </tbody>
+                            </table>
+
+                            @if (count($transactions) !== 0)
+                                <div class="px-4 mt-7">
+                                    {{ $transactions->links() }}
+                                </div>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
