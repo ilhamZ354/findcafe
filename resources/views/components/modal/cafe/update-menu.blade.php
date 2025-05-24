@@ -24,7 +24,7 @@
             ]" :selected="$menu->type" />
 
             {{-- Harga --}}
-            <x-form.input-field name="price" type="number" value="{{ $menu->price }}" label="Harga"
+            <x-form.input-field name="price" type="number" value="{{ $menu->harga }}" label="Harga"
                 placeholder="Masukkan harga menu" required />
         </div>
 

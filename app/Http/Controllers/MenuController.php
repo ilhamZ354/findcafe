@@ -48,7 +48,6 @@ class MenuController extends Controller
         return view('pages.menu-cafe', [
             'menus' => $menus,
             'type' => $tipe,
-            'cafe_id' => $cafe_id
         ]);
     }
 
@@ -57,10 +56,13 @@ class MenuController extends Controller
         //get menu berdasarkan id menu
         $query = Menu::findOrFail($id);
 
-        $menus = $query->first();
+        // $menus = $query->first();
+        $menus = Menu::where('cafe_id', Auth::id())->get();
 
         return view('cafe.menu-cafe', [
-            'menus' => $menus,
+            'menus' => $menus,        // collection utk table
+            'menu' => $query,          // object utk modal
+            'showModalEdit' => true,
         ]);
     }
     // store data menu
@@ -133,16 +135,10 @@ class MenuController extends Controller
             $validasi = $request->validate([
                 'name' => ['required', 'string', 'min:2'],
                 'type' => ['required', 'in:makanan,minuman'],
-                'harga' => ['required', 'string'],
-                'image' => ['required', 'string'],
+                'price' => ['required', 'string'],
+                'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,svg'],
                 'description' => ['required', 'string', 'min:3'],
             ]);
-
-            if ($request->hasFile('image')) {
-                $rules['image'] = 'required|image';
-            }
-
-            $validated = $request->validate($rules);
 
             DB::beginTransaction();
 
@@ -151,16 +147,16 @@ class MenuController extends Controller
 
             if ($request->hasFile('image')) {
                 // Delete old image
-                if (file_exists(storage_path('app/public/menu-cafe_images/' . $menu->image))) {
-                    unlink(storage_path('app/public/menu-cafe_images/' . $menu->image));
+                if ($menu->image && file_exists(storage_path('app/public/' . $menu->image))) {
+                    unlink(storage_path('app/public/' . $menu->image));
                 }
 
                 $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
-                $request->file('image')->storeAs('menu-cafe_images', $imageName);
-                $validated['image'] = $imageName;
+                $image_path = $request->file('image')->storeAs('menu-cafe_images', $imageName, 'public');
+                $validasi['image'] = $image_path;
             }
 
-            $menu->update($validated);
+            $menu->update($validasi);
 
             DB::commit();
 
