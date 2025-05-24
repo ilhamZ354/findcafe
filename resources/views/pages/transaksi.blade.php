@@ -172,8 +172,8 @@
                 // Optional
                 onError: function(result) {
                     /// fetch perbarui status
-                    fetch('/transaksi/pay/status', {
-                            method: 'POST',
+                    fetch(`${window.location.origin}/transaksi/pay/status`, {
+                            method: 'PUT',
                             headers: {
                                 'Content-Type': 'application/json',
                                 'X-CSRF-TOKEN': document.querySelector(
@@ -182,15 +182,23 @@
                             },
                             body: JSON.stringify({
                                 result: result,
-                                statusTransaksi: 'failed'
+                                statusTransaksi: "failed"
                             })
                         })
                         .then(response => response.json())
                         .then(data => {
-                            window.location.href = `/transaksi?status=failed`;
+                            console.log(data);
+                            if (data.error) {
+                                window.location.href =
+                                    `/transaksi?status=error`;
+                            } else {
+                                window.location.href = `/transaksi?status=failed`;
+                            }
                         })
                         .catch(error => {
-                            window.location.href = `/transaksi?status=error`;
+                            console.log(error);
+                            window.location.href =
+                                `/transaksi?status=error`;
                         });
                 }
             });
