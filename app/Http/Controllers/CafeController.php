@@ -121,25 +121,37 @@ class CafeController extends Controller
     // list cafe untuk user
     public function listCafes()
     {
-        $data = DB::table('users')
+        $cafes = DB::table('users')
             ->join('cafe_details', 'users.id', '=', 'cafe_details.cafe_id')
-            ->join('rating_reviews', 'cafe_details.cafe_id', '=', 'rating_reviews.cafe_id')
             ->where('users.role', 'cafe')
             ->select(
                 'users.id as user_id',
                 'users.username',
                 'users.email',
                 'cafe_details.id as cafe_detail_id',
-                'cafe_details.*',
-                'rating_reviews.id as review_id',
-                'rating_reviews.rating',
-                'rating_reviews.review'
+                'cafe_details.*'
             )
             ->get();
 
-        // dd($data);
-        return view('pages.index', compact('data'));
+        // Tambahkan rata-rata rating (manual perhitungan: total_rating / total_review)
+        foreach ($cafes as $cafe) {
+            $ratingData = DB::table('rating_reviews')
+                ->where('cafe_id', $cafe->user_id)
+                ->selectRaw('SUM(rating) as total_rating, COUNT(*) as total_review')
+                ->first();
+
+            if ($ratingData->total_review > 0) {
+                $cafe->avg_rating = round($ratingData->total_rating / $ratingData->total_review, 1);
+            } else {
+                $cafe->avg_rating = 0;
+            }
+        }
+
+        // dd($cafes);
+
+        return view('pages.index', ['data' => $cafes]);
     }
+
 
     public function show($cafe)
     {

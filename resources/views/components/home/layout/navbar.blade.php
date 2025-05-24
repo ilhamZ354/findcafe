@@ -54,7 +54,7 @@
 
                         {{-- transaksi --}}
                         <li>
-                            <a href="{{ route('transaksi-user', Auth::user()->id) }}"
+                            <a href="{{ route('transaksi-user') }}"
                                 class="flex items-center gap-1 text-xs font-medium duration-300 ease-in-out text-primaryBrown lg:text-base">
                                 <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" fill="none" viewBox="0 0 24 24">

@@ -44,7 +44,7 @@ class TransactionController extends Controller
             ->select(
                 'transactions.*',
                 'pembayarans.*',
-                'users.name as cafe_name'
+                'users.name as cafe_name',
             )
             ->orderByDesc('transactions.created_at') // Menampilkan data terbaru terlebih dahulu
             ->get();

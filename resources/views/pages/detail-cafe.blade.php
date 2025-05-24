@@ -120,6 +120,46 @@
                 </div>
             </div>
 
+            {{-- Review dan Rating --}}
+            <div class="px-5 pt-16 md:px-20 md:pt-20">
+                <div class="max-w-3xl">
+                    <h1 class="text-4xl font-bold tracking-widest text-primaryBrown">Ulasan Pengunjung</h1>
+                    <span class="text-sm font-light tracking-wider text-grayTheme">Berikut adalah beberapa ulasan dari pengunjung yang pernah datang.</span>
+                </div>
+
+                @php
+                    $reviews = \App\Models\RatingReview::where('cafe_id', $data->cafe_id)->with('user')->latest()->get();
+                    $totalRating = $reviews->sum('rating');
+                    $ratingCount = $reviews->count();
+                    $averageRating = $ratingCount > 0 ? number_format($totalRating / $ratingCount, 1) : 0;
+                @endphp
+
+                {{-- Rata-rata rating --}}
+                <div class="mt-5 mb-10 text-xl font-semibold text-yellow-500">
+                    Rata-rata Rating: ⭐ {{ $averageRating }} / 5 ({{ $ratingCount }} ulasan)
+                </div>
+
+                {{-- Daftar review --}}
+                <div class="space-y-6">
+                    @forelse ($reviews as $review)
+                        <div class="p-5 bg-white border rounded-xl shadow">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h2 class="text-lg font-semibold">{{ $review->user->name ?? 'Pengguna Tidak Diketahui' }}</h2>
+                                    <p class="text-sm text-gray-500">Rating: ⭐ {{ $review->rating }}</p>
+                                </div>
+                                <span class="text-sm text-gray-400">{{ $review->created_at->diffForHumans() }}</span>
+                            </div>
+                            <p class="mt-2 text-gray-700">{{ $review->review }}</p>
+                        </div>
+                    @empty
+                        <div class="py-8 text-center text-gray-500">
+                            <p>Belum ada ulasan untuk cafe ini.</p>
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+
             {{-- button booking --}}
             <div class="relative">
                 <x-home.waves-svg-top />

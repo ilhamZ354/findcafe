@@ -84,7 +84,7 @@
                                                     </svg>
                                                 </div>
                                                 <span
-                                                    class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-smms-3">5.0</span>
+                                                    class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-smms-3">{{ $cafe->avg_rating }}</span>
                                             </div>
                                             <div class="flex items-center justify-end">
                                                 <a href="{{ route('detail-cafe', $cafe->cafe_id) }}"

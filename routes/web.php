@@ -8,6 +8,7 @@ use App\Http\Controllers\CafeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\RatingReviewController;
 
 // ============AUTH===========
 Route::get('/', [AuthController::class, 'index'])->name('login');
@@ -70,19 +71,18 @@ Route::middleware('auth')->group(
         Route::put('transaksi/pay/status', [TransactionController::class, 'updateStatusTransaksi'])->name('transaksi-user.update-status');
         // Route::post('/payment/midtrans-callback', [App\Http\Controllers\PaymentController::class, 'midtransCallback']);
         Route::get('/menu-cafe/{id}', [MenuController::class, 'listMenuUser'])->name('menu-cafe');
+        
+        // rating dan review
+        Route::post('/transaksi/rating-review/{cafe_id}', [RatingReviewController::class, 'store'])->name('rating-review.store');
         Route::get('/bookmark/{id}', function ($id) {
             return view('pages.bookmark', compact('id'));
         })->name('bookmark');
         Route::get('/profile/{id}', function ($id) {
             return view('pages.profile', compact('id'));
         })->name('profile');
-        // Route::get('/chat-cafe/{id}', function ($id) {
-        //     return view('pages.chat', compact('id'));
-        // })->name('chat-cafe');
         Route::get('/chat-cafe/{toUserId}', function ($toUserId) {
             return view('pages.chat', ['toUserId' => $toUserId]);
         })->name('chat-cafe');
-        // Route::get('/chat-cafe/{toUserId}', ChatRoom::class)->name('chat-cafe');
 
     }
 );

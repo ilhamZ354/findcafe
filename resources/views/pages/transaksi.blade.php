@@ -80,10 +80,11 @@
                                         <button type="button"
                                             class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-1.5 text-center me-2 mb-2 ">Batalkan</button>
                                     @elseif ($transaction->status == 'processing')
-                                        <button type="button"
+                                        <button type="button" data-modal-target="rating-modal" data-modal-toggle="rating-modal"
                                             {{ \Carbon\Carbon::parse($transaction->tgl_booking)->lt(now()->startOfDay()) ? '' : 'disabled' }}
                                             class="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-50 font-medium rounded-lg text-sm px-4 py-1.5 text-center me-2 mb-2 disabled:opacity-50 disabled:cursor-not-allowed">Review
-                                            & Rating</button>
+                                            & Rating
+                                        </button>
                                     @endif
                                 </td>
                             </tr>
@@ -114,6 +115,8 @@
         <span class="sr-only">Loading...</span>
     </div>
 </x-home.layout>
+
+@include('components.modal.user.rating-review', ['cafe_id' => $transaction->cafe_id])
 
 <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}">
 </script>
