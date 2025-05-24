@@ -2,15 +2,20 @@
     class="flex flex-col justify-between h-[calc(100vh-5.5rem)] w-full max-h-[calc(100vh-5.5rem)] px-10 pb-1 mx-auto mb-3">
 
     {{-- Container chat dengan polling setiap 3 detik --}}
-    <div id="chat-container" x-data x-init="$nextTick(() => { $refs.chat.scrollTop = $refs.chat.scrollHeight })" x-ref="chat" wire:poll.100ms="getMessages"
-        class="h-[calc(100vh-9.5rem)] overflow-y-auto hide-scrollbar">
+    <div id="chat-container" wire:poll.100ms="getMessages" class="h-[calc(100vh-9.5rem)] overflow-y-auto hide-scrollbar">
         @foreach ($messages as $message)
             <div wire:key="message-text-{{ $loop->index }}"
                 class="chat {{ $message['is_mine'] ? 'chat-end' : 'chat-start' }}">
+
+                @php
+                    $profileSrc = $message['is_mine']
+                        ? $userImage ?? asset('images/profile-default.png')
+                        : $cafeImage ?? asset('images/profile-default.png');
+                @endphp
+
                 <div class="chat-image avatar">
                     <div class="w-10 rounded-full">
-                        <img alt="Tailwind CSS chat bubble component"
-                            src="{{ $message['is_mine'] ? asset('images/profile-default.png') : $cafeImage }}" />
+                        <img alt="profile" src="{{ $profileSrc }}" />
                     </div>
                 </div>
                 <div class="chat-header">
@@ -30,7 +35,7 @@
         <textarea wire:key="message-text-{{ $messageKey }}" wire:model.defer="messageText"
             wire:keydown.enter.prevent="sendMessage" wire:keydown.shift.enter="" rows="1"
             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300"
-            placeholder="Type a message...">
+            placeholder="Type a message..." autofocus>
     </textarea>
 
         <button type="submit"
@@ -45,13 +50,20 @@
 </main>
 
 <script>
+    let lastMessageCount = 0;
     setInterval(() => {
-        const el = document.getElementById('scroll-anchor');
-        if (el) {
-            el.scrollIntoView({
-                behavior: 'smooth',
-                block: 'end'
-            });
+        const container = document.getElementById('chat-container');
+        const anchor = document.getElementById('scroll-anchor');
+
+        if (container && anchor) {
+            const currentCount = container.children.length;
+            if (currentCount > lastMessageCount) {
+                anchor.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'end'
+                });
+                lastMessageCount = currentCount;
+            }
         }
-    }, 100);
+    }, 300);
 </script>

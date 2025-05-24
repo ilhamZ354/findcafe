@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Chat;
+use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 
@@ -13,11 +14,14 @@ class ChatRoom extends Component
     public $messageText = '';
     public $toUserId;
     public $cafeImage;
+    public $userImage;
     public int $messageKey = 0;
 
-    #[On('refreshMessages')]
+    // #[On('refreshMessages')]
     public function getMessages()
     {
+        Logger('getMessages');
+
         $chats = Chat::with('sender')
             ->where(function ($q) {
                 $q->where('from_user_id', Auth::id())
@@ -43,12 +47,14 @@ class ChatRoom extends Component
         })->toArray();
     }
 
-    public function mount($toUserId, $cafeImage)
+    public function mount($toUserId, $cafeImage = null, $userImage = null)
     {
         $this->toUserId = $toUserId;
         $this->cafeImage = $cafeImage;
+        $this->userImage = $userImage;
         $this->getMessages();
     }
+
 
     public function sendMessage()
     {
@@ -66,13 +72,14 @@ class ChatRoom extends Component
         $this->getMessages();
 
         // Scroll ke bawah setelah kirim pesan
-        $this->dispatch('messageSent');
+        $this->dispatch('messageAdded');
     }
 
     public function render()
     {
         return view('livewire.chat-room', [
-            'cafeImage' => $this->cafeImage
+            'cafeImage' => $this->cafeImage,
+            'userImage' => $this->userImage
         ]);
     }
 }

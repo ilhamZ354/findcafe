@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\CafeController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\MenuController;
@@ -60,6 +61,9 @@ Route::middleware('auth')->group(
         Route::get('/cafe/transaksi/edit/{id}', [TransactionController::class, 'editTransaksiCafe'])->name('cafe.transaksi.editTC');
         Route::put('/cafe/transaksi/update/{id}', [TransactionController::class, 'updateTransaksiCafe'])->name('cafe.transaksi.updateTC');
         Route::delete('/cafe/transaksi/delete/{id}', [TransactionController::class, 'destroyTransaksiCafe'])->name('cafe.transaksi.deleteTC');
+        // chat
+        Route::get('/cafe/list-chat', [ChatController::class, 'listChat'])->name('cafe.list-chat');
+        Route::get('/cafe/chat-cafe/{toUserId}', [ChatController::class, 'chatCafe'])->name('cafe.chat');
 
         // =============USER===========
         Route::get('/home', [CafeController::class, 'listCafes'])->name('home');
@@ -70,7 +74,6 @@ Route::middleware('auth')->group(
         Route::put('transaksi/pay/status', [TransactionController::class, 'updateStatusTransaksi'])->name('transaksi-user.update-status');
         Route::put('transaksi/cancel/{id}', [TransactionController::class, 'cancelTransaksi'])->name('transaksi-user.cancel');
         // Route::post('/payment/midtrans-callback', [App\Http\Controllers\PaymentController::class, 'midtransCallback']);
-        Route::get('/chat-cafe/{toUserId}', [CafeController::class, 'chatCafe'])->name('chat-cafe');
         Route::get('/menu-cafe/{id}', [MenuController::class, 'listMenuUser'])->name('menu-cafe');
         Route::get('/bookmark/{id}', function ($id) {
             return view('pages.bookmark', compact('id'));
@@ -78,5 +81,7 @@ Route::middleware('auth')->group(
         Route::get('/profile/{id}', function ($id) {
             return view('pages.profile', compact('id'));
         })->name('profile');
+        // chat
+        Route::get('/chat-cafe/{toUserId}', [ChatController::class, 'chatUser'])->name('chat-cafe');
     }
 );

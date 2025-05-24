@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\CafeDetail;
 use App\Models\Chat;
-use App\Models\User;
 use App\Models\RatingReview;
 use Illuminate\Validation\ValidationException;
 
@@ -167,19 +166,5 @@ class CafeController extends Controller
         // dd($data);
 
         return view('pages.detail-cafe', ['data' => $data, 'sum_notification' => $sum_notification]);
-    }
-
-    // go to chat cafe
-    public function chatCafe($toUserId)
-    {
-        // tandain terbaca dulu
-        Chat::where('from_user_id', $toUserId)
-            ->where('to_user_id', Auth::id())
-            ->where('is_read', false)
-            ->update(['is_read' => true]);
-
-
-        $cafe = User::where('id', $toUserId)->with('cafeDetail')->first();
-        return view('pages.chat', ['cafe' => $cafe]);
     }
 }
