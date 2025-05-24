@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\CafeDetail;
 use App\Models\RatingReview;
+use App\Models\Bookmark;
 use Illuminate\Validation\ValidationException;
 
 class CafeController extends Controller
@@ -173,5 +174,43 @@ class CafeController extends Controller
         // dd($data);
 
         return view('pages.detail-cafe', ['data' => $data]);
+    }
+
+    // simpan ke bookmark atau lepas dari bookmark
+    public function storeToBookmark ($id) {
+
+        try {
+            $user_id = Auth::id();
+
+            // Cek apakah bookmark sudah ada
+            $bookmark = Bookmark::where('cafe_id', $id)
+                                ->where('user_id', $user_id)
+                                ->first();
+
+            if ($bookmark) {
+                // Jika sudah ada, hapus
+                $bookmark->delete();
+
+                return redirect()->back()->with('error', 'Cafe telah kamu simpan sebelumnya, sekarang sudah tidak lagi');
+            } else {
+                // Jika belum, tambahkan
+                Bookmark::create([
+                    'cafe_id' => $id,
+                    'user_id' => $user_id
+                ]);
+
+                return redirect()->back()->with('success', 'Cafe berhasil disimpan ke bookmark');
+            }
+        } catch (ValidationException $e) {
+            // Tangkap error validasi dan redirect ke halaman sebelumnya 
+            return redirect()->back()->withInput();
+        } catch (\Exception $e) {
+            // Tangkap error dan gagalkan update
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Gagal menyimpan ke bookmark');
+        }
     }
 }
