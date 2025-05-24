@@ -48,6 +48,7 @@ class MenuController extends Controller
         return view('pages.menu-cafe', [
             'menus' => $menus,
             'type' => $tipe,
+            'cafe_id' => $cafe_id
         ]);
     }
 
