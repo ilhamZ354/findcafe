@@ -68,14 +68,13 @@ class MenuController extends Controller
     {
 
         try {
-            $image_menu = $request['image_menu'];
-
             // validasi data
             $validasi = $request->validate([
                 'name' => ['required', 'string', 'min:2'],
                 'type' => ['required', 'in:makanan,minuman'],
                 'harga' => ['required', 'string'],
                 'description' => ['required', 'string', 'min:3'],
+                'image_menu_input' => ['required', 'image', 'mimes:jpg,jpeg,png,svg'],
             ]);
 
             DB::beginTransaction();
@@ -89,8 +88,12 @@ class MenuController extends Controller
                     ->with('error', 'Cafe Detail tidak ditemukan!');
             }
 
+            if ($request->hasFile('image_menu_input')) {
+                $image_path = $request->file('image_menu_input')->store('menu-cafe_images', 'public');
+                $validasi['image'] = $image_path;
+            }
+
             $validasi['cafe_id'] = $cafe->cafe_id;
-            $validasi['image'] = $image_menu;
 
             Menu::create($validasi);
 
