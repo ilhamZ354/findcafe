@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\CafeDetail;
+use App\Models\Chat;
 use App\Models\RatingReview;
 use App\Models\Bookmark;
 use Illuminate\Validation\ValidationException;
@@ -156,8 +157,21 @@ class CafeController extends Controller
 
     public function show($cafe)
     {
+        // cek apakah ada notif (pesan belum dibaca)
+        $sum_notification = Chat::where('to_user_id', Auth::id())
+            ->where('from_user_id', $cafe)
+            ->where('is_read', false)
+            ->count();
 
-        // dd($cafe);
+        // cek apakah cafe sudah pernah disimpan ke bookmark
+        $is_saved = false;
+        $bookmark = Bookmark::where('cafe_id', $cafe)
+                            ->where('user_id', Auth::id())
+                            ->first();
+        
+        if($bookmark){
+            $is_saved = true;
+        }
 
         $data = DB::table('users')
             ->join('cafe_details', 'users.id', '=', 'cafe_details.cafe_id')
@@ -173,7 +187,7 @@ class CafeController extends Controller
 
         // dd($data);
 
-        return view('pages.detail-cafe', ['data' => $data]);
+        return view('pages.detail-cafe', ['data' => $data, 'sum_notification' => $sum_notification, 'is_saved' => $is_saved]);
     }
 
     // simpan ke bookmark atau lepas dari bookmark
@@ -212,5 +226,47 @@ class CafeController extends Controller
                 ->withInput()
                 ->with('error', 'Gagal menyimpan ke bookmark');
         }
+    }
+
+    // menampilkan list bookmarks
+    public function listBookmark () {
+        
+        $user_id = Auth::id();
+
+        // Ambil semua cafe_id dari bookmarks
+        $saves = Bookmark::where('user_id', $user_id)->get();
+        $cafeIds = $saves->pluck('cafe_id')->toArray();
+
+        // Ambil data cafe yang cocok
+        $cafes = DB::table('users')
+            ->join('cafe_details', 'users.id', '=', 'cafe_details.cafe_id')
+            ->where('users.role', 'cafe')
+            ->whereIn('users.id', $cafeIds)
+            ->select(
+                'users.id as user_id',
+                'users.username',
+                'users.email',
+                'cafe_details.id as cafe_detail_id',
+                'cafe_details.*'
+            )
+            ->get();
+
+        // Tambahkan rata-rata rating (manual perhitungan: total_rating / total_review)
+        foreach ($cafes as $cafe) {
+            $ratingData = DB::table('rating_reviews')
+                ->where('cafe_id', $cafe->user_id)
+                ->selectRaw('SUM(rating) as total_rating, COUNT(*) as total_review')
+                ->first();
+
+            if ($ratingData->total_review > 0) {
+                $cafe->avg_rating = round($ratingData->total_rating / $ratingData->total_review, 1);
+            } else {
+                $cafe->avg_rating = 0;
+            }
+        }
+
+        // dd($cafes);
+
+        return view('pages.bookmark', ['data' => $cafes]);
     }
 }

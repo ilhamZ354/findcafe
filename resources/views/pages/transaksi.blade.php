@@ -77,8 +77,14 @@
 
 
                                         {{-- cancel button --}}
-                                        <button type="button"
-                                            class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-1.5 text-center me-2 mb-2 ">Batalkan</button>
+                                        <form id="formCancel-{{ $transaction->id }}"
+                                            action="{{ route('transaksi-user.cancel', $transaction->id) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="button" onclick="confirmCancel({{ $transaction->id }})"
+                                                class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-1.5 text-center me-2 mb-2 ">Batalkan</button>
+                                        </form>
                                     @elseif ($transaction->status == 'processing')
                                         <button type="button" data-modal-target="rating-modal" data-modal-toggle="rating-modal"
                                             {{ \Carbon\Carbon::parse($transaction->tgl_booking)->lt(now()->startOfDay()) ? '' : 'disabled' }}
@@ -99,6 +105,12 @@
                     <!-- Tambah baris data lainnya di sini -->
                 </tbody>
             </table>
+
+            @if (count($transactions) !== 0)
+                <div class="px-4 mt-7">
+                    {{ $transactions->links() }}
+                </div>
+            @endif
         </div>
     </div>
 
@@ -175,8 +187,8 @@
                 // Optional
                 onError: function(result) {
                     /// fetch perbarui status
-                    fetch('/transaksi/pay/status', {
-                            method: 'POST',
+                    fetch(`${window.location.origin}/transaksi/pay/status`, {
+                            method: 'PUT',
                             headers: {
                                 'Content-Type': 'application/json',
                                 'X-CSRF-TOKEN': document.querySelector(
@@ -185,18 +197,46 @@
                             },
                             body: JSON.stringify({
                                 result: result,
-                                statusTransaksi: 'failed'
+                                statusTransaksi: "failed"
                             })
                         })
                         .then(response => response.json())
                         .then(data => {
-                            window.location.href = `/transaksi?status=failed`;
+                            console.log(data);
+                            if (data.error) {
+                                window.location.href =
+                                    `/transaksi?status=error`;
+                            } else {
+                                window.location.href = `/transaksi?status=failed`;
+                            }
                         })
                         .catch(error => {
-                            window.location.href = `/transaksi?status=error`;
+                            console.log(error);
+                            window.location.href =
+                                `/transaksi?status=error`;
                         });
                 }
             });
         });
     });
+</script>
+<script>
+    function confirmCancel(transactionId) {
+        Swal.fire({
+            title: 'Batalkan Transaksi?',
+            text: 'Apakah Anda yakin ingin membatalkan transaksi ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            cancelButtonText: 'Batal',
+            confirmButtonText: 'Ya, batalkan',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = document.getElementById('formCancel-' + transactionId);
+
+                form.submit();
+            }
+        });
+    }
 </script>

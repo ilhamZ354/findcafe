@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\CafeController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\MenuController;
@@ -58,9 +59,14 @@ Route::middleware('auth')->group(
         // transaksi
         Route::get('/cafe/transaksi', [TransactionController::class, 'listTransactionForCafe'])->name('cafe.transaksi');
         Route::post('/cafe/transaksis', [TransactionController::class, 'storeTransaksiCafe'])->name('cafe.transaksi.store');
-        Route::get('/cafe/transaksi/edit/{id}', [TransactionController::class, 'editTransaksiCafe'])->name('cafe.transaksi.editTC');
-        Route::put('/cafe/transaksi/update/{id}', [TransactionController::class, 'updateTransaksiCafe'])->name('cafe.transaksi.updateTC');
-        Route::delete('/cafe/transaksi/delete/{id}', [TransactionController::class, 'destroyTransaksiCafe'])->name('cafe.transaksi.deleteTC');
+        // Route::get('/cafe/transaksi/edit/{id}', [TransactionController::class, 'editTransaksiCafe'])->name('cafe.transaksi.editTC');
+        // Route::put('/cafe/transaksi/update/{id}', [TransactionController::class, 'updateTransaksiCafe'])->name('cafe.transaksi.updateTC');
+        Route::delete('/cafe/transaksi/delete/{id}', [TransactionController::class, 'destroyTransaksiCafe'])->name('cafe.transaksi.delete');
+        Route::put('/cafe/transaksi/cancel/{id}', [TransactionController::class, 'cancelTransaksi'])->name('cafe.transaksi.cancel');
+        Route::put('/cafe/transaksi/finish/{id}', [TransactionController::class, 'finishTransaksi'])->name('cafe.transaksi.finish');
+        // chat
+        Route::get('/cafe/list-chat', [ChatController::class, 'listChat'])->name('cafe.list-chat');
+        Route::get('/cafe/chat-cafe/{toUserId}', [ChatController::class, 'chatCafe'])->name('cafe.chat');
 
         // =============USER===========
         Route::get('/home', [CafeController::class, 'listCafes'])->name('home');
@@ -68,15 +74,18 @@ Route::middleware('auth')->group(
         Route::post('/detail-cafe/booking/{id}', [TransactionController::class, 'storeTransaksi'])->name('store-transaksi');
         Route::get('/transaksi', [TransactionController::class, 'listTransactionForUser'])->name('transaksi-user');
         Route::put('/transaksi/{id}', [TransactionController::class, 'updateTransaksi'])->name('transaksi-user.update');
-        Route::put('transaksi/pay/status', [TransactionController::class, 'updateStatusTransaksi'])->name('transaksi-user.update-status');
+        Route::put('/transaksi/pay/status', [TransactionController::class, 'updateStatusTransaksi'])->name('transaksi-user.update-status');
+        Route::put('/transaksi/cancel/{id}', [TransactionController::class, 'cancelTransaksi'])->name('transaksi-user.cancel');
         // Route::post('/payment/midtrans-callback', [App\Http\Controllers\PaymentController::class, 'midtransCallback']);
         Route::get('/menu-cafe/{id}', [MenuController::class, 'listMenuUser'])->name('menu-cafe');
         
         // rating dan review
         Route::post('/transaksi/rating-review/{cafe_id}', [RatingReviewController::class, 'store'])->name('rating-review.store');
-        Route::get('/bookmark/{id}', function ($id) {
-            return view('pages.bookmark', compact('id'));
-        })->name('bookmark');
+        
+        // bookmarks
+        Route::get('/bookmark', [CafeController::class, 'listBookmark'])->name('bookmarks');
+        Route::post('/bookmark/{cafe_id}', [CafeController::class, 'storeToBookmark'])->name('bookmark.store');
+        
         Route::get('/profile/{id}', function ($id) {
             return view('pages.profile', compact('id'));
         })->name('profile');
@@ -84,5 +93,7 @@ Route::middleware('auth')->group(
             return view('pages.chat', ['toUserId' => $toUserId]);
         })->name('chat-cafe');
 
+        // chat
+        Route::get('/chat-cafe/{toUserId}', [ChatController::class, 'chatUser'])->name('chat-cafe');
     }
 );

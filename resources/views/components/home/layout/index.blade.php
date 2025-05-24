@@ -111,8 +111,26 @@
 
     <script defer src="{{ asset('tailadmin/build/bundle.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
-    {{-- <script src="sweetalert2.all.min.js"></script> --}}
 
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
+    @livewireScripts
+
+    <script>
+        function scrollToBottom() {
+            const chatBox = document.getElementById('chatBox');
+            if (chatBox) {
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        }
+
+        function handleSendMessage() {
+            // Tunggu 100ms supaya Livewire sempat update DOM
+            setTimeout(() => {
+                console.log('Scrolling to bottom...');
+                scrollToBottom();
+            }, 100);
+        }
+    </script>
 </body>
 
 </html>

@@ -22,7 +22,7 @@
             ]" />
 
             {{-- Harga --}}
-            <x-form.input-field name="harga" type="text" value="{{ old('harga') }}" label="Harga"
+            <x-form.input-field name="harga" type="number" value="{{ old('harga') }}" label="Harga"
                 placeholder="Masukkan harga menu" required />
         </div>
 

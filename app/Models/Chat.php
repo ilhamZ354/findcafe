@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Chat extends Model
 {
     protected $fillable = [
-        'from_user_id', 'to_user_id', 'message', 'is_read',
+        'from_user_id',
+        'to_user_id',
+        'message',
+        'is_read',
     ];
 
     public function sender()
@@ -20,4 +23,3 @@ class Chat extends Model
         return $this->belongsTo(User::class, 'to_user_id');
     }
 }
-

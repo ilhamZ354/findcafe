@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Chat;
+use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 
@@ -12,10 +13,20 @@ class ChatRoom extends Component
     public $messages = [];
     public $messageText = '';
     public $toUserId;
+    public $cafeImage;
+    public $userImage;
+    public int $messageKey = 0;
 
-    #[On('refreshMessages')]
+    // #[On('refreshMessages')]
     public function getMessages()
     {
+        // tandai telah dibaca
+        Chat::where('from_user_id', $this->toUserId)
+            ->where('to_user_id', Auth::id())
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
+
+        // ambil data
         $chats = Chat::with('sender')
             ->where(function ($q) {
                 $q->where('from_user_id', Auth::id())
@@ -36,15 +47,19 @@ class ChatRoom extends Component
                 'message' => $msg->message,
                 'is_mine' => $msg->from_user_id === Auth::id(),
                 'time' => $msg->created_at->format('H:i'),
+                'is_read' => $msg->is_read
             ];
         })->toArray();
     }
 
-    public function mount($toUserId)
+    public function mount($toUserId, $cafeImage = null, $userImage = null)
     {
         $this->toUserId = $toUserId;
+        $this->cafeImage = $cafeImage;
+        $this->userImage = $userImage;
         $this->getMessages();
     }
+
 
     public function sendMessage()
     {
@@ -56,15 +71,20 @@ class ChatRoom extends Component
             'message' => $this->messageText,
         ]);
 
+        // $this->reset('messageText');
         $this->messageText = '';
+        $this->messageKey++;
         $this->getMessages();
 
         // Scroll ke bawah setelah kirim pesan
-        $this->dispatch('messageSent');
+        $this->dispatch('messageAdded');
     }
 
     public function render()
     {
-        return view('livewire.chat-room');
+        return view('livewire.chat-room', [
+            'cafeImage' => $this->cafeImage,
+            'userImage' => $this->userImage
+        ]);
     }
 }

@@ -82,4 +82,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Bookmark::class);
     }
+
+    // relasi ke unread messages
+    public function unreadMessages()
+    {
+        return $this->hasMany(Chat::class, 'from_user_id', 'id')
+            ->where('is_read', false);
+    }
 }
