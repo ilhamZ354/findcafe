@@ -68,6 +68,7 @@ Route::middleware('auth')->group(
         Route::get('/transaksi', [TransactionController::class, 'listTransactionForUser'])->name('transaksi-user');
         Route::put('/transaksi/{id}', [TransactionController::class, 'updateTransaksi'])->name('transaksi-user.update');
         Route::put('transaksi/pay/status', [TransactionController::class, 'updateStatusTransaksi'])->name('transaksi-user.update-status');
+        Route::put('transaksi/cancel/{id}', [TransactionController::class, 'cancelTransaksi'])->name('transaksi-user.cancel');
         // Route::post('/payment/midtrans-callback', [App\Http\Controllers\PaymentController::class, 'midtransCallback']);
         Route::get('/menu-cafe/{id}', [MenuController::class, 'listMenuUser'])->name('menu-cafe');
         Route::get('/bookmark/{id}', function ($id) {
@@ -76,11 +77,6 @@ Route::middleware('auth')->group(
         Route::get('/profile/{id}', function ($id) {
             return view('pages.profile', compact('id'));
         })->name('profile');
-        // Route::get('/chat-cafe/{id}', function ($id) {
-        //     return view('pages.chat', compact('id'));
-        // })->name('chat-cafe');
         Route::get('/chat-cafe/{toUserId}', [CafeController::class, 'chatCafe'])->name('chat-cafe');
-        // Route::get('/chat-cafe/{toUserId}', ChatRoom::class)->name('chat-cafe');
-
     }
 );

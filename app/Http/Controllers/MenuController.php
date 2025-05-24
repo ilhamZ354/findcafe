@@ -48,6 +48,7 @@ class MenuController extends Controller
         return view('pages.menu-cafe', [
             'menus' => $menus,
             'type' => $tipe,
+            'cafe_id' => $cafe_id
         ]);
     }
 
@@ -71,21 +72,21 @@ class MenuController extends Controller
 
             // validasi data
             $validasi = $request->validate([
-                'name' => ['required','string','min:2'],
-                'type' => ['required','in:makanan,minuman'],
-                'harga' => ['required','string'],
-                'description' => ['required','string','min:3'],
+                'name' => ['required', 'string', 'min:2'],
+                'type' => ['required', 'in:makanan,minuman'],
+                'harga' => ['required', 'string'],
+                'description' => ['required', 'string', 'min:3'],
             ]);
-            
+
             DB::beginTransaction();
 
             $cafe = CafeDetail::where('cafe_id', Auth::id())->first();
 
             if (!$cafe) {
                 return redirect()
-                ->back()
-                ->withInput()
-                ->with('error', 'Cafe Detail tidak ditemukan!');
+                    ->back()
+                    ->withInput()
+                    ->with('error', 'Cafe Detail tidak ditemukan!');
             }
 
             $validasi['cafe_id'] = $cafe->cafe_id;
@@ -105,7 +106,7 @@ class MenuController extends Controller
             return redirect()
                 ->back()
                 ->withInput()
-                ->with('error', 'Gagal menambahkan menu'.$e->getMessage());
+                ->with('error', 'Gagal menambahkan menu' . $e->getMessage());
         }
     }
 
@@ -127,11 +128,11 @@ class MenuController extends Controller
         try {
             // validasi data
             $validasi = $request->validate([
-                'name' => ['required','string','min:2'],
-                'type' => ['required','in:makanan,minuman'],
-                'harga' => ['required','string'],
-                'image' => ['required','string'],
-                'description' => ['required','string','min:3'],
+                'name' => ['required', 'string', 'min:2'],
+                'type' => ['required', 'in:makanan,minuman'],
+                'harga' => ['required', 'string'],
+                'image' => ['required', 'string'],
+                'description' => ['required', 'string', 'min:3'],
             ]);
 
             if ($request->hasFile('image')) {

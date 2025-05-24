@@ -77,8 +77,14 @@
 
 
                                         {{-- cancel button --}}
-                                        <button type="button"
-                                            class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-1.5 text-center me-2 mb-2 ">Batalkan</button>
+                                        <form id="formCancel-{{ $transaction->id }}"
+                                            action="{{ route('transaksi-user.cancel', $transaction->id) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="button" onclick="confirmCancel({{ $transaction->id }})"
+                                                class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-1.5 text-center me-2 mb-2 ">Batalkan</button>
+                                        </form>
                                     @elseif ($transaction->status == 'processing')
                                         <button type="button"
                                             {{ \Carbon\Carbon::parse($transaction->tgl_booking)->lt(now()->startOfDay()) ? '' : 'disabled' }}
@@ -204,4 +210,24 @@
             });
         });
     });
+</script>
+<script>
+    function confirmCancel(transactionId) {
+        Swal.fire({
+            title: 'Batalkan Transaksi?',
+            text: 'Apakah Anda yakin ingin membatalkan transaksi ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ya, batalkan',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = document.getElementById('formCancel-' + transactionId);
+
+                form.submit();
+            }
+        });
+    }
 </script>

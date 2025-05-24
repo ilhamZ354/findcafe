@@ -288,6 +288,30 @@ class TransactionController extends Controller
         }
     }
 
+    // cancel transaksi
+    public function cancelTransaksi($id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $transaksi = Transaction::where('id', $id)->firstOrFail();
+            $transaksi->update([
+                'status' => 'failed'
+            ]);
+
+            $payment = Pembayaran::where('transaksi_id', $id)->firstOrFail();
+            $payment->update([
+                'status' => 'cancelled',
+            ]);
+
+            DB::commit();
+            return redirect()->route('transaksi-user')->with('success', 'Transaksi berhasil dibatalkan.');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat membatalkan transaksi.');
+        }
+    }
+
     public function destroyTransaksiCafe($id)
     {
         try {
