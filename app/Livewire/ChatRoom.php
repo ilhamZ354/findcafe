@@ -38,6 +38,7 @@ class ChatRoom extends Component
                 'message' => $msg->message,
                 'is_mine' => $msg->from_user_id === Auth::id(),
                 'time' => $msg->created_at->format('H:i'),
+                'is_read' => $msg->is_read
             ];
         })->toArray();
     }

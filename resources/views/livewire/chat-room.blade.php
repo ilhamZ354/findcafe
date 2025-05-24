@@ -17,7 +17,8 @@
                     <time class="text-xs opacity-50">{{ $message['time'] }}</time>
                 </div>
                 <div class="chat-bubble">{{ $message['message'] }}</div>
-                <div class="opacity-50 chat-footer">{{ $message['is_mine'] ? 'Terkirim' : 'Diterima' }}</div>
+                <div class="opacity-50 chat-footer">
+                    {{ $message['is_mine'] ? ($message['is_read'] ? 'Dibaca' : 'Belum dibaca') : 'Diterima' }}</div>
             </div>
         @endforeach
         {{-- ini akan ditarget scroll-nya --}}

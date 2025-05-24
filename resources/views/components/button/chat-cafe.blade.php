@@ -1,4 +1,4 @@
-@props(['cafe_id'])
+@props(['cafe_id', 'sum_notification'])
 
 <a href="{{ route('chat-cafe', $cafe_id) }}"
     class="fixed flex flex-col items-center justify-center w-20 h-20 text-sm font-medium text-center border-2 rounded-full shadow-2xl bottom-16 right-16 text-primaryBrown border-primaryBrown bg-lightPrimaryBrown backdrop-blur-md hover:text-white hover:bg-semiPrimaryBrown focus:ring-4 focus:outline-none focus:ring-lightPrimaryBrown">
@@ -9,4 +9,9 @@
     </svg>
 
     <span class="text-xs">Chat Cafe</span>
+    @if ($sum_notification > 0)
+        <div
+            class="absolute inline-flex items-center justify-center w-8 h-8 text-sm font-bold text-white bg-red-500 border-2 border-white rounded-full -top-1 -end-1">
+            {{ $sum_notification }}</div>
+    @endif
 </a>

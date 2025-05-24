@@ -70,6 +70,7 @@ Route::middleware('auth')->group(
         Route::put('transaksi/pay/status', [TransactionController::class, 'updateStatusTransaksi'])->name('transaksi-user.update-status');
         Route::put('transaksi/cancel/{id}', [TransactionController::class, 'cancelTransaksi'])->name('transaksi-user.cancel');
         // Route::post('/payment/midtrans-callback', [App\Http\Controllers\PaymentController::class, 'midtransCallback']);
+        Route::get('/chat-cafe/{toUserId}', [CafeController::class, 'chatCafe'])->name('chat-cafe');
         Route::get('/menu-cafe/{id}', [MenuController::class, 'listMenuUser'])->name('menu-cafe');
         Route::get('/bookmark/{id}', function ($id) {
             return view('pages.bookmark', compact('id'));
@@ -77,6 +78,5 @@ Route::middleware('auth')->group(
         Route::get('/profile/{id}', function ($id) {
             return view('pages.profile', compact('id'));
         })->name('profile');
-        Route::get('/chat-cafe/{toUserId}', [CafeController::class, 'chatCafe'])->name('chat-cafe');
     }
 );
