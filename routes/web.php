@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\ChatRoom;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UploadController;
@@ -81,6 +82,7 @@ Route::middleware('auth')->group(
         Route::get('/chat-cafe/{toUserId}', function ($toUserId) {
             return view('pages.chat', ['toUserId' => $toUserId]);
         })->name('chat-cafe');
+        // Route::get('/chat-cafe/{toUserId}', ChatRoom::class)->name('chat-cafe');
 
     }
 );
