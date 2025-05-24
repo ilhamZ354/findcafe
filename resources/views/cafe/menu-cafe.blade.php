@@ -33,6 +33,11 @@
                             </thead>
                             <tbody class="divide-y divide-gray-200">
                                 @foreach ($menus as $menu)
+                                    @php
+                                        $imagePath = Str::startsWith($menuItem->image, ['http://', 'https://'])
+                                            ? $menuItem->image
+                                            : asset('storage/' . $menuItem->image);
+                                    @endphp
                                     <tr class="hover:bg-gray-50">
                                         <td class="p-3 font-medium text-black dark:text-white">{{ $menu->type }}
                                         </td>
@@ -42,7 +47,7 @@
                                         </td>
                                         <td class="p-3 font-medium text-meta-3">{{ $menu->price }}</td>
                                         <td class="p-3">
-                                            <img src="{{ asset(path: 'storage/menu-cafe_images/' . $menu->image) }}"
+                                            <img src="{{ $imagePath }}" alt="{{ $menuItem->name }}"
                                                 alt="{{ $menu->name }}" class="w-16 h-16 object-cover rounded" />
                                         </td>
                                         <td class="p-3 sm:table-cell">
@@ -63,15 +68,15 @@
 
                                                     {{-- BUTTON UPDATE --}}
                                                     <a href="{{ route('cafe.menu.edit', $menu->id) }}" class="block">
-                                                    <x-dashboard.button-icon color="blue" text="Edit"
-                                                        method="PUT">
-                                                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg"
-                                                            fill="none" viewBox="0 0 24 24">
-                                                            <path stroke="currentColor" stroke-linecap="round"
-                                                                stroke-linejoin="round" stroke-width="2"
-                                                                d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28" />
-                                                        </svg>
-                                                    </x-dashboard.button-icon>
+                                                        <x-dashboard.button-icon color="blue" text="Edit"
+                                                            method="PUT">
+                                                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg"
+                                                                fill="none" viewBox="0 0 24 24">
+                                                                <path stroke="currentColor" stroke-linecap="round"
+                                                                    stroke-linejoin="round" stroke-width="2"
+                                                                    d="M10.779 17.779 4.36 19.918 6.5 13.5m4.279 4.279 8.364-8.643a3.027 3.027 0 0 0-2.14-5.165 3.03 3.03 0 0 0-2.14.886L6.5 13.5m4.279 4.279L6.499 13.5m2.14 2.14 6.213-6.504M12.75 7.04 17 11.28" />
+                                                            </svg>
+                                                        </x-dashboard.button-icon>
                                                     </a>
 
                                                     {{-- BUTTON DELETE --}}
@@ -102,8 +107,8 @@
 
     <!-- modal -->
     @include('components.modal.cafe.add-menu')
-    
-    @if (isset($menu)) 
+
+    @if (isset($menu))
         @include('components.modal.cafe.update-menu')
     @endif
 
