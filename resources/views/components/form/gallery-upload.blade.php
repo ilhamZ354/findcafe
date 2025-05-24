@@ -2,7 +2,6 @@
     'values' => [],
 ])
 
-
 <div id="galleryUploader" class="space-y-2">
     <label class="block text-sm font-medium text-gray-700">Gallery Foto</label>
 
@@ -19,7 +18,7 @@
 
     <!-- HASIL UPLOAD -->
     <div id="uploadedContainer" class="grid grid-cols-2 gap-3 pt-2 md:grid-cols-3">
-        @if (isset($values) && count($values) > 0)
+        @if (isset($values) && is_array($values) && count($values) > 0)
             @foreach ($values as $value)
                 <div class="relative overflow-hidden border rounded">
                     <img src="{{ $value }}" alt="gallery" class="object-cover w-full h-32">

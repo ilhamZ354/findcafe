@@ -15,7 +15,7 @@
                 <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
                     d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
             </svg>
-            <input type="file" name="image_menu_input" id="image_menu_input" class="hidden" accept="image/*">
+            <input type="file" name="image_menu_input" id="image_menu_input" class="absolute inset-0 opacity-0 cursor-pointer" accept="image/*">
         </label>
     </div>
     <input type="hidden" name="image_menu" id="image_menu_url" value="{{ $value }}" class="hidden"

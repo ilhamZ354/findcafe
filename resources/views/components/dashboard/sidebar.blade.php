@@ -28,8 +28,7 @@
                 <ul class="mb-6 flex flex-col gap-1.5">
                     <!-- Menu Item Dashboard -->
                     <li>
-                        <x-dashboard.item-template href="{{ route('dashboard') }}" label="Dashboard"
-                            selected="Dashboard">
+                        <x-dashboard.item-template href="{{ route('dashboard') }}" label="Dashboard">
                             <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -52,8 +51,7 @@
                     @if (Auth::user()->role == 'super-admin')
                         <!-- Menu Cafe -->
                         <li>
-                            <x-dashboard.item-template href="{{ route('superadmin.cafe') }}" label="Cafe"
-                                selected="Cafe">
+                            <x-dashboard.item-template href="{{ route('superadmin.cafe') }}" label="Cafe">
                                 <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -65,8 +63,7 @@
 
                         <!-- Menu users -->
                         <li>
-                            <x-dashboard.item-template href="{{ route('superadmin.users') }}" label="Users"
-                                selected="Users">
+                            <x-dashboard.item-template href="{{ route('superadmin.users') }}" label="Users">
                                 <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
@@ -77,8 +74,7 @@
 
                         <!-- Menu Transaction -->
                         <li>
-                            <x-dashboard.item-template href="{{ route('superadmin.transaksi') }}" label="Transaksi"
-                                selected="Transaksi">
+                            <x-dashboard.item-template href="{{ route('superadmin.transaksi') }}" label="Transaksi">
                                 <svg class="w-6 h-6 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -94,8 +90,7 @@
                     @if (Auth::user()->role == 'cafe')
                         {{-- menu data cafe --}}
                         <li>
-                            <x-dashboard.item-template href="{{ route('cafe.data-cafe') }}" label="Data Cafe"
-                                selected="Data Cafe">
+                            <x-dashboard.item-template href="{{ route('cafe.data-cafe') }}" label="Data Cafe">
                                 <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -108,8 +103,7 @@
 
                         {{-- menu menus cafe --}}
                         <li>
-                            <x-dashboard.item-template href="{{ route('cafe.menu') }}" label="Menu Cafe"
-                                selected="Menu Cafe">
+                            <x-dashboard.item-template href="{{ route('cafe.menu') }}" label="Menu Cafe">
                                 <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -122,8 +116,7 @@
 
                         {{-- transaksi cafe --}}
                         <li>
-                            <x-dashboard.item-template href="{{ route('cafe.transaksi') }}" label="Transaksi Cafe"
-                                selected="Transaksi Cafe">
+                            <x-dashboard.item-template href="{{ route('cafe.transaksi') }}" label="Transaksi Cafe">
                                 <svg class="w-6 h-6 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
