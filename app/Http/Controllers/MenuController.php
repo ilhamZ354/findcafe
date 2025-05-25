@@ -107,10 +107,7 @@ class MenuController extends Controller
     public function store(Request $request)
     {
 
-        // dd($request);
-
         try {
-
             $image = $request['image_menu'];
 
             // validasi data
@@ -173,7 +170,7 @@ class MenuController extends Controller
             $validasi = $request->validate([
                 'name' => ['required', 'string', 'min:2'],
                 'type' => ['required', 'in:makanan,minuman'],
-                'price' => ['required', 'string'],
+                'harga' => ['required', 'string'],
                 'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,svg'],
                 'description' => ['required', 'string', 'min:3'],
             ]);

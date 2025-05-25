@@ -10,8 +10,8 @@
                 placeholder="Masukkan nama menu" required />
 
             {{-- Deskripsi --}}
-            <x-form.input-field name="description" value="{{ $menu->description }}" label="Deskripsi"
-                placeholder="Deskripsi menu" required />
+            <x-form.input-field name="description" value="{{ $menu->description }}"
+                label="Deskripsi (Max. 100 karakter)" placeholder="Deskripsi menu" required />
 
             {{-- Gambar --}}
             <x-form.input-field name="image" type="file" label="Ganti Gambar (kosongkan jika tidak diubah)"
@@ -25,7 +25,7 @@
                 value="{{ $menu->type }}" />
 
             {{-- Harga --}}
-            <x-form.input-field name="price" type="number" value="{{ $menu->harga }}" label="Harga"
+            <x-form.input-field name="harga" type="number" value="{{ $menu->harga }}" label="Harga"
                 placeholder="Masukkan harga menu" required />
         </div>
 

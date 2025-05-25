@@ -18,7 +18,7 @@ class TransactionController extends Controller
     // view transaksi untuk superadmin
     public function index()
     {
-        $transactions = Transaction::with(['user', 'cafe'])->paginate(20);
+        $transactions = Transaction::with(['user', 'cafe', 'payments'])->paginate(20);
 
         return view('superadmin.transaksi', compact('transactions'));
     }

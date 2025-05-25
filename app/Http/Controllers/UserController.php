@@ -125,8 +125,10 @@ class UserController extends Controller
         try {
             $validasi = $request->validate([
                 'username' => ['required', 'string'],
+                'name' => ['required', 'string'],
                 'email' => ['required', 'string', 'email'],
                 'no_wa' => ['required', 'string', 'min:11'],
+                'password' => ['required', 'string', 'min:8'],
             ]);
 
             $user = User::findOrFail($id);
@@ -166,6 +168,7 @@ class UserController extends Controller
                 'name' => ['required', 'string'],
                 'email' => ['required', 'string', 'email'],
                 'no_wa' => ['required', 'string', 'min:11'],
+                'password' => ['required', 'string', 'min:8'],
             ]);
 
             $user = User::findOrFail($id);

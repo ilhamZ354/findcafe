@@ -48,12 +48,14 @@
                                                     {{ $transaction->name }}</td>
                                                 <td class="p-3 font-medium text-black">
                                                     {{ $transaction->catatan }}</td>
-                                                <td class="p-3 font-medium text-meta-3">{{ $transaction->nominal }}</td>
+                                                <td class="p-3 font-medium text-meta-3">Rp
+                                                    {{ number_format($transaction->nominal, 0, ',', '.') }}</td>
                                                 <td class="p-3 font-medium text-black sm:table-cell">
                                                     {{ $transaction->tgl_booking->format('d F Y') }}</td>
                                                 <td class="p-3 font-medium text-black">
                                                     {{ $transaction->status }}</td>
-                                                <td class="p-3 font-medium text-meta-3">{{ $transaction->snap_token }}
+                                                <td class="p-3 font-medium text-meta-3">
+                                                    {{ $transaction->payments->snap_token }}
                                                 </td>
                                                 </td>
                                                 <td class="p-3 sm:table-cell">
