@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Menu;
+use App\Models\Chat;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -43,21 +44,39 @@ class MenuController extends Controller
 
     public function listMenuUser(Request $request, $cafe_id)
     {
+        // ambil dulu id detail cafe
+        $cafe = CafeDetail::where('cafe_id', $cafe_id)->first();
+        if (!$cafe) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Cafe Detail tidak ditemukan!');
+        }
+
         // get semua menu
-        $query = Menu::where('cafe_id', $cafe_id);
+        $query = Menu::where('cafe_id', $cafe->id);
 
         // apakah ada dicari tipe
         $tipe = $request->query('type');
-        if ($tipe) {
-            $query = Menu::where('type', $tipe);
+        if ($tipe && $tipe !== "All") {
+            $query = Menu::where('type', $tipe)->where('cafe_id', $cafe->id);
         }
 
         $menus = $query->get();
 
+        // parameter chat
+        $sum_notification = Chat::where('to_user_id', Auth::id())
+            ->where('from_user_id', $cafe_id)
+            ->where('is_read', false)
+            ->count();
+
+        // dd($menus);
+
         return view('pages.menu-cafe', [
             'menus' => $menus,
             'type' => $tipe,
-            'cafe_id' => $cafe_id
+            'cafe_id' => $cafe_id,
+            'sum_notification' => $sum_notification,
         ]);
     }
 
@@ -88,14 +107,18 @@ class MenuController extends Controller
     public function store(Request $request)
     {
 
+        // dd($request);
+
         try {
+
+            $image = $request['image_menu'];
+
             // validasi data
             $validasi = $request->validate([
                 'name' => ['required', 'string', 'min:2'],
                 'type' => ['required', 'in:makanan,minuman'],
                 'harga' => ['required', 'string'],
                 'description' => ['required', 'string', 'min:3'],
-                'image_menu_input' => ['required', 'image', 'mimes:jpg,jpeg,png,svg'],
             ]);
 
             DB::beginTransaction();
@@ -109,13 +132,8 @@ class MenuController extends Controller
                     ->with('error', 'Cafe Detail tidak ditemukan!');
             }
 
-            if ($request->hasFile('image_menu_input')) {
-                $image_path = $request->file('image_menu_input')->store('menu-cafe_images', 'public');
-                $validasi['image'] = $image_path;
-            }
-
             $validasi['cafe_id'] = $cafe->id;
-
+            $validasi['image'] = $image;
 
             Menu::create($validasi);
 

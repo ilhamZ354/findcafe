@@ -1,5 +1,5 @@
 @php
-    $typeMenus = ['All', 'Makanan', 'Minuman'];
+    $typeMenus = ['All', 'makanan', 'minuman'];
 
     // identify cafe_id
     $path = request()->path();
@@ -22,10 +22,12 @@
             <label for="typeMenus" class="block mb-2 text-sm font-medium text-primaryBrown md:mx-5">
                 Jenis Menu
             </label>
-            <select id="typeMenus" name="typeMenus" onchange="this.form.submit()"
+            <select id="type" name="type" onchange="this.form.submit()"
                 class="block px-3 py-2 border rounded-md shadow-sm w-44 text-primaryBrown border-primaryBrown focus:ring-4 focus:outline-none focus:ring-lightPrimaryBrown">
                 @foreach ($typeMenus as $typeMenu)
-                    <option value="{{ $typeMenu }}">{{ $typeMenu }}</option>
+                    <option value="{{ $typeMenu }}"
+                        {{ $typeMenu == request('type') ? 'selected' : '' }}>{{ $typeMenu }}
+                    </option>
                 @endforeach
             </select>
         </form>
@@ -55,6 +57,8 @@
         </div>
 
         {{-- chat cafe --}}
-        <x-button.chat-cafe cafe_id="{{ $cafe_id }}"></x-button.chat-cafe>
+        <x-button.chat-cafe cafe_id="{{ $cafe_id }}"
+            sum_notification="{{ $sum_notification }}">
+        </x-button.chat-cafe>
     </div>
 </x-home.layout>

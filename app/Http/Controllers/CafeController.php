@@ -205,7 +205,7 @@ class CafeController extends Controller
                 // Jika sudah ada, hapus
                 $bookmark->delete();
 
-                return redirect()->back()->with('error', 'Cafe telah kamu simpan sebelumnya, sekarang sudah tidak lagi');
+                return redirect()->back()->with('success', 'Cafe telah kamu simpan sebelumnya, sekarang sudah tidak lagi');
             } else {
                 // Jika belum, tambahkan
                 Bookmark::create([

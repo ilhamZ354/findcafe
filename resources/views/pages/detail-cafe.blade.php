@@ -51,7 +51,7 @@
 
                 {{-- Location --}}
                 <div class="flex flex-col items-center justify-center">
-                    <a href="https://www.google.com/maps?q={{ $data->location }}" target="_blank"
+                    <a href="{{ $data->location }}" target="_blank"
                         class="block p-3 border rounded-full text-primaryBrown border-primaryBrown hover:bg-semiPrimaryBrown focus:ring-4 focus:outline-none focus:ring-lightPrimaryBrown">
                         <svg class="w-6 h-6 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                             height="24" fill="none" viewBox="0 0 24 24">
@@ -186,7 +186,8 @@
 
         {{-- chat cafe --}}
         <x-button.chat-cafe cafe_id="{{ $data->cafe_id }}"
-            sum_notification="{{ $sum_notification }}"></x-button.chat-cafe>
+            sum_notification="{{ $sum_notification }}">
+        </x-button.chat-cafe>
     </div>
 </x-home.layout>
 
