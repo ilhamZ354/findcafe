@@ -102,7 +102,7 @@
                                                                     @method('PUT')
                                                                     <button type="submit"
                                                                         onclick="confirmSelesai({{ $transaction->id }})"
-                                                                        {{ \Carbon\Carbon::parse($transaction->tgl_booking)->lt(now()->startOfDay()) ? '' : 'disabled' }}
+                                                                        {{ \Carbon\Carbon::parse($transaction->tgl_booking)->gt(now()) ? 'disabled' : '' }}
                                                                         class="flex items-center w-full px-4 py-2 text-sm text-green-500 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-white">
                                                                         <svg class="w-6 h-6" aria-hidden="true"
                                                                             xmlns="http://www.w3.org/2000/svg"
