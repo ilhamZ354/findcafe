@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -43,7 +41,7 @@ class AuthController extends Controller
                 }
             }
 
-            return redirect()->route('login')->withInput()->withInput()->with('error', 'Email atau password salah');
+            return redirect()->route('login')->withInput()->with('error', 'Email atau password salah');
         } catch (\Exception $e) {
             return redirect()->route('login')->withInput()->with('error', 'Email atau password salah');
         }

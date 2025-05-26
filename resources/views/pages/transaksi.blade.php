@@ -103,7 +103,6 @@
                             </td>
                         </tr>
                     @endif
-                    <!-- Tambah baris data lainnya di sini -->
                 </tbody>
             </table>
 

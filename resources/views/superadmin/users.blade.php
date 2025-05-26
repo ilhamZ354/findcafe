@@ -1,11 +1,11 @@
 @section('title-header', 'Users')
 
 <x-dashboard.layout>
-    <!-- ===== Main Content Start ===== -->
+    <!-- ===== Main Content ===== -->
     <main>
         <div class="p-4 mx-auto max-w-screen-2xl md:p-6 2xl:p-10">
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-                <!-- ====== Table Daftar User Start -->
+                <!-- ====== Table Daftar User -->
                 <div x-data="{
                     openModal: false,
                     openEditModal: {{ isset($showEditModal) && $showEditModal ? 'true' : 'false' }},
@@ -15,8 +15,6 @@
                         class="rounded-xl border border-stroke bg-white px-5 pb-10 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-5 -z-10">
                         <div class="flex items-center justify-between mb-6">
                             <h4 class="text-xl font-bold text-black">Daftar Pengguna</h4>
-                            {{-- <button data-modal-target="add-user" data-modal-toggle="add-user"
-                                class="px-4 py-2 text-white rounded-lg bg-primary">Tambah</button> --}}
                         </div>
 
 
@@ -115,8 +113,6 @@
     </main>
     <!-- ===== Main Content End ===== -->
 
-    <!-- modal -->
-    {{-- @include('components.modal.superadmin.add-user') --}}
     @include('components.modal.superadmin.update-user')
 
     @if (isset($showEditModal) && $showEditModal)
@@ -126,7 +122,7 @@
                 const modal = new Modal(updateModal);
                 modal.show();
 
-                // Focus on first input when modal opens
+                //focus ke input ketika modal aktif
                 updateModal.addEventListener('shown.bs.modal', function() {
                     document.getElementById('update-name').focus();
                 });

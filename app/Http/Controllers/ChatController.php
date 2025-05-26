@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CafeDetail;
 use App\Models\Chat;
 use App\Models\User;
+use App\Models\CafeDetail;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 
 class ChatController extends Controller
 {
 
-    // go to chat user
+    // menampilkan chat untuk user
     public function chatUser($toUserId)
     {
         // tandain terbaca dulu

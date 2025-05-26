@@ -121,7 +121,7 @@
                         </div>
                     @empty
                         <div class="py-8 text-center text-gray-500 col-span-full">
-                            <p>No gallery images available</p>
+                            <p>Tidak ada gambar galleri yang tersedia.</p>
                         </div>
                     @endforelse
                 </div>

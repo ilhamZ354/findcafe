@@ -1,11 +1,11 @@
 @php
     $typeMenus = ['All', 'makanan', 'minuman'];
 
-    // identify cafe_id
+    // mengambil cafe id
     $path = request()->path();
     $cafeId = substr($path, strrpos($path, '/') + 1);
 
-    // get type from url
+    // mengambil type dari url
     $currentType = request()->query('type');
 @endphp
 
@@ -51,7 +51,7 @@
                 </div>
             @empty
                 <div class="col-span-3 p-10 text-center text-gray-500">
-                    <p>No menu items available.</p>
+                    <p>Tidak ada menu yang  tersedia.</p>
                 </div>
             @endforelse
         </div>

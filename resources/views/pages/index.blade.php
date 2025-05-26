@@ -1,5 +1,7 @@
+{{-- landing page --}}
 <x-home.layout title="Home">
     @php
+        // data gambar untuk careusel
         $images = [
             asset('images/carousel/gambar-1.png'),
             asset('images/carousel/gambar-2.png'),

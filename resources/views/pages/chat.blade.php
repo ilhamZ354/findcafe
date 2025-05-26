@@ -1,3 +1,5 @@
+
+{{-- untuk tampilan chat di user --}}
 <x-home.layout title="Chat User" :footer="false" :navbar="false">
     <div class="flex items-center justify-center w-full h-screen bg-gray-700 bg-center bg-no-repeat bg-cover bg-blend-multiply"
         style="background-image: url('/images/background-cafe.jpg')" loading="lazy">

@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Menu;
 use App\Models\Chat;
+use App\Models\CafeDetail;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Storage;
-use App\Models\CafeDetail;
 
+// menampilkan list menu untuk cafe
 class MenuController extends Controller
 {
     public function listMenuCafe(Request $request)
@@ -42,6 +43,7 @@ class MenuController extends Controller
         ]);
     }
 
+    // list menu untuk user
     public function listMenuUser(Request $request, $cafe_id)
     {
         // ambil dulu id detail cafe
@@ -80,6 +82,7 @@ class MenuController extends Controller
         ]);
     }
 
+    // menamppilkan detail menu untuk cafe
     public function show($id)
     {
         // ambil dulu id detail cafe
@@ -98,11 +101,12 @@ class MenuController extends Controller
         $menus = Menu::where('cafe_id', $cafe->id)->get();
 
         return view('cafe.menu-cafe', [
-            'menus' => $menus,        // collection utk table
-            'menu' => $query,          // object utk modal
+            'menus' => $menus,   
+            'menu' => $query,         
             'showModalEdit' => true,
         ]);
     }
+
     // store data menu
     public function store(Request $request)
     {
@@ -138,7 +142,7 @@ class MenuController extends Controller
 
             return redirect()->back()->with('success', 'Menu berhasil ditambahkan.');
         } catch (ValidationException $e) {
-            return redirect()->back()->with('error', 'Gagal menambahkan menu!')->withErrors($e->validator)->withInput();
+            return redirect()->back()->with('error', 'Gagal menambahkan menu!')->withInput();
         } catch (\Exception $e) {
             // Tangkap error dan gagalkan store
             DB::rollBack();
@@ -146,21 +150,9 @@ class MenuController extends Controller
             return redirect()
                 ->back()
                 ->withInput()
-                ->with('error', 'Gagal menambahkan menu' . $e->getMessage());
+                ->with('error', 'Gagal menambahkan menu');
         }
     }
-
-    // edit data menu
-    // public function edit($id)
-    // {
-    //     // ambil data menu
-    //     $menu = Menu::findOrFail($id);
-
-    //     return view('menucafe.edit', [
-    //         'menu' => $menu,
-    //         'showModalEdit' => true,
-    //     ]);
-    // }
 
     // update data menu
     public function update(Request $request, $id)
@@ -197,7 +189,7 @@ class MenuController extends Controller
 
             return redirect()->route('cafe.menu')->with('success', 'Menu berhasil diubah.');
         } catch (ValidationException $e) {
-            return redirect()->back()->with('error', 'Gagal mengubah menu.')->withErrors($e->validator)->withInput();
+            return redirect()->back()->with('error', 'Gagal mengubah menu.')->withInput();
         } catch (\Exception $e) {
             // Tangkap error dan gagalkan update
             DB::rollBack();

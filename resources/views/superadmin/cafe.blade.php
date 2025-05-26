@@ -1,11 +1,11 @@
 @section('title-header', 'Cafe')
 
 <x-dashboard.layout>
-    <!-- ===== Main Content Start ===== -->
+    <!-- ===== Main Content ===== -->
     <main>
         <div class="p-4 mx-auto max-w-screen-2xl md:p-6 2xl:p-10">
             <div class="grid grid-cols-5">
-                <!-- ====== Table Daftar Cafe Start -->
+                <!-- ====== Table Daftar Cafe -->
                 <div x-data="{
                     openModal: false,
                     openEditModal: {{ isset($showEditModal) && $showEditModal ? 'true' : 'false' }},
@@ -100,11 +100,9 @@
                                             </td>
                                         </tr>
                                     @endforeach
-                                    <!-- Tambah baris data lainnya di sini -->
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -123,7 +121,7 @@
                 const modal = new Modal(updateModal);
                 modal.show();
 
-                // Focus on first input when modal opens
+                // fokus ke input ketika modal aktif
                 updateModal.addEventListener('shown.bs.modal', function() {
                     document.querySelector('#update-cafe input[name="username"]').focus();
                 });

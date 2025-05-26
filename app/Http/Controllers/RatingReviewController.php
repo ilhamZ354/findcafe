@@ -10,6 +10,7 @@ use Illuminate\Validation\ValidationException;
 
 class RatingReviewController extends Controller
 {
+    // simpang rating dan review
     public function store (Request $request, $id) {
         try {
 
@@ -17,7 +18,7 @@ class RatingReviewController extends Controller
 
             $validasi = $request->validate([
                 'rating' => ['required', 'integer'],
-                'review' => ['string', 'max:100'],
+                'review' => ['string'],
             ]);
 
             DB::beginTransaction();

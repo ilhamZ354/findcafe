@@ -7,12 +7,11 @@
             <h3 class="text-xl tracking-wide text-primaryBrown">Profile</h3>
         </div>
 
-
         <div>
             <div class="p-4 mx-auto max-w-screen-2xl md:p-6 2xl:p-10">
                 <div class="mx-auto">
 
-                    <!-- ====== Profile Section Start -->
+                    <!-- ====== Profile Section -->
                     <div class="overflow-hidden bg-white border rounded-xl border-stroke shadow-default">
                         <div class="relative z-20 h-35 md:h-65">
                             <img src="{{ asset('images/carousel/gambar-1.png') }}" alt="profile cover"
@@ -39,7 +38,7 @@
                         <span class="block mx-auto mb-3 text-sm italic font-light text-center text-grayTheme">Bergabung
                             sejak {{ Auth::user()->created_at->diffForHumans() }}</span>
                     </div>
-                    <!-- ====== Profile Section End -->
+                    <!-- ====== Profile Section -->
                 </div>
             </div>
         </div>

@@ -1,3 +1,5 @@
+
+{{-- modal form tambah akun cafe --}}
 <x-modal.modal-template id_modal="add-cafe" title_modal="Tambah Cafe">
     <!-- Modal body -->
     <form class="p-4 md:p-5" method="POST" action="{{ route('superadmin.cafe.store') }}">
@@ -26,9 +28,6 @@
             <x-form.input-field name="password" type="password" label="Password" showTogglePassword="true"
                 value="{{ $password ?? '' }}" placeholder="**********" required />
 
-            {{-- Konfirmasi Password --}}
-            {{-- <x-form.input-field name="confirm_password" type="password" label="Konfirmasi Password"
-                showTogglePassword="true" placeholder="**********" required /> --}}
         </div>
 
         {{-- Button Simpan --}}

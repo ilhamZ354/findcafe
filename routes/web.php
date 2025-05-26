@@ -52,22 +52,22 @@ Route::middleware('auth')->group(
 
         // ============= CAFE ===========
         Route::middleware(IsCafe::class)->group( function() {
-            // untuk data cafe
+            // untuk data detail cafe
             Route::post('/cafe', [CafeController::class, 'store'])->name('cafe.store');
             Route::get('/cafe/data-cafe', [CafeController::class, 'index'])->name('cafe.data-cafe');
             Route::put('/cafe/update/{id}', [CafeController::class, 'update'])->name('cafe.update');
-            // menu
+            // untuk data menu
             Route::get('/cafe/menu', [MenuController::class, 'listMenuCafe'])->name('cafe.menu');
             Route::post('/cafe/menu', [MenuController::class, 'store'])->name('cafe.menu.store');
             Route::get('/cafe/menu/edit/{id}', [MenuController::class, 'show'])->name('cafe.menu.edit');
             Route::put('/cafe/menu/update/{id}', [MenuController::class, 'update'])->name('cafe.menu.update');
             Route::delete('/cafe/menu/delete/{id}', [MenuController::class, 'destroy'])->name('cafe.menu.delete');
-            // transaksi
+            // untuk data transaksi
             Route::get('/cafe/transaksi', [TransactionController::class, 'listTransactionForCafe'])->name('cafe.transaksi');
-            Route::post('/cafe/transaksis', [TransactionController::class, 'storeTransaksiCafe'])->name('cafe.transaksi.store');
+            Route::post('/cafe/transaksi', [TransactionController::class, 'storeTransaksiCafe'])->name('cafe.transaksi.store');
             Route::delete('/cafe/transaksi/delete/{id}', [TransactionController::class, 'destroyTransaksiCafe'])->name('cafe.transaksi.delete');
             Route::put('/cafe/transaksi/finish/{id}', [TransactionController::class, 'finishTransaksi'])->name('cafe.transaksi.finish');
-            // chat
+            // chat di cafe
             Route::get('/cafe/list-chat', [ChatController::class, 'listChat'])->name('cafe.list-chat');
             Route::get('/cafe/chat-cafe/{toUserId}', [ChatController::class, 'chatCafe'])->name('cafe.chat');
 
@@ -78,17 +78,18 @@ Route::middleware('auth')->group(
             Route::get('/home', [CafeController::class, 'listCafes'])->name('home');
             Route::get('/detail-cafe/{id}', [CafeController::class, 'show'])->name('detail-cafe');
             Route::post('/detail-cafe/booking/{id}', [TransactionController::class, 'storeTransaksi'])->name('store-transaksi');
+            // untuk transaksi dan rating review
             Route::get('/transaksi', [TransactionController::class, 'listTransactionForUser'])->name('transaksi-user');
             Route::put('/transaksi/{id}', [TransactionController::class, 'updateTransaksi'])->name('transaksi-user.update');
             Route::put('/transaksi/pay/status', [TransactionController::class, 'updateStatusTransaksi'])->name('transaksi-user.update-status');
             Route::put('/transaksi/cancel/{id}', [TransactionController::class, 'cancelTransaksi'])->name('transaksi-user.cancel');
-            Route::get('/menu-cafe/{id}', [MenuController::class, 'listMenuUser'])->name('menu-cafe');
-            // rating dan review
             Route::post('/transaksi/rating-review/{cafe_id}', [RatingReviewController::class, 'store'])->name('rating-review.store');
+            // untuk list menu di user
+            Route::get('/menu-cafe/{id}', [MenuController::class, 'listMenuUser'])->name('menu-cafe');
             // bookmarks
             Route::get('/bookmark', [CafeController::class, 'listBookmark'])->name('bookmarks');
             Route::post('/bookmark/{cafe_id}', [CafeController::class, 'storeToBookmark'])->name('bookmark.store');
-            // profilee
+            // profile
             Route::get('/profile/{id}', function ($id) {
                 return view('pages.profile', compact('id'));
             })->name('profile');

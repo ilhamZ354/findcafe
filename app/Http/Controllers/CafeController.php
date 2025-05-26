@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Chat;
+use App\Models\Bookmark;
+use App\Models\CafeDetail;
+use App\Models\RatingReview;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Models\CafeDetail;
-use App\Models\Chat;
-use App\Models\RatingReview;
-use App\Models\Bookmark;
 use Illuminate\Validation\ValidationException;
 
 class CafeController extends Controller
@@ -65,7 +65,7 @@ class CafeController extends Controller
                 ->with('success', 'Data Cafe Berhasil Ditambahkan');
         } catch (ValidationException $e) {
             // Tangkap error validasi dan redirect ke halaman sebelumnya dengan membawa old input
-            return redirect()->back()->with('error', 'Gagal menambahkan data cafe')->withErrors($e->validator)->withInput();
+            return redirect()->back()->with('error', 'Gagal menambahkan data cafe')->withInput();
         } catch (\Exception $e) {
             // Tangkap error dan gagalkan store
             DB::rollBack();
@@ -92,7 +92,7 @@ class CafeController extends Controller
 
 
             $validasi = Validator::make($data, [
-                'description' => ['required', 'string', 'min:3', 'max:100'],
+                'description' => ['required', 'string', 'min:3'],
                 'image_profile' => ['required', 'string'],
                 'address' => ['required', 'string', 'min:5'],
                 'location' => ['required', 'string', 'min:10'],
@@ -109,7 +109,7 @@ class CafeController extends Controller
                 ->with('success', 'Data Cafe Berhasil Diubah');
         } catch (ValidationException $e) {
             // Tangkap error validasi dan redirect ke halaman sebelumnya dengan membawa old input
-            return redirect()->back()->withErrors($e->validator)->withInput();
+            return redirect()->back()->with('error', 'Gagal update data cafe')->withInput();
         } catch (\Exception $e) {
             // Tangkap error dan gagalkan update
 
@@ -123,6 +123,7 @@ class CafeController extends Controller
     // list cafe untuk user
     public function listCafes()
     {
+        // ambil data user dengan role cafe dan join kan cafe details
         $cafes = DB::table('users')
             ->join('cafe_details', 'users.id', '=', 'cafe_details.cafe_id')
             ->where('users.role', 'cafe')
@@ -155,6 +156,7 @@ class CafeController extends Controller
     }
 
 
+    // detail cafe untuk user
     public function show($cafe)
     {
         // cek apakah ada notif (pesan belum dibaca)
@@ -218,9 +220,9 @@ class CafeController extends Controller
             }
         } catch (ValidationException $e) {
             // Tangkap error validasi dan redirect ke halaman sebelumnya 
-            return redirect()->back()->withInput();
+            return redirect()->back()->withInput()->with('error', 'Gagal menyimpan ke bookmark');
         } catch (\Exception $e) {
-            // Tangkap error dan gagalkan update
+            // Tangkap error dan gagalkan store
 
             return redirect()
                 ->back()

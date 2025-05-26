@@ -1,4 +1,4 @@
-{{-- atas nama, nominal, catatan --}}
+{{-- modal form booking --}}
 
 <x-modal.modal-template id_modal="booking-modal" title_modal="Booking Cafe">
     <!-- Modal body -->
