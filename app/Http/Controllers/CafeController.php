@@ -128,7 +128,7 @@ class CafeController extends Controller
             ->where('users.role', 'cafe')
             ->select(
                 'users.id as user_id',
-                'users.username',
+                'users.name',
                 'users.email',
                 'cafe_details.id as cafe_detail_id',
                 'cafe_details.*'

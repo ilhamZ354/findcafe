@@ -76,7 +76,7 @@
 
                 {{-- data cafe --}}
                 <div>
-                    <h1 class="text-2xl font-bold text-center text-primaryBrown">{{ Auth::user()->username }}</h1>
+                    <h1 class="text-2xl font-bold text-center text-primaryBrown">{{ Auth::user()->name }}</h1>
                     <span
                         class="block mx-auto text-sm font-light text-center text-grayTheme">{{ Auth::user()->role }}</span>
 
