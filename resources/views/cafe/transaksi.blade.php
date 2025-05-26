@@ -59,7 +59,7 @@
 
                                             {{-- tanggal booking --}}
                                             <td class="p-3">
-                                                {{ $transaction->tgl_booking->format('d F Y') }}</td>
+                                                {{ $transaction->tgl_booking->format('d F Y H:i') }}</td>
 
                                             {{-- status --}}
                                             <td

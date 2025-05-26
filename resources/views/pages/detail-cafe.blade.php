@@ -69,22 +69,23 @@
                 <div class="flex flex-col items-center justify-center">
                     <form action="{{ route('bookmark.store', $data->cafe_id) }}" method="POST">
                         @csrf
-                        <button
-                            type="submit" class="p-3 border rounded-full text-primaryBrown border-primaryBrown hover:bg-semiPrimaryBrown focus:ring-4 focus:outline-none focus:ring-lightPrimaryBrown">
+                        <button type="submit"
+                            class="p-3 border rounded-full text-primaryBrown border-primaryBrown hover:bg-semiPrimaryBrown focus:ring-4 focus:outline-none focus:ring-lightPrimaryBrown">
 
                             {{-- Jika $is_save true, tampilkan ikon "mark", jika false tampilkan "unmark" --}}
                             @if ($is_saved)
                                 {{-- mark --}}
-                                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                                    height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                     <path
                                         d="M7.833 2c-.507 0-.98.216-1.318.576A1.92 1.92 0 0 0 6 3.89V21a1 1 0 0 0 1.625.78L12 18.28l4.375 3.5A1 1 0 0 0 18 21V3.889c0-.481-.178-.954-.515-1.313A1.808 1.808 0 0 0 16.167 2H7.833Z" />
                                 </svg>
                             @else
                                 {{-- unmark --}}
-                                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                                    height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2"
                                         d="m17 21-5-4-5 4V3.889a.92.92 0 0 1 .244-.629.808.808 0 0 1 .59-.26h8.333a.81.81 0 0 1 .589.26.92.92 0 0 1 .244.63V21Z" />
                                 </svg>
                             @endif
@@ -130,11 +131,15 @@
             <div class="px-5 pt-16 md:px-20 md:pt-20">
                 <div class="max-w-3xl">
                     <h1 class="text-4xl font-bold tracking-widest text-primaryBrown">Ulasan Pengunjung</h1>
-                    <span class="text-sm font-light tracking-wider text-grayTheme">Berikut adalah beberapa ulasan dari pengunjung yang pernah datang.</span>
+                    <span class="text-sm font-light tracking-wider text-grayTheme">Berikut adalah beberapa ulasan dari
+                        pengunjung yang pernah datang.</span>
                 </div>
 
                 @php
-                    $reviews = \App\Models\RatingReview::where('cafe_id', $data->cafe_id)->with('user')->latest()->get();
+                    $reviews = \App\Models\RatingReview::where('cafe_id', $data->cafe_id)
+                        ->with('user')
+                        ->latest()
+                        ->get();
                     $totalRating = $reviews->sum('rating');
                     $ratingCount = $reviews->count();
                     $averageRating = $ratingCount > 0 ? number_format($totalRating / $ratingCount, 1) : 0;
@@ -142,16 +147,17 @@
 
                 {{-- Rata-rata rating --}}
                 <div class="mt-5 mb-10 text-xl font-semibold text-yellow-500">
-                    Rata-rata Rating: ⭐ {{ $averageRating }} / 5 ({{ $ratingCount }} ulasan)
+                    Rating: ⭐ {{ $averageRating }} / 5 ({{ $ratingCount }} ulasan)
                 </div>
 
                 {{-- Daftar review --}}
                 <div class="space-y-6">
                     @forelse ($reviews as $review)
-                        <div class="p-5 bg-white border rounded-xl shadow">
+                        <div class="p-5 bg-white border shadow rounded-xl">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <h2 class="text-lg font-semibold">{{ $review->user->name ?? 'Pengguna Tidak Diketahui' }}</h2>
+                                    <h2 class="text-lg font-semibold">
+                                        {{ $review->user->name ?? 'Pengguna Tidak Diketahui' }}</h2>
                                     <p class="text-sm text-gray-500">Rating: ⭐ {{ $review->rating }}</p>
                                 </div>
                                 <span class="text-sm text-gray-400">{{ $review->created_at->diffForHumans() }}</span>
@@ -185,8 +191,7 @@
 
 
         {{-- chat cafe --}}
-        <x-button.chat-cafe cafe_id="{{ $data->cafe_id }}"
-            sum_notification="{{ $sum_notification }}">
+        <x-button.chat-cafe cafe_id="{{ $data->cafe_id }}" sum_notification="{{ $sum_notification }}">
         </x-button.chat-cafe>
     </div>
 </x-home.layout>

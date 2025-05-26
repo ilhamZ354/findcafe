@@ -33,7 +33,7 @@
                                         <div class="px-5 py-5">
                                             <a href="{{ route('detail-cafe', $cafe->cafe_id) }}">
                                                 <h5 class="text-xl font-semibold tracking-tight text-gray-900">
-                                                    {{ $cafe->username }}</h5>
+                                                    {{ $cafe->name }}</h5>
                                                 <p class="mt-2 text-sm text-grayTheme">
                                                     {{ Str::words($cafe->description, 20, '...') }}</p>
                                                 <p class="mt-2 text-sm text-lightGrayTheme">Lokasi : <span

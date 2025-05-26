@@ -37,7 +37,7 @@ class CafeController extends Controller
 
 
             $validasi = Validator::make($data, [
-                'description' => ['required', 'string', 'min:3', 'max:100'],
+                'description' => ['required', 'string', 'min:3'],
                 'image_profile' => ['required', 'string'],
                 'address' => ['required', 'string', 'min:5'],
                 'location' => ['required', 'string', 'min:10'],
@@ -166,10 +166,10 @@ class CafeController extends Controller
         // cek apakah cafe sudah pernah disimpan ke bookmark
         $is_saved = false;
         $bookmark = Bookmark::where('cafe_id', $cafe)
-                            ->where('user_id', Auth::id())
-                            ->first();
-        
-        if($bookmark){
+            ->where('user_id', Auth::id())
+            ->first();
+
+        if ($bookmark) {
             $is_saved = true;
         }
 
@@ -191,15 +191,16 @@ class CafeController extends Controller
     }
 
     // simpan ke bookmark atau lepas dari bookmark
-    public function storeToBookmark ($id) {
+    public function storeToBookmark($id)
+    {
 
         try {
             $user_id = Auth::id();
 
             // Cek apakah bookmark sudah ada
             $bookmark = Bookmark::where('cafe_id', $id)
-                                ->where('user_id', $user_id)
-                                ->first();
+                ->where('user_id', $user_id)
+                ->first();
 
             if ($bookmark) {
                 // Jika sudah ada, hapus
@@ -229,8 +230,9 @@ class CafeController extends Controller
     }
 
     // menampilkan list bookmarks
-    public function listBookmark () {
-        
+    public function listBookmark()
+    {
+
         $user_id = Auth::id();
 
         // Ambil semua cafe_id dari bookmarks
@@ -244,7 +246,7 @@ class CafeController extends Controller
             ->whereIn('users.id', $cafeIds)
             ->select(
                 'users.id as user_id',
-                'users.username',
+                'users.name',
                 'users.email',
                 'cafe_details.id as cafe_detail_id',
                 'cafe_details.*'

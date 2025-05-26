@@ -9,11 +9,11 @@
                 placeholder="Masukkan nama menu" required />
 
             {{-- Deskripsi --}}
-            <x-form.input-field name="description" value="{{ old('description') }}" label="Deskripsi"
-                placeholder="Deskripsi menu (opsional)" />
+            <x-form.input-field name="description" value="{{ old('description') }}"
+                label="Deskripsi (Max. 100 karakter)" placeholder="Deskripsi menu (opsional)" />
 
             {{-- Gambar --}}
-            <x-form.menu-image value="{{ old('image') }}"/>
+            <x-form.menu-image value="{{ old('image') }}" />
 
             {{-- Tipe --}}
             <x-form.select-field name="type" label="Tipe Menu" required :options="[
