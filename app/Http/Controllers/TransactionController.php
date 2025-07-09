@@ -53,6 +53,15 @@ class TransactionController extends Controller
         return view('pages.transaksi', compact('transactions'));
     }
 
+
+    // detail transaksi
+    public function detailTransaksi($id)
+    {
+        $transaction = Transaction::with(['user', 'cafe', 'payments'])->findOrFail($id);
+        return view('pages.transaksi-detail', compact('transaction'));
+    }
+
+
     // store transaksi untuk user
     public function storeTransaksi(MidtransService $midtransService, Request $request, $cafe)
     {
@@ -95,7 +104,9 @@ class TransactionController extends Controller
 
             DB::commit();
 
-            return redirect()->route('transaksi-user')->with('success', 'Transaksi berhasil ditambahkan.');
+            // return redirect()->route('transaksi-user')->with('success', 'Transaksi berhasil ditambahkan.');
+            // ke detail transaksi
+            return  redirect()->route('transaksi-user.detail', $transaksi->id)->with('success', 'Transaksi berhasil ditambahkan.');
         } catch (\Throwable $e) {
             DB::rollBack();
             return redirect()->back()->withInput()->with('error', 'Gagal menambahkan transaksi.');

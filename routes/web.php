@@ -32,7 +32,7 @@ Route::middleware('auth')->group(
         })->name('dashboard');
 
         // ============ SUPER ADMIN ===========
-        Route::middleware(IsSuperAdmin::class)->group( function() {
+        Route::middleware(IsSuperAdmin::class)->group(function () {
             // untuk data users
             Route::get('/superadmin/users', [UserController::class, 'listUsers'])->name('superadmin.users');
             Route::get('/superadmin/user/edit/{id}', [UserController::class, 'editUser'])->name('superadmin.user.edit');
@@ -51,7 +51,7 @@ Route::middleware('auth')->group(
         });
 
         // ============= CAFE ===========
-        Route::middleware(IsCafe::class)->group( function() {
+        Route::middleware(IsCafe::class)->group(function () {
             // untuk data detail cafe
             Route::post('/cafe', [CafeController::class, 'store'])->name('cafe.store');
             Route::get('/cafe/data-cafe', [CafeController::class, 'index'])->name('cafe.data-cafe');
@@ -70,16 +70,16 @@ Route::middleware('auth')->group(
             // chat di cafe
             Route::get('/cafe/list-chat', [ChatController::class, 'listChat'])->name('cafe.list-chat');
             Route::get('/cafe/chat-cafe/{toUserId}', [ChatController::class, 'chatCafe'])->name('cafe.chat');
-
         });
 
         // =============USER===========
-        Route::middleware(IsUser::class)->group( function() {
+        Route::middleware(IsUser::class)->group(function () {
             Route::get('/home', [CafeController::class, 'listCafes'])->name('home');
             Route::get('/detail-cafe/{id}', [CafeController::class, 'show'])->name('detail-cafe');
             Route::post('/detail-cafe/booking/{id}', [TransactionController::class, 'storeTransaksi'])->name('store-transaksi');
             // untuk transaksi dan rating review
             Route::get('/transaksi', [TransactionController::class, 'listTransactionForUser'])->name('transaksi-user');
+            Route::get('/transaksi/detail/{id}', [TransactionController::class, 'detailTransaksi'])->name('transaksi-user.detail');
             Route::put('/transaksi/{id}', [TransactionController::class, 'updateTransaksi'])->name('transaksi-user.update');
             Route::put('/transaksi/pay/status', [TransactionController::class, 'updateStatusTransaksi'])->name('transaksi-user.update-status');
             Route::put('/transaksi/cancel/{id}', [TransactionController::class, 'cancelTransaksi'])->name('transaksi-user.cancel');

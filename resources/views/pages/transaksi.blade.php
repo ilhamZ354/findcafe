@@ -68,7 +68,7 @@
                                 </td>
 
                                 {{-- aksi --}}
-                                <td class="flex items-center justify-center gap-2 p-3">
+                                <td class="flex items-center justify-end gap-2 p-3">
                                     @if ($transaction->status == 'pending')
                                         {{-- pay button --}}
                                         <button type="button" data-snap-token="{{ $transaction->snap_token }}"
@@ -93,6 +93,12 @@
                                             & Rating
                                         </button>
                                     @endif
+
+                                    {{-- button detail --}}
+                                    <a href="{{ route('transaksi-user.detail', $transaction->id) }}"
+                                        class="text-gray-500 border border-gray-700
+                                        focus:ring-4 focus:outline-none focus:ring-semigray-500 font-medium rounded-lg
+                                        text-sm px-4 py-1.5 text-center me-2 mb-2 bg-gray-100/50 backdrop-blur-xl">Detail</a>
                                 </td>
                             </tr>
                         @endforeach
