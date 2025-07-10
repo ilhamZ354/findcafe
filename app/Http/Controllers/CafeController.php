@@ -121,10 +121,10 @@ class CafeController extends Controller
     }
 
     // list cafe untuk user
-    public function listCafes()
+    public function listCafes(Request $request)
     {
         // ambil data user dengan role cafe dan join kan cafe details
-        $cafes = DB::table('users')
+        $query = DB::table('users')
             ->join('cafe_details', 'users.id', '=', 'cafe_details.cafe_id')
             ->where('users.role', 'cafe')
             ->select(
@@ -133,8 +133,15 @@ class CafeController extends Controller
                 'users.email',
                 'cafe_details.id as cafe_detail_id',
                 'cafe_details.*'
-            )
-            ->get();
+            );
+
+        // Filter berdasarkan nama cafe jika ada parameter search
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('users.name', 'like', '%' . $search . '%');
+        }
+
+        $cafes = $query->get();
 
         // Tambahkan rata-rata rating (manual perhitungan: total_rating / total_review)
         foreach ($cafes as $cafe) {
@@ -150,9 +157,11 @@ class CafeController extends Controller
             }
         }
 
-        // dd($cafes);
 
-        return view('pages.index', ['data' => $cafes]);
+        return view('pages.index', [
+            'data' => $cafes,
+            'search' => $request->search
+        ]);
     }
 
 

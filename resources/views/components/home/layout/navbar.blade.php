@@ -100,20 +100,20 @@
             <ul
                 class="flex flex-col p-4 mt-4 font-medium border border-gray-100 rounded-lg md:p-0 bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-transparent">
                 <li>
-                    <a href="http://localhost:8000/home#"
+                    <a href="/home#"
                         class="block px-3 py-2 text-white rounded bg-primaryBrown md:bg-transparent md:text-primaryBrown md:p-0"
                         aria-current="page">Home</a>
                 </li>
                 <li>
-                    <a href="http://localhost:8000/home#about"
+                    <a href="/home#about"
                         class="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primaryBrown md:p-0">Tentang</a>
                 </li>
                 <li>
-                    <a href="http://localhost:8000/home#services"
+                    <a href="/home#services"
                         class="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primaryBrown md:p-0">Layanan</a>
                 </li>
                 <li>
-                    <a href="http://localhost:8000/home#contact"
+                    <a href="/home#contact"
                         class="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primaryBrown md:p-0">Kontak</a>
                 </li>
             </ul>

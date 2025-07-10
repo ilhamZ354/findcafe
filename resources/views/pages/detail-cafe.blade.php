@@ -12,7 +12,7 @@
     <div class="relative">
         {{-- button back --}}
         <div class="mx-5 mt-24 md:mt-20">
-            <x-button.back-pages href="http://localhost:8000/home#services"></x-button.back-pages>
+            <x-button.back-pages href="/home#services"></x-button.back-pages>
         </div>
 
         <section id="header" class="mt-2">

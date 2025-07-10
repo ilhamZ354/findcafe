@@ -1,10 +1,10 @@
 @props([
     'images' => [
-        asset('images/carousel/gambar-1.png'),
-        asset('images/carousel/gambar-2.png'),
-        asset('images/carousel/gambar-3.png'),
-        asset('images/carousel/gambar-4.png'),
-        asset('images/carousel/gambar-5.png'),
+        asset('images/carousel/gambar-1.jpg'),
+        asset('images/carousel/gambar-2.jpg'),
+        asset('images/carousel/gambar-3.jpg'),
+        asset('images/carousel/gambar-4.jpg'),
+        asset('images/carousel/gambar-5.jpg'),
     ],
 ])
 

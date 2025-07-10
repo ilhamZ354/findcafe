@@ -6,16 +6,16 @@
             </a>
             <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-white sm:mb-0 ">
                 <li>
-                    <a href="http://localhost:8000/home#" class="hover:underline me-4 md:me-6">Home</a>
+                    <a href="/home#" class="hover:underline me-4 md:me-6">Home</a>
                 </li>
                 <li>
-                    <a href="http://localhost:8000/home#about" class="hover:underline me-4 md:me-6">Tentang</a>
+                    <a href="/home#about" class="hover:underline me-4 md:me-6">Tentang</a>
                 </li>
                 <li>
-                    <a href="http://localhost:8000/home#services" class="hover:underline me-4 md:me-6">Layanan</a>
+                    <a href="/home#services" class="hover:underline me-4 md:me-6">Layanan</a>
                 </li>
                 <li>
-                    <a href="http://localhost:8000/home#contact" class="hover:underline">Kontak</a>
+                    <a href="/home#contact" class="hover:underline">Kontak</a>
                 </li>
             </ul>
         </div>

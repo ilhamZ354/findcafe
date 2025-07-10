@@ -2,7 +2,7 @@
     <div class="min-h-[55vh] px-5 my-20 md:px-10">
         <div class="flex items-center justify-start w-full gap-2">
             {{-- button back --}}
-            <x-button.back-pages href="http://localhost:8000/home"></x-button.back-pages>
+            <x-button.back-pages href="/home"></x-button.back-pages>
 
             <h3 class="text-xl tracking-wide text-primaryBrown">Profile</h3>
         </div>
@@ -14,7 +14,7 @@
                     <!-- ====== Profile Section -->
                     <div class="overflow-hidden bg-white border rounded-xl border-stroke shadow-default">
                         <div class="relative z-20 h-35 md:h-65">
-                            <img src="{{ asset('images/carousel/gambar-1.png') }}" alt="profile cover"
+                            <img src="{{ asset('images/carousel/gambar-2.jpg') }}" alt="profile cover"
                                 class="object-cover object-center w-full rounded-tl-sm rounded-tr-sm h-72" />
                         </div>
                         <div class="px-4 pb-6 text-center lg:pb-8 xl:pb-11.5">
