@@ -110,11 +110,39 @@ document.addEventListener("DOMContentLoaded", () => {
                     continue;
                 }
 
-                const existing = uploadedUrlsInput.value
-                    ? JSON.parse(uploadedUrlsInput.value)
-                    : [];
+                // const existing = uploadedUrlsInput.value
+                //     ? JSON.parse(uploadedUrlsInput.value)
+                //     : [];
 
-                const combined = Array.from(new Set([...existing, data.url]));
+                // const combined = Array.from(new Set([...existing, data.url]));
+                // uploadedUrlsInput.value = JSON.stringify(combined);
+
+                const existingValue = uploadedUrlsInput.value.trim();
+
+                // Coba parse, tapi tangani jika gagal
+                let parsed = [];
+
+                try {
+                    const tryParse = JSON.parse(existingValue);
+                    if (Array.isArray(tryParse)) {
+                        parsed = tryParse;
+                    } else {
+                        parsed = [];
+                    }
+                } catch (e) {
+                    // Kalau gagal parse (misalnya karena "data1","data2"), coba split manual
+                    if (existingValue.includes("https://")) {
+                        parsed = existingValue
+                            .replaceAll('"', "")
+                            .split(",")
+                            .map((str) => str.trim())
+                            .filter((str) => str.startsWith("http"));
+                    } else {
+                        parsed = [];
+                    }
+                }
+
+                const combined = Array.from(new Set([...parsed, data.url]));
                 uploadedUrlsInput.value = JSON.stringify(combined);
 
                 console.log(combined);
