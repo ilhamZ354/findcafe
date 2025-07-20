@@ -94,12 +94,3 @@
         </main>
     </div>
 </section>
-
-
-<script>
-    document.getElementById('search-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const query = new URLSearchParams(new FormData(this)).toString();
-        window.location.href = `/home?${query}#services`;
-    });
-</script>
