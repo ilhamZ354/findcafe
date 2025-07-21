@@ -15,7 +15,8 @@ use App\Http\Middleware\IsUser;
 use App\Http\Middleware\IsCafe;
 
 // ============AUTH===========
-Route::get('/', [AuthController::class, 'index'])->name('login');
+Route::get('/', [CafeController::class, 'listCafes'])->name('home');
+Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::get('/register', [AuthController::class, 'registerForm'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -74,7 +75,7 @@ Route::middleware('auth')->group(
 
         // =============USER===========
         Route::middleware(IsUser::class)->group(function () {
-            Route::get('/home', [CafeController::class, 'listCafes'])->name('home');
+            // Route::get('/home', [CafeController::class, 'listCafes'])->name('home');
             Route::get('/detail-cafe/{id}', [CafeController::class, 'show'])->name('detail-cafe');
             Route::post('/detail-cafe/booking/{id}', [TransactionController::class, 'storeTransaksi'])->name('store-transaksi');
             // untuk transaksi dan rating review

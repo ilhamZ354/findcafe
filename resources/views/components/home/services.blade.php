@@ -37,12 +37,14 @@
                             <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                                 @foreach ($data as $cafe)
                                     <div class="w-full max-w-md bg-white border border-gray-200 rounded-lg shadow-sm">
-                                        <a href="{{ route('detail-cafe', $cafe->cafe_id) }}">
+                                        <a
+                                            href="{{ Auth::check() ? route('detail-cafe', $cafe->cafe_id) : route('login') }}">
                                             <img class="object-cover w-full rounded-t-lg h-60"
                                                 src="{{ $cafe->image_profile }}" alt="product image" />
                                         </a>
                                         <div class="px-5 py-5">
-                                            <a href="{{ route('detail-cafe', $cafe->cafe_id) }}">
+                                            <a
+                                                href="{{ Auth::check() ? route('detail-cafe', $cafe->cafe_id) : route('login') }}">
                                                 <h5 class="text-xl font-semibold tracking-tight text-gray-900">
                                                     {{ $cafe->name }}</h5>
                                                 <p class="mt-2 text-sm text-grayTheme">
@@ -72,7 +74,7 @@
                                             </div>
 
                                             <div class="flex items-center justify-end">
-                                                <a href="{{ route('detail-cafe', $cafe->cafe_id) }}"
+                                                <a href="{{ Auth::check() ? route('detail-cafe', $cafe->cafe_id) : route('login') }}"
                                                     class="text-white bg-primaryBrown hover:bg-semiPrimaryBrown focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Lihat
                                                     lainnya</a>
                                             </div>

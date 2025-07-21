@@ -27,8 +27,8 @@ class AuthController extends Controller
         try {
             // dd($request->all());
             $credentials = $request->validate([
-                'email' => ['required','string'],
-                'password' => ['required','string'],
+                'email' => ['required', 'string'],
+                'password' => ['required', 'string'],
             ]);
 
             if (Auth::attempt($credentials)) {
@@ -55,6 +55,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login')->with('success', 'Logout berhasil.');
+        return redirect()->route('home')->with('success', 'Logout berhasil.');
     }
 }
